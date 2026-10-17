@@ -1,4 +1,10 @@
-wrangler.jsonc
-README.md
-.assetsignore
 .git
+.github
+node_modules
+.assetsignore
+wrangler.jsonc
+wrangler.toml
+*.md
+.dev.vars
+.env
+.wrangler
