@@ -10,6 +10,35 @@ window.RR_SHOW_PRICES=false;if(window.RR_SHOW_PRICES===false)document.documentEl
 <style id="rr-no-prices-css">/* cart drawer money (not covered by the JS flag) */
 html.rr-no-prices .rr-ci-price,html.rr-no-prices aside#drawer .drawer-foot .total,html.rr-no-prices body #drawer .drawer-foot .total{display:none!important}</style>
 <meta charset="utf-8"/>
+
+<style id="rr-logo-critical">
+/* Logo v80: ONE image, CSS lives in <head> so it exists before the nav is painted (fixes the oversized-logo flash). */
+.nav-brand .rr-lg{display:block;position:relative;width:100%;max-width:636px;min-width:0;aspect-ratio:1600/313}
+.nav-brand .rr-logo{filter:drop-shadow(0 4px 10px rgba(20,0,0,.45));display:block;width:100%;height:auto;aspect-ratio:1600/313;opacity:0;transform:scale(.97);transform-origin:left center;animation:rrLogoIn .55s cubic-bezier(.2,.7,.2,1) .05s forwards}
+@keyframes rrLogoIn{to{opacity:1;transform:none}}
+/* gold shine: masked to the logo's own shape, plays once after load, again on hover */
+.rr-lg-shine{position:absolute;inset:0;z-index:3;pointer-events:none;-webkit-mask-image:url("assets/logo/rr-logo-480.webp");mask-image:url("assets/logo/rr-logo-480.webp");-webkit-mask-size:100% 100%;mask-size:100% 100%;
+ background:linear-gradient(105deg,transparent 36%,rgba(255,196,80,0) 42%,rgba(255,196,80,.65) 50%,rgba(255,196,80,0) 58%,transparent 64%);background-size:260% 100%;background-position:130% 0}
+.rr-lg-shine{animation:rrFoil 1.6s ease-in-out 1.1s 1 both}
+.nav-brand:hover .rr-lg-shine{animation:rrFoil 1.2s ease-in-out 0s 1 both}
+@keyframes rrFoil{0%{background-position:130% 0}100%{background-position:-30% 0}}
+.nav-brand{transition:transform .35s cubic-bezier(.2,.7,.2,1)}.nav-brand:hover{transform:scale(1.015)}
+/* Logo size v80 (authoritative; beats the older !important patch layers by specificity).
+   Desktop: width follows viewport, leaving >=20px before the nav links. Phones: fits beside the 3 buttons. */
+html body nav.top-nav .nav-brand{flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:none!important}
+html body nav.top-nav .nav-brand .rr-lg{max-width:none;min-width:0}
+html body nav.top-nav .nav-brand .nav-logo{width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important}
+@media(min-width:980px){html body nav.top-nav .nav-brand .rr-lg{width:30.2vw}}
+@media(min-width:1280px){html body nav.top-nav .nav-brand .rr-lg{width:min(32vw,525px)}}
+@media(min-width:701px) and (max-width:979px){html body nav.top-nav .nav-brand .rr-lg{width:44vw;max-width:340px}}
+@media(max-width:700px){html body nav.top-nav .nav-brand{flex:0 1 auto!important}html body nav.top-nav .nav-brand .rr-lg{width:min(230px,calc(100vw - 146px))}}
+/* 980-1099px: menu text 14px so the last link no longer touches the search button (was overlapping by up to 48px) */
+@media(min-width:980px) and (max-width:1019px){html body nav.top-nav .nav-brand .rr-lg{width:28vw}}
+@media(min-width:980px) and (max-width:1099px){html body nav.top-nav .nav-links a{font-size:14px!important}html body nav.top-nav .nav-links{gap:6px!important}}
+@media(min-width:980px){body.rr-nav-hide nav.top-nav{translate:0 -170%!important}body nav.top-nav{transition:translate .4s cubic-bezier(.2,.7,.2,1),scale .45s cubic-bezier(.2,.7,.2,1),filter .45s}}
+@media(prefers-reduced-motion:reduce){.nav-brand .rr-logo{opacity:1;transform:none;animation:none}.rr-lg-shine{animation:none;opacity:0}.nav-brand,.nav-brand:hover{transform:none;transition:none}body.rr-nav-hide nav.top-nav{translate:none!important}}
+</style>
+
 <link rel="preload" href="/assets/fonts/cormorant-garamond-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/cormorant-garamond-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/manrope-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -46,9 +75,19 @@ html.rr-no-prices .rr-ci-price,html.rr-no-prices aside#drawer .drawer-foot .tota
 @font-face{font-family:'Great Vibes';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/great-vibes-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 </style>
 <style id="rr-v69-fontgate">html.rr-fw :is(.top-nav .nav-links,.top-nav .nav-brand-text,.hero-copy,.hero-bottom .hero-first,.hero-bottom .rr-hero-order,.hero-bottom .music-info){visibility:hidden!important}html.rr-fw #home *{animation-play-state:paused!important}</style>
-<script id="rr-v69-fontgate-js">(function(){var d=document.documentElement;if(!document.fonts||!document.fonts.load)return;d.classList.add('rr-fw');var f=function(){d.classList.remove('rr-fw')},t=setTimeout(f,2000);
+<script id="rr-v69-fontgate-js">(function(){var d=document.documentElement;if(!document.fonts||!document.fonts.load)return;d.classList.add('rr-fw');var f=function(){d.classList.remove('rr-fw')},t=setTimeout(f,1200);
 Promise.all(['600 16px "Cormorant Garamond"','700 16px "Cormorant Garamond"','500 16px Manrope','600 16px Manrope','700 16px Manrope'].map(function(x){return document.fonts.load(x)})).then(function(){clearTimeout(t);f()},function(){clearTimeout(t);f()})})();</script>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link rel="preload" as="image" href="/assets/hero-m-0.webp" media="(max-width:700px)" fetchpriority="high"/>
+<link rel="preload" as="image" href="/assets/a72557d0ea.jpg" media="(min-width:701px)" fetchpriority="high"/>
+<link rel="preload" as="image" href="assets/logo/rr-logo-480.webp" media="(max-width:700px) and (max-resolution:2dppx)" fetchpriority="high"/>
+<link rel="preload" as="image" href="assets/logo/rr-logo-800.webp" media="(max-width:700px) and (min-resolution:2.01dppx)" fetchpriority="high"/>
+<link rel="preload" as="image" href="assets/logo/rr-logo-480.webp" media="(min-width:701px) and (max-resolution:1dppx)" fetchpriority="high"/>
+<link rel="preload" as="image" href="assets/logo/rr-logo-800.webp" media="(min-width:701px) and (min-resolution:1.01dppx) and (max-resolution:1.99dppx)" fetchpriority="high"/>
+<link rel="preload" as="image" href="assets/logo/rr-logo.webp" media="(min-width:701px) and (min-resolution:2dppx)" fetchpriority="high"/>
+<style id="rr-poster">/* phones: show the first hero photo as the page background while the rest of the page is still downloading (no more empty dark red screen). Removed once the page has loaded. */
+@media(max-width:700px){html:not(.rr-ready) body{background-image:url(/assets/hero-m-0.webp)!important;background-repeat:no-repeat!important;background-position:50% 0!important;background-size:100% auto!important}}</style>
+<script id="rr-poster-js">addEventListener("load",function(){setTimeout(function(){document.documentElement.classList.add("rr-ready")},400)});</script>
 <title>RR Durbar | Biryani &amp; Andhra Food in Vijayawada</title>
 <meta name="description" content="Since 1991, RR Durbar serves royal biryani and Andhra favourites across six Vijayawada outlets. Order for pickup or on Swiggy and Zomato.">
 <meta name="robots" content="index,follow"><meta property="og:type" content="website"><meta property="og:site_name" content="RR Durbar">
@@ -4196,8 +4235,8 @@ html body #home .slide-photo picture{display:contents}
   html body #home.hero .slide .slide-photo .hero-image{object-position:50% 50%!important}
 }
 </style>
-<link rel="preload" as="image" href="/assets/hero-m-0.webp" media="(max-width:700px)">
-<link rel="preload" as="image" href="/assets/a72557d0ea.jpg" media="(min-width:701px)">
+
+
 <style id="rr-v48">
 /* v48 type/contrast */
 body #bestsellers .rr-eyebrow,body #bestsellers .rr-edit-label{color:#7a4a0c!important;font-weight:800!important;letter-spacing:.14em!important}
@@ -4920,6 +4959,15 @@ html body #stats .rr-stats .rr-stat span{font-size:14px!important;letter-spacing
 @keyframes m74pulse{0%,100%{box-shadow:0 0 0 0 rgba(212,173,101,.55)}60%{box-shadow:0 0 0 8px rgba(212,173,101,0)}}
 }
 </style>
+<style id="rr-v84">
+/* v84: drawer link icons */
+.mobile-nav-panel a{display:flex!important;align-items:center;gap:14px}
+.mobile-nav-panel a .rr-ni{flex:none;width:24px;height:24px;display:inline-block;color:#ffc04c}
+.mobile-nav-panel a .rr-ni svg{width:24px;height:24px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mobile-nav-panel a:hover .rr-ni,.mobile-nav-panel a:focus-visible .rr-ni{color:#fff}
+/* v84: 16px form text on phones stops iOS zoom-on-focus; placeholders stay readable */
+@media(max-width:700px){input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea{font-size:16px!important}input::placeholder,textarea::placeholder{opacity:1}}
+</style>
 </head>
 <body>
 <button type="button" class="rr-skip" id="rr-skip-btn">Skip to main content</button><script>document.getElementById("rr-skip-btn").addEventListener("click",function(){var m=document.getElementById("main-content");if(!m)return;m.setAttribute("tabindex","-1");m.focus();m.scrollIntoView({block:"start"})})</script>
@@ -4930,7 +4978,7 @@ html body #stats .rr-stats .rr-stat span{font-size:14px!important;letter-spacing
 <nav class="top-nav" aria-label="Primary navigation">
 <svg aria-hidden="true" class="nav-architecture" focusable="false" preserveAspectRatio="none" viewBox="0 0 1440 146"><defs><linearGradient id="royal-maroon-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a0810"/><stop offset="24%" stop-color="#82182a"/><stop offset="48%" stop-color="#a52c3d"/><stop offset="72%" stop-color="#78121e"/><stop offset="100%" stop-color="#300409"/></linearGradient><linearGradient id="royal-gold-edge" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" stop-color="#ffe8a0"/><stop offset="48%" stop-color="#d4af37"/><stop offset="100%" stop-color="#a87c18"/></linearGradient><linearGradient id="royal-gold-footer" x1="0%" x2="100%" y1="0%" y2="0%"><stop offset="0%" stop-color="#ff9e18"/><stop offset="44%" stop-color="#ffe09a"/><stop offset="74%" stop-color="#f2bf5b"/><stop offset="100%" stop-color="#ff9e18"/></linearGradient></defs><path d="M0 55Q0 0 55 0H1385Q1440 0 1440 55V91Q1440 146 1385 146H55Q0 146 0 91Z" fill="url(#royal-maroon-gradient)"/><path class="nav-board-desktop" d="M0 55Q0 0 55 0H530C570 0 600 45 635 146H55Q0 146 0 91Z" fill="#fff"/><path class="nav-board-mobile" d="M0 31Q0 0 77 0H740C790 0 810 46 840 146H77Q0 146 0 89Z" fill="#fff"/></svg>
 <div class="nav-inner">
-<a class="nav-brand" href="?page=home#home" aria-label="RR Durbar — Dine Like a King, Since 1991 — Home"><span class="rr-lg"><span class="rr-lg-stack"><img class="nav-logo rr-lg-plate" src="assets/logo/rr-logo-plate.webp" alt="RR Durbar — Dine Like a King, Since 1991" width="1600" height="313" fetchpriority="high" decoding="async"/><img class="rr-lg-l rr-lg-emblem" src="assets/logo/rr-logo-emblem.webp" alt="" aria-hidden="true" width="1600" height="313" decoding="async"/><img class="rr-lg-l rr-lg-title" src="assets/logo/rr-logo-title.webp" alt="" aria-hidden="true" width="1600" height="313" decoding="async"/><img class="rr-lg-l rr-lg-tag" src="assets/logo/rr-logo-tagline.webp" alt="" aria-hidden="true" width="1600" height="313" decoding="async"/><span class="rr-lg-shine" aria-hidden="true"></span></span></span></a>
+<a class="nav-brand" href="?page=home#home" aria-label="RR Durbar — Dine Like a King, Since 1991 — Home"><span class="rr-lg"><img class="nav-logo rr-logo" src="assets/logo/rr-logo-800.webp" srcset="assets/logo/rr-logo-480.webp 480w, assets/logo/rr-logo-800.webp 800w, assets/logo/rr-logo.webp 1600w" sizes="(max-width:700px) 240px, 420px" alt="RR Durbar — Dine Like a King, Since 1991" width="1600" height="313" fetchpriority="high" decoding="async"/><span class="rr-lg-shine" aria-hidden="true"></span></span></a>
 <div class="nav-links">
 <a class="nav-home" href="?page=home#home">Home</a>
 <a class="nav-about" href="?page=about-us#about">About Us</a>
@@ -4957,14 +5005,14 @@ html body #stats .rr-stats .rr-stat span{font-size:14px!important;letter-spacing
 <div aria-hidden="true" class="hero-orbit orbit-a"></div><div aria-hidden="true" class="hero-orbit orbit-b"></div>
 <div aria-hidden="true" class="hero-sparkles"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <!-- 6 FULL-SCREEN FOOD SLIDES: zoom + reveal toward the viewer -->
-<article class="slide active" data-scene="0" data-scene-label="THE FLAME OF ANDHRA" style="--fx:60%;--fy:52%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-0.webp" width="780" height="1688"><img width="1600" height="900" alt="Kodi vepudu tossed in the air over a hammered silver bowl on a deep red backdrop" class="hero-image" data-card="assets/7fb76668ea.jpg" data-thumb="assets/3334142cae.jpg" src="assets/a72557d0ea.jpg" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Bhimavaram-style kodi vepudu · RR Durbar</div><h1 class="hero-title">Bold spice.<br/><em>Royal appetite.</em></h1><p class="hero-desc">Crisp-edged chicken, green chilli, curry leaves and deep Andhra spice — made to wake up the table.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Explore signature dishes →</a><a class="hero-secondary" href="?page=branches#br-list">Choose your outlet</a></div><div class="slide-index"><b>01</b><span>/</span>08<span class="hero-cap"> · THE FLAME OF ANDHRA</span></div></div></div></article>
-<article class="slide rr-split" data-scene="1" data-scene-label="THE ROYAL BOWL" style="--fx:67%;--fy:54%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-1.webp" width="780" height="1688"><img width="1024" height="1536" alt="Chicken biryani piled high in a golden brass lotus bowl with whole spices" class="hero-image" data-card="assets/398782e278.jpg" data-thumb="assets/1d7b0344e5.jpg" src="assets/9b53331477.jpg" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Brass-bowl biryani · RR Durbar</div><h2 class="hero-title">A royal plate.<br/><em>Made to linger.</em></h2><p class="hero-desc">Long-grain biryani piled high in a golden brass bowl, finished with fried onions, fresh coriander and whole spices.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Explore the biryanis →</a><a class="hero-secondary" href="?page=menu#menu-page">View menu</a></div><div class="slide-index"><b>02</b><span>/</span>08<span class="hero-cap"> · THE ROYAL BOWL</span></div></div></div></article>
-<article class="slide" data-scene="2" data-scene-label="THE DURBAR KITCHEN" style="--fx:60%;--fy:58%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-2.webp" width="780" height="1688"><img width="1600" height="900" alt="Biryani topped with masala on a banana leaf, with tomato and carrot garnish" class="hero-image" data-card="assets/efd4ef3fc6.jpg" data-thumb="assets/4a02d3c90f.jpg" src="assets/f8820a1495.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Banana-leaf biryani · RR Durbar</div><h2 class="hero-title">The Durbar<br/><em>on your table.</em></h2><p class="hero-desc">A generous biryani plate on banana leaf, layered with masala, fresh garnish and the unmistakable warmth of a royal feast.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Discover the biryanis →</a><a class="hero-secondary" href="#about">Our story</a></div><div class="slide-index"><b>03</b><span>/</span>08<span class="hero-cap"> · THE DURBAR KITCHEN</span></div></div></div></article>
-<article class="slide rr-split" data-scene="3" data-scene-label="THE ROYAL CLASSICS" style="--fx:67%;--fy:55%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-3.webp" width="780" height="1688"><img width="1023" height="1537" alt="Vankay biryani with roasted brinjal and cashews on a brass platter, steaming" class="hero-image" data-card="assets/ae580716bf.jpg" data-thumb="assets/0a0d2ac83d.jpg" src="assets/ca0edf2252.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Vankay biryani · RR Durbar</div><h2 class="hero-title">Smoke, spice &amp;<br/><em>roasted brinjal.</em></h2><p class="hero-desc">Fragrant long-grain rice with glossy roasted brinjal, rich masala and golden cashews.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Taste the vankay biryani →</a><a class="hero-secondary" href="?page=branches#br-list">Choose your outlet</a></div><div class="slide-index"><b>04</b><span>/</span>08<span class="hero-cap"> · THE ROYAL CLASSICS</span></div></div></div></article>
-<article class="slide" data-scene="4" data-scene-label="THE ROYAL MASALA" style="--fx:59%;--fy:52%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-4.webp" width="780" height="1688"><img width="1600" height="900" alt="Biryani with rich masala gravy on a banana leaf with cucumber and green chilli" class="hero-image" data-card="assets/645c019008.jpg" data-thumb="assets/3de8833261.jpg" src="assets/6820bd4f15.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Masala biryani · RR Durbar</div><h2 class="hero-title">Slow-cooked.<br/><em>Seriously royal.</em></h2><p class="hero-desc">Fragrant saffron rice crowned with a rich, slow-cooked masala, served on banana leaf with cool cucumber and green chilli.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Taste the masala biryani →</a><a class="hero-secondary" href="?page=branches#br-list">Find an outlet</a></div><div class="slide-index"><b>05</b><span>/</span>08<span class="hero-cap"> · THE ROYAL MASALA</span></div></div></div></article>
-<article class="slide" data-scene="5" data-scene-label="THE ROYAL STARTERS" style="--fx:67%;--fy:68%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-5.webp" width="780" height="1688"><img width="1600" height="900" alt="Chicken lollipops in a glossy red sauce on a black plate with a carved-carrot garnish" class="hero-image" data-card="assets/934553ab54.jpg" data-thumb="assets/1353a2c218.jpg" src="assets/5c9f81d658.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Chicken lollipops · RR Durbar</div><h2 class="hero-title">Sticky, saucy.<br/><em>Seriously royal.</em></h2><p class="hero-desc">Chicken lollipops tossed in a glossy, spiced red sauce and finished with fresh coriander and a carved-carrot crown.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Explore the starters →</a><a class="hero-secondary" href="?page=menu#menu-page">View menu</a></div><div class="slide-index"><b>06</b><span>/</span>08<span class="hero-cap"> · THE ROYAL STARTERS</span></div></div></div></article>
-<article class="slide" data-scene="6" data-scene-label="THE TIKKA TABLE" style="--fx:67%;--fy:68%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-6.webp" width="780" height="1688"><img width="1600" height="900" alt="Golden chicken and paneer tikka on a black paddle with green chutney and red onion" class="hero-image" data-thumb="assets/3060caf49d.jpg" src="assets/7c01b77a60.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Chicken &amp; paneer tikka · RR Durbar</div><h2 class="hero-title">Golden-edged.<br/><em>Seriously good.</em></h2><p class="hero-desc">Chicken and paneer tikka grilled until golden at the edges, served with a fresh green chutney, red onion and crisp slaw.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Explore the tikkas →</a><a class="hero-secondary" href="?page=menu#menu-page">View menu</a></div><div class="slide-index"><b>07</b><span>/</span>08<span class="hero-cap"> · THE TIKKA TABLE</span></div></div></div></article>
-<article class="slide" data-scene="7" data-scene-label="THE ROYAL GRILL" style="--fx:67%;--fy:68%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-7.webp" width="780" height="1688"><img width="1600" height="900" alt="Charred grilled chicken on banana leaf with mint chutney and crunchy salad" class="hero-image" data-thumb="assets/9a288b4fe7.jpg" src="assets/a9f6768a06.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Royal grill · RR Durbar</div><h2 class="hero-title">Fire, flavour.<br/><em>Served royal.</em></h2><p class="hero-desc">Charred, juicy pieces finished with fresh herbs, crisp salad and a cool mint chutney on the side.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Taste the royal grill →</a><a class="hero-secondary" href="?page=branches#br-list">Find an outlet</a></div><div class="slide-index"><b>08</b><span>/</span>08<span class="hero-cap"> · THE ROYAL GRILL</span></div></div></div></article>
+<article class="slide active" data-scene="0" data-scene-label="THE FLAME OF ANDHRA" style="--fx:60%;--fy:52%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-0.webp" width="780" height="1688"><img width="1600" height="900" alt="Kodi vepudu tossed in the air over a hammered silver bowl on a deep red backdrop" class="hero-image" fetchpriority="high" data-card="assets/7fb76668ea.jpg" data-thumb="assets/3334142cae.jpg" src="assets/a72557d0ea.jpg" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Bhimavaram-style kodi vepudu · RR Durbar</div><h1 class="hero-title">Bold spice.<br/><em>Royal appetite.</em></h1><p class="hero-desc">Crisp-edged chicken, green chilli, curry leaves and deep Andhra spice — made to wake up the table.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Explore signature dishes →</a><a class="hero-secondary" href="?page=branches#br-list">Choose your outlet</a></div><div class="slide-index"><b>01</b><span>/</span>08<span class="hero-cap"> · THE FLAME OF ANDHRA</span></div></div></div></article>
+<article class="slide rr-split" data-scene="1" data-scene-label="THE ROYAL BOWL" style="--fx:67%;--fy:54%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-1.webp" width="780" height="1688"><img width="1024" height="1536" alt="Chicken biryani piled high in a golden brass lotus bowl with whole spices" class="hero-image" fetchpriority="low" data-card="assets/398782e278.jpg" data-thumb="assets/1d7b0344e5.jpg" src="assets/9b53331477.jpg" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Brass-bowl biryani · RR Durbar</div><h2 class="hero-title">A royal plate.<br/><em>Made to linger.</em></h2><p class="hero-desc">Long-grain biryani piled high in a golden brass bowl, finished with fried onions, fresh coriander and whole spices.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Explore the biryanis →</a><a class="hero-secondary" href="?page=menu#menu-page">View menu</a></div><div class="slide-index"><b>02</b><span>/</span>08<span class="hero-cap"> · THE ROYAL BOWL</span></div></div></div></article>
+<article class="slide" data-scene="2" data-scene-label="THE DURBAR KITCHEN" style="--fx:60%;--fy:58%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-2.webp" width="780" height="1688"><img width="1600" height="900" alt="Biryani topped with masala on a banana leaf, with tomato and carrot garnish" class="hero-image" fetchpriority="low" data-card="assets/efd4ef3fc6.jpg" data-thumb="assets/4a02d3c90f.jpg" src="assets/f8820a1495.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Banana-leaf biryani · RR Durbar</div><h2 class="hero-title">The Durbar<br/><em>on your table.</em></h2><p class="hero-desc">A generous biryani plate on banana leaf, layered with masala, fresh garnish and the unmistakable warmth of a royal feast.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Discover the biryanis →</a><a class="hero-secondary" href="#about">Our story</a></div><div class="slide-index"><b>03</b><span>/</span>08<span class="hero-cap"> · THE DURBAR KITCHEN</span></div></div></div></article>
+<article class="slide rr-split" data-scene="3" data-scene-label="THE ROYAL CLASSICS" style="--fx:67%;--fy:55%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-3.webp" width="780" height="1688"><img width="1023" height="1537" alt="Vankay biryani with roasted brinjal and cashews on a brass platter, steaming" class="hero-image" fetchpriority="low" data-card="assets/ae580716bf.jpg" data-thumb="assets/0a0d2ac83d.jpg" src="assets/ca0edf2252.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Vankay biryani · RR Durbar</div><h2 class="hero-title">Smoke, spice &amp;<br/><em>roasted brinjal.</em></h2><p class="hero-desc">Fragrant long-grain rice with glossy roasted brinjal, rich masala and golden cashews.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Taste the vankay biryani →</a><a class="hero-secondary" href="?page=branches#br-list">Choose your outlet</a></div><div class="slide-index"><b>04</b><span>/</span>08<span class="hero-cap"> · THE ROYAL CLASSICS</span></div></div></div></article>
+<article class="slide" data-scene="4" data-scene-label="THE ROYAL MASALA" style="--fx:59%;--fy:52%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-4.webp" width="780" height="1688"><img width="1600" height="900" alt="Biryani with rich masala gravy on a banana leaf with cucumber and green chilli" class="hero-image" fetchpriority="low" data-card="assets/645c019008.jpg" data-thumb="assets/3de8833261.jpg" src="assets/6820bd4f15.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Masala biryani · RR Durbar</div><h2 class="hero-title">Slow-cooked.<br/><em>Seriously royal.</em></h2><p class="hero-desc">Fragrant saffron rice crowned with a rich, slow-cooked masala, served on banana leaf with cool cucumber and green chilli.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Taste the masala biryani →</a><a class="hero-secondary" href="?page=branches#br-list">Find an outlet</a></div><div class="slide-index"><b>05</b><span>/</span>08<span class="hero-cap"> · THE ROYAL MASALA</span></div></div></div></article>
+<article class="slide" data-scene="5" data-scene-label="THE ROYAL STARTERS" style="--fx:67%;--fy:68%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-5.webp" width="780" height="1688"><img width="1600" height="900" alt="Chicken lollipops in a glossy red sauce on a black plate with a carved-carrot garnish" class="hero-image" fetchpriority="low" data-card="assets/934553ab54.jpg" data-thumb="assets/1353a2c218.jpg" src="assets/5c9f81d658.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Chicken lollipops · RR Durbar</div><h2 class="hero-title">Sticky, saucy.<br/><em>Seriously royal.</em></h2><p class="hero-desc">Chicken lollipops tossed in a glossy, spiced red sauce and finished with fresh coriander and a carved-carrot crown.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Explore the starters →</a><a class="hero-secondary" href="?page=menu#menu-page">View menu</a></div><div class="slide-index"><b>06</b><span>/</span>08<span class="hero-cap"> · THE ROYAL STARTERS</span></div></div></div></article>
+<article class="slide" data-scene="6" data-scene-label="THE TIKKA TABLE" style="--fx:67%;--fy:68%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-6.webp" width="780" height="1688"><img width="1600" height="900" alt="Golden chicken and paneer tikka on a black paddle with green chutney and red onion" class="hero-image" fetchpriority="low" data-thumb="assets/3060caf49d.jpg" src="assets/7c01b77a60.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Chicken &amp; paneer tikka · RR Durbar</div><h2 class="hero-title">Golden-edged.<br/><em>Seriously good.</em></h2><p class="hero-desc">Chicken and paneer tikka grilled until golden at the edges, served with a fresh green chutney, red onion and crisp slaw.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Explore the tikkas →</a><a class="hero-secondary" href="?page=menu#menu-page">View menu</a></div><div class="slide-index"><b>07</b><span>/</span>08<span class="hero-cap"> · THE TIKKA TABLE</span></div></div></div></article>
+<article class="slide" data-scene="7" data-scene-label="THE ROYAL GRILL" style="--fx:67%;--fy:68%"><div class="slide-photo"><picture><source media="(max-width:700px)" srcset="assets/hero-m-7.webp" width="780" height="1688"><img width="1600" height="900" alt="Charred grilled chicken on banana leaf with mint chutney and crunchy salad" class="hero-image" fetchpriority="low" data-thumb="assets/9a288b4fe7.jpg" src="assets/a9f6768a06.jpg" loading="lazy" decoding="async"/></picture></div><div class="slide-content"><div class="hero-copy"><div class="hero-eyebrow">Royal grill · RR Durbar</div><h2 class="hero-title">Fire, flavour.<br/><em>Served royal.</em></h2><p class="hero-desc">Charred, juicy pieces finished with fresh herbs, crisp salad and a cool mint chutney on the side.</p><div class="hero-actions"><a class="hero-primary" href="#bestsellers">Taste the royal grill →</a><a class="hero-secondary" href="?page=branches#br-list">Find an outlet</a></div><div class="slide-index"><b>08</b><span>/</span>08<span class="hero-cap"> · THE ROYAL GRILL</span></div></div></div></article>
 <div class="hero-bottom"><p class="hero-first">Vijayawada's first theme-based restaurant</p><div class="rr-hero-order" data-rr-cta="1"><a class="cb-go" href="?page=order-now#ordering">Order Now</a><a class="cb-pk" href="?page=pickup">Order Pickup</a></div><div class="bottom-inner"><div class="music-box" id="musicBox"><button aria-label="Turn ambience on" class="music-button" id="musicButton">♫</button><div class="music-info"><strong>Royal ambience</strong><small id="musicText">Off · tap to play</small></div><div class="sound-bars"><i></i><i></i><i></i><i></i></div></div><div class="hero-nav-controls"><button class="hero-arrow" id="prevSlide" aria-label="Previous slide">‹</button><div class="progress" id="progressBars"><button aria-label="Slide 1" class="active" onclick="goSlide(0)"></button><button aria-label="Slide 2" onclick="goSlide(1)"></button><button aria-label="Slide 3" onclick="goSlide(2)"></button><button aria-label="Slide 4" onclick="goSlide(3)"></button><button aria-label="Slide 5" onclick="goSlide(4)"></button><button aria-label="Slide 6" onclick="goSlide(5)"></button><button aria-label="Slide 7" onclick="goSlide(6)"></button><button aria-label="Slide 8" onclick="goSlide(7)"></button></div><button class="hero-arrow" id="nextSlide" aria-label="Next slide">›</button></div><div class="hero-thumbs" id="heroThumbs"><button class="hero-thumb active" onclick="goSlide(0)" aria-label="Show slide 1"><img alt="Preview 1" loading="lazy" decoding="async"></button><button class="hero-thumb" onclick="goSlide(1)" aria-label="Show slide 2"><img alt="Preview 2" loading="lazy" decoding="async"></button><button class="hero-thumb" onclick="goSlide(2)" aria-label="Show slide 3"><img alt="Preview 3" loading="lazy" decoding="async"></button><button class="hero-thumb" onclick="goSlide(3)" aria-label="Show slide 4"><img alt="Preview 4" loading="lazy" decoding="async"></button><button class="hero-thumb" onclick="goSlide(4)" aria-label="Show slide 5"><img alt="Preview 5" loading="lazy" decoding="async"></button><button class="hero-thumb" onclick="goSlide(5)" aria-label="Show slide 6"><img alt="Preview 6" loading="lazy" decoding="async"></button><button class="hero-thumb" onclick="goSlide(6)" aria-label="Show slide 7"><img alt="Preview 7" loading="lazy" decoding="async"></button><button class="hero-thumb" onclick="goSlide(7)" aria-label="Show slide 8"><img alt="Preview 8" loading="lazy" decoding="async"></button></div></div></div></section>
 <section class="rr-section wh" id="honours" data-edit-section="home-honours" aria-labelledby="wh-h">
 <div class="wh-panel" id="wh-panel">
@@ -5282,7 +5330,7 @@ html body #stats .rr-stats .rr-stat span{font-size:14px!important;letter-spacing
     <h3>Pickup from Outlet</h3><p class="od-sub">Skip the wait, collect it fresh</p>
     <ul class="od-feat"><li><span><svg class="od-i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Pick your own time</li><li><span><svg class="od-i" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8a3 3 0 0 1 6 0"/></svg></span>No delivery fee</li></ul>
     <div class="od-selw"><label for="rr-order-outlet" class="od-sr">Choose your outlet</label><select id="rr-order-outlet"><option value="">Choose your outlet</option></select></div>
-    <button type="button" class="od-btn od-gold" id="odPickupBtn">Select Outlet <svg class="od-i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <button type="button" class="od-btn od-gold" id="odPickupBtn">Find nearest outlet <svg class="od-i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
    </article>
   </div>
 
@@ -9545,7 +9593,7 @@ var b=el('div','ot-body');b.appendChild(el('p','ot-addr',o.address));b.appendChi
 var a=el('div','ot-act'),d=el('a','ot-dir','Directions');d.href=o.directions;d.target='_blank';d.rel='noopener';var p=el('a','ot-call','Call');p.href='tel:'+o.tel;a.appendChild(d);a.appendChild(p);b.appendChild(a);c.appendChild(b);g.appendChild(c)})})();</script>
 <script id="rr-v45-pickup-js">(function(){
 /* FILL IN: one Rista ordering link and the real GPS lat/lng per outlet. Empty values are handled. */
-var CFG={singhnagar:{rista:"",lat:16.5332,lng:80.6358},moghalrajpuram:{rista:"",live:true,lat:16.5057,lng:80.6384},bhavanipuram:{rista:"",lat:16.5369,lng:80.5898},poranki:{rista:"",lat:16.4801,lng:80.6922},patamatalanka:{rista:"",lat:16.4912,lng:80.6554},autonagar:{rista:"",lat:16.5161,lng:80.6728}};
+var CFG={singhnagar:{rista:"",live:true,lat:16.5332,lng:80.6358},moghalrajpuram:{rista:"",live:true,lat:16.5057,lng:80.6384},bhavanipuram:{rista:"",live:true,lat:16.5369,lng:80.5898},poranki:{rista:"",live:true,lat:16.4801,lng:80.6922},patamatalanka:{rista:"",lat:16.4912,lng:80.6554},autonagar:{rista:"",live:true,lat:16.5161,lng:80.6728}};
 var O=[{"id": "singhnagar", "name": "Singhnagar", "address": "42-3-3, Budameru Centre, Ramakrishnapuram, Vijayawada, 520011", "hours": "Open daily 11:00 AM – 11:30 PM", "tel": "+917702077999", "phone": "+91 77020 77999", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.5332,80.6358", "pos": [395, 240]}, {"id": "moghalrajpuram", "name": "Moghalrajpuram", "address": "40-7-3, Near Jammichettu Centre, Moghalrajpuram, Vijayawada, 520010", "hours": "Open daily 11:00 AM – 11:30 PM", "tel": "+917702077999", "phone": "+91 77020 77999", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.5057,80.6384", "pos": [630, 195]}, {"id": "bhavanipuram", "name": "Bhavanipuram", "address": "D.No 76/8/15, Taruni Nilayam, Crombay Road, Bhavanipuram, Vijayawada, 520012", "hours": "Open daily 11:00 AM – 11:30 PM", "tel": "+917702077999", "phone": "+91 77020 77999", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.5369,80.5898", "pos": [300, 350]}, {"id": "poranki", "name": "Poranki", "address": "15-160, Vijayawada Rd, Poranki, Vijayawada, 521137", "hours": "Open daily 11:00 AM – 11:30 PM", "tel": "+917702077999", "phone": "+91 77020 77999", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.4801,80.6922", "pos": [530, 600]}, {"id": "patamatalanka", "name": "Patamatalanka", "address": "FMR4+G2F, Krishnaveni School Road, Patamatalanka, Vijayawada, 520010", "hours": "Open daily 11:00 AM – 11:30 PM", "tel": "+917702077999", "phone": "+91 77020 77999", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.4912,80.6554", "pos": [975, 480]}, {"id": "autonagar", "name": "Autonagar", "address": "Besides RR Chickens, Ballemvari Street, Murali Nagar, Auto Nagar, Vijayawada, 520007", "hours": "Call for hours", "tel": "+917702077999", "phone": "+91 77020 77999", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.5161,80.6728", "pos": [760, 700]}],MW=1220,MH=890,list=document.getElementById('pkList'),pins=document.getElementById('pkPins');if(!list)return;
 var user=null,sel=null,nearId=null;
 function e(t,c,x){var n=document.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n}
@@ -10391,40 +10439,6 @@ body #catering .cx-btn-primary{background:linear-gradient(180deg,#A66A14,#7A4A0C
 /* Forced-colors friendliness */
 @media (forced-colors:active){:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid Highlight}}
 </style>
-<style id="rr-v79-logo-css">
-/* v79: flat (no 3D) logo. Layers shift slightly with the mouse (parallax), warm gold shine every 8s, nav hides on scroll down (desktop). */
-.nav-brand .rr-lg{display:block;position:relative;width:100%;max-width:636px;min-width:0}
-.rr-lg-stack{position:relative;display:block}
-.rr-lg-l{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:left center;pointer-events:none;z-index:2;transition:translate .45s cubic-bezier(.2,.7,.2,1)}
-.rr-lg-plate{position:relative;z-index:1}
-.rr-lg-emblem{translate:calc(var(--px,0)*5px) calc(var(--py,0)*3px)}
-.rr-lg-title{translate:calc(var(--px,0)*3px) calc(var(--py,0)*2px)}
-.rr-lg-tag{translate:calc(var(--px,0)*1.5px) calc(var(--py,0)*1px)}
-.rr-lg-stack.rr-live .rr-lg-l{transition:translate .1s linear}
-.rr-lg-shine{position:absolute;inset:0;z-index:3;pointer-events:none;-webkit-mask-image:url("data:image/png;base64,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");mask-image:url("data:image/png;base64,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");-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  background:linear-gradient(105deg,transparent 36%,rgba(255,196,80,0) 42%,rgba(255,196,80,.6) 50%,rgba(255,196,80,0) 58%,transparent 64%);background-size:260% 100%;background-position:130% 0;animation:rrFoil 8s ease-in-out 2s infinite}
-@keyframes rrFoil{0%{background-position:130% 0}20%{background-position:-30% 0}100%{background-position:-30% 0}}
-@media(max-width:430px){.nav-brand .rr-lg{width:auto;min-width:auto;flex:0 0 auto}.rr-lg-stack{width:auto}}
-@media(min-width:980px){body.rr-nav-hide nav.top-nav{translate:0 -170%!important}body nav.top-nav{transition:translate .4s cubic-bezier(.2,.7,.2,1),scale .45s cubic-bezier(.2,.7,.2,1),filter .45s}}
-@media(prefers-reduced-motion:reduce){.rr-lg-l{transition:none;translate:none}.rr-lg-shine{animation:none;opacity:0}body.rr-nav-hide nav.top-nav{translate:none!important}}
-</style>
-<script id="rr-v79-logo-js">
-(function(){'use strict';
-var doc=document,reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
-var nav=doc.querySelector('nav.top-nav');if(!nav||reduce)return;
-var brand=doc.querySelector('.nav-brand'),stack=doc.querySelector('.rr-lg-stack');
-if(brand&&stack&&fine){var raf=0,px=0,py=0;
-  function apply(){raf=0;stack.style.setProperty('--px',px.toFixed(3));stack.style.setProperty('--py',py.toFixed(3))}
-  brand.addEventListener('pointermove',function(e){var r=brand.getBoundingClientRect();
-    px=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-.5)*2));py=Math.max(-1,Math.min(1,((e.clientY-r.top)/r.height-.5)*2));stack.classList.add('rr-live');if(!raf)raf=requestAnimationFrame(apply)});
-  brand.addEventListener('pointerleave',function(){stack.classList.remove('rr-live');px=py=0;if(!raf)raf=requestAnimationFrame(apply)});}
-var links=nav.querySelector('.nav-links'),last=window.scrollY,tick=false;
-window.addEventListener('scroll',function(){if(tick)return;tick=true;requestAnimationFrame(function(){tick=false;var y=window.scrollY,d=y-last;
-  var open=doc.querySelector('.mobile-menu[aria-expanded="true"]')||nav.contains(doc.activeElement)||(links&&links.matches(':hover'));
-  if(y<320||open||d<-6)doc.body.classList.remove('rr-nav-hide');else if(d>10)doc.body.classList.add('rr-nav-hide');
-  if(Math.abs(d)>6)last=y;else if(y<320)last=y})},{passive:true});
-})();
-</script>
 <style id="rr-v79-catering-mask">
 /* catering hero photo: one clean mask (soft left fade + soft top/bottom fade) so there is no hard seam under the header or against the card */
 @media(min-width:761px){
@@ -10463,13 +10477,23 @@ html body #catering .cx-hero-photo::after{background:none!important}}
 #rrP3.lv .p3-go:disabled{opacity:.55;cursor:not-allowed}
 #rrP3.lv .lv-small{font:400 12.5px/1.4 Arial,sans-serif;color:#806e68}
 @media(max-width:560px){#rrP3.lv .lv-list{grid-template-columns:1fr}#rrP3.lv .lv-ph{flex-basis:72px;width:72px;height:72px}}
+
+#odPickupCard .od-selw{display:none}
+.lv-cod{margin-top:18px;padding:14px;border:1px dashed rgba(184,134,11,.7);border-radius:14px}
+.lv-cod h4{margin:0 0 6px}
+.lv-f{display:block;margin:8px 0}.lv-f span{display:block;font-size:13px;margin-bottom:4px}
+.lv-f input{width:100%;box-sizing:border-box;min-height:44px;padding:8px 12px;border:1px solid rgba(0,0,0,.25);border-radius:10px;font:inherit}
+.lv-change{font-size:14px;text-decoration:underline}
 </style>
 <script id="rr-v76-live-js">
 (function(){'use strict';
 /* Live menu + server prices for outlets that are connected to Rista. Add more outlets here later. */
 var API='https://rr-durbar-api.bjnexusai-alekya.workers.dev';
-var LIVE={moghalrajpuram:'MR'};
-var NAMES={moghalrajpuram:'Moghalrajpuram'};
+var LIVE={moghalrajpuram:'MR',singhnagar:'SN',bhavanipuram:'BH',poranki:'PO',autonagar:'AT'};
+var NAMES={moghalrajpuram:'Moghalrajpuram',singhnagar:'Singhnagar',bhavanipuram:'Bhavanipuram',poranki:'Poranki',autonagar:'Autonagar'};
+var COD=['MR'];   /* outlets that may take the TEST order (pay at outlet) */
+var TEST=false;try{if(/[?&]test=1\b/.test(location.search))sessionStorage.setItem('rrTest','1');TEST=sessionStorage.getItem('rrTest')==='1'}catch(e){}
+var codBusy=false,codId='';
 var doc=document,$=function(i){return doc.getElementById(i)};
 var p3=$('rrP3'),sel=$('rr-order-outlet');
 if(!p3||!sel)return;
@@ -10490,7 +10514,7 @@ function getMenu(code){
   S.loading=true;S.failed=false;
   return fetch(API+'/api/menu?branch='+encodeURIComponent(code)).then(function(r){if(!r.ok)throw new Error('menu '+r.status);return r.json()}).then(function(j){
     if(!j||!Array.isArray(j.categories))throw new Error('bad menu');
-    S.menu=j;S.code=code;S.loadedAt=Date.now();dishById={};
+    S.menu=(function(m){var cs=(m&&m.categories)||[];cs.forEach(function(c){c.items=(c.items||[]).filter(function(d){if(d.variants&&d.variants.length){d.variants=d.variants.filter(function(v){return !v.soldOut});return d.variants.length>0}return !d.soldOut})});m.categories=cs.filter(function(c){return c.items.length});return m})(j);S.code=code;S.loadedAt=Date.now();dishById={};
     j.categories.forEach(function(c){c.items.forEach(function(d){
       if(d.variants&&d.variants.length)d.variants.forEach(function(v){dishById[v.id]={dish:d,label:v.label,v:v}});
       else dishById[d.id]={dish:d,label:'',v:d}})});
@@ -10555,6 +10579,37 @@ var mbBtn=null;
 function updMb(){var bar=doc.querySelector('#ordering .od-mbar');if(!bar)return;mbBtn=bar.querySelector('.rr-mb-cart');if(!mbBtn)return;
   var q=S.quote&&S.quoteFor===sig()&&S.quote.allOk?S.quote:null;mbBtn.textContent='Cart \u00B7 '+count()+(q?' \u00B7 '+money(q.total):'')}
 
+/* ---------- TEST order: pay at outlet (needs the secret test code; shown only when the page was opened with test=1) ---------- */
+function codBox(code){
+  var w=el('div','lv-cod');w.appendChild(el('h4','','Test order \u00B7 pay at outlet'));
+  w.appendChild(el('p','lv-small','For testing only. This sends the order to the outlet system with no payment. Tell the outlet first.'));
+  function field(label,type,ac){var l=el('label','lv-f');l.appendChild(el('span','',label));var i=el('input');i.type=type;if(ac)i.autocomplete=ac;l.appendChild(i);w.appendChild(l);return i}
+  var nm=field('Name','text','name'),ph=field('Phone (10 digits)','tel','tel'),cd=field('Test code','password','off');ph.inputMode='numeric';ph.maxLength=14;
+  var out=el('p','lv-msg');out.setAttribute('role','status');
+  var b=el('button','p3-go','Place test order');b.type='button';
+  function say(t,err){out.className='lv-msg'+(err?' err':'');out.textContent=t}
+  b.addEventListener('click',function(){
+    if(codBusy)return;
+    var q=S.quote&&S.quoteFor===sig()?S.quote:null;
+    if(!count()||!q||!q.allOk){say('Add dishes and wait for the prices first.',true);return}
+    if(nm.value.trim().length<2){say('Please enter the name.',true);return}
+    if(!/^(\+?91)?[6-9]\d{9}$/.test(ph.value.replace(/[\s-]/g,''))){say('Please enter a 10 digit mobile number.',true);return}
+    if(!cd.value){say('Please enter the test code.',true);return}
+    codBusy=true;b.disabled=true;say('Sending\u2026');
+    if(!codId)codId='W'+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,6).toUpperCase();
+    fetch(API+'/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({branch:code,orderId:codId,name:nm.value,phone:ph.value,code:cd.value,items:S.order.map(function(id){return {id:id,qty:S.lines[id].qty}})})})
+    .then(function(r){return r.json().then(function(j){return {s:r.status,j:j||{}}},function(){return {s:r.status,j:{}}})})
+    .then(function(x){var j=x.j;
+      if(x.s===200&&j.dryRun)say('Dry run OK. Nothing was sent. Total '+money(j.total)+'. Ref '+j.orderId);
+      else if(x.s===200){say('Order sent. Rista invoice '+(j.invoiceNumber||'(not returned)')+'. Total '+money(j.total)+(j.cashierNotified?'. Cashier notified.':'. Cashier notice not confirmed.'));S.lines={};S.order=[];codId='';changed()}
+      else if(x.s===404)say('Test code not accepted.',true);
+      else if(x.s===409)say('Some dishes cannot be ordered now. Remove them and try again.',true);
+      else if(x.s===502)say('Rista did not accept the order ('+(j.status||'error')+'). '+(j.detail||''),true);
+      else say('Could not place the order ('+x.s+').',true)})
+    .catch(function(){say('No connection. Please try again.',true)})
+    .then(function(){codBusy=false;b.disabled=false})});
+  w.appendChild(b);w.appendChild(out);return w}
+
 function dishRow(d){
   var row=el('div','lv-d'),ph=el('div','lv-ph');
   if(d.image){var im=doc.createElement('img');im.src=d.image;im.alt='';im.loading='lazy';im.decoding='async';im.referrerPolicy='no-referrer';im.addEventListener('error',function(){im.remove()});ph.appendChild(im)}
@@ -10589,6 +10644,7 @@ function render(){
     p3.classList.add('lv');p3.setAttribute('aria-live','off');p3.textContent='';
     p3.appendChild(el('h3','','Step 3 \u00B7 Build your pickup order \u00B7 '+NAMES[slug]));
     p3.appendChild(el('p','p3-sub','Live menu from the outlet. Add dishes, then send the order to the outlet on WhatsApp.'));
+    var cpar=el('p','lv-small'),chg=el('a','lv-change','Change outlet');chg.href='?page=pickup';cpar.appendChild(chg);p3.appendChild(cpar);
     if(window.RRCart&&RRCart.count()>0){var w=el('p','lv-msg','Dishes you added from the menu page are not in this order. ');var cb=el('button','','Remove them');cb.type='button';cb.addEventListener('click',function(){RRCart.clear();w.remove()});w.appendChild(cb);p3.appendChild(w)}
     var fresh=S.menu&&S.code===code&&Date.now()-S.loadedAt<60000;
     if(!fresh){
@@ -10613,6 +10669,7 @@ function render(){
       feedNote();$('odWA').click()});
     p3.appendChild(goBtn);
     p3.appendChild(el('p','p3-note','Online payment is not live yet. The outlet confirms your order on WhatsApp or by phone. Prices come from the outlet\u2019s system.'));
+    if(TEST&&COD.indexOf(code)>-1)p3.appendChild(codBox(code));
     if(S.order.length&&!(S.quote&&S.quoteFor===sig()))askQuote();else paintCart();
   }finally{obs.observe(p3,{childList:true});}
 }
@@ -10630,6 +10687,31 @@ window.rrOrderLive=function(slug){
 window.RR_LIVE_OUTLETS=LIVE;
 })();
 </script>
+<script id="rr-logo-js">
+(function(){'use strict';
+var doc=document,nav=doc.querySelector('nav.top-nav');if(!nav||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+var links=nav.querySelector('.nav-links'),last=window.scrollY,tick=false;
+window.addEventListener('scroll',function(){if(tick)return;tick=true;requestAnimationFrame(function(){tick=false;var y=window.scrollY,d=y-last;
+ var open=doc.querySelector('.mobile-menu[aria-expanded="true"]')||nav.contains(doc.activeElement)||(links&&links.matches(':hover'));
+ if(y<320||open||d<-6)doc.body.classList.remove('rr-nav-hide');else if(d>10)doc.body.classList.add('rr-nav-hide');
+ if(Math.abs(d)>6)last=y;else if(y<320)last=y})},{passive:true});
+})();
+</script>
+<script id="rr-v84-js">(function(){
+var P={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+about:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6"/>',
+menu:'<path d="M7 3v8a2 2 0 0 0 2 2v8"/><path d="M5 3v6M9 3v6"/><path d="M17 21V3c-2 1-3 4-3 8h3"/>',
+order:'<path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/>',
+branches:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+catering:'<path d="M3 17h18"/><path d="M5 17a7 7 0 0 1 14 0"/><path d="M12 7V5"/><path d="M10 5h4"/>',
+contact:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+track:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+policies:'<path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4"/><path d="M10 12h6M10 16h6"/>'};
+function key(t){t=(t||'').toLowerCase();return t.indexOf('home')>-1?'home':t.indexOf('about')>-1?'about':t.indexOf('track')>-1?'track':t.indexOf('order')>-1?'order':t.indexOf('menu')>-1?'menu':t.indexOf('branch')>-1?'branches':t.indexOf('cater')>-1?'catering':t.indexOf('contact')>-1?'contact':t.indexOf('polic')>-1?'policies':''}
+function icons(){document.querySelectorAll('.mobile-nav-panel a').forEach(function(a){if(a.querySelector('.rr-ni'))return;var k=key(a.textContent);if(!k)return;var s=document.createElement('span');s.className='rr-ni';s.setAttribute('aria-hidden','true');s.innerHTML='<svg viewBox="0 0 24 24" focusable="false">'+P[k]+'</svg>';a.insertBefore(s,a.firstChild)})}
+icons();addEventListener('load',function(){icons();setTimeout(icons,600)});
+var pn=document.querySelector('.mobile-nav-panel');if(pn&&window.MutationObserver)new MutationObserver(icons).observe(pn,{childList:true});
+})();</script>
 </body>
 </html>
 
