@@ -4667,8 +4667,8 @@ html body #bestsellers .rr-food-card.rr-signature-card .rr-media{position:relati
 /* v62: on phones the scaled .rrw made the fixed chat panel only ~17px wide when opened; scale just the launcher instead */
 @media(max-width:480px){
  .rrw.open{transform:none!important}
- .rrw.open .rrw-launch{transform:scale(.86);transform-origin:bottom right}
- .rrw.open .rrw-panel{left:12px!important;right:12px!important;width:auto!important;bottom:calc(84px + 58px*.86 + 12px)!important;height:min(520px,calc(100dvh - 250px))!important}
+ .rrw.open .rrw-launch{display:none}
+ .rrw.open .rrw-panel{left:12px!important;right:12px!important;width:auto!important;bottom:calc(74px + env(safe-area-inset-bottom))!important;height:min(520px,calc(100dvh - 96px - 74px - env(safe-area-inset-bottom)))!important}
 }
 /* reduced motion: gallery tilt, lift, zoom and glow were not guarded in v60 */
 @media(prefers-reduced-motion:reduce){
