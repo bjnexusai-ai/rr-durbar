@@ -7941,7 +7941,7 @@ var started=false,name='',reduce=window.matchMedia&&matchMedia('(prefers-reduced
 var wait=function(ms){return new Promise(function(r){setTimeout(r,reduce?60:ms)})};
 var toEnd=function(){body.scrollTop=body.scrollHeight};
 function bubble(text,me){var d=document.createElement('div');d.className='rrw-msg'+(me?' me':'');d.textContent=text;body.appendChild(d);toEnd();return d}
-async function bot(text){var t=document.createElement('div');t.className='rrw-typing';t.innerHTML='<i></i><i></i><i></i>';body.appendChild(t);toEnd();await wait(850);t.remove();bubble(text);await wait(350)}
+async function bot(text){var t=document.createElement('div');t.className='rrw-typing';t.innerHTML='<i></i><i></i><i></i>';body.appendChild(t);toEnd();await wait(350);t.remove();bubble(text);await wait(150)}
 function options(){
  var w=document.createElement('div');w.className='rrw-opts';
  var o=document.createElement('a');o.className='rrw-opt rrw-order';o.href=ORDER_URL;o.textContent='\uD83C\uDF7D\uFE0F  Order Now';o.addEventListener('click',close);
