@@ -2284,6 +2284,7 @@ body .hero .slide.active .slide-content{opacity:1;transition:opacity .2s ease .1
 .rrd-btn{width:36px!important;height:36px!important}
 .rrd-btn svg{width:17px!important;height:17px!important}
 .rrw-panel{bottom:60px!important}
+@media(max-height:500px) and (orientation:landscape){.rrw.open{transform:none!important}.rrw.open .rrw-panel{position:fixed!important;top:auto!important;bottom:8px!important;right:max(12px,env(safe-area-inset-right))!important;left:auto!important;width:min(370px,calc(100vw - 24px))!important;height:calc(100dvh - 16px)!important}.rrw.open .rrw-launch{display:none!important}}
 @media(max-width:480px){.rrd{bottom:54px!important}.rrw-panel{bottom:68px!important}}
 </style>
 <style id="rr-about-remodel">
@@ -7993,6 +7994,7 @@ document.getElementById('rrw-close').addEventListener('click',close);
 form.addEventListener('submit',function(e){e.preventDefault();proceed(input.value.trim())});
 document.getElementById('rrw-skip').addEventListener('click',function(){proceed('')});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+window.addEventListener('click',function(e){var t=e.target&&e.target.closest&&e.target.closest('#rrw-body a');if(t)close()},true);
 })();</script>
 <script>(function(){var el=document.getElementById('awards');if(!el)return;if(!('IntersectionObserver' in window)){el.classList.add('rrA-in');return}var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){el.classList.add('rrA-in');io.disconnect()}},{threshold:.12});io.observe(el)})();</script>
 <script id="rrC-js">(function(){
@@ -9908,7 +9910,7 @@ function fit(){
  var ref=(ws.transform!=='none'||cs.position!=='fixed')?wr.bottom:innerHeight,pb=ref-bp*(ws.transform!=='none'?sc:1);
  var nav=document.querySelector('.top-nav'),nb=nav?Math.max(0,nav.getBoundingClientRect().bottom):0;
  var avail=(pb-nb-14)/(ws.transform!=='none'?sc:1);
- if(avail<P.offsetHeight)P.style.maxHeight=Math.max(220,Math.floor(avail))+'px'}
+ if(avail<P.offsetHeight)P.style.maxHeight=Math.max(140,Math.floor(avail))+'px'}
 function later(){fit();setTimeout(fit,450);setTimeout(fit,1200)}
 new MutationObserver(later).observe(W,{attributes:true,attributeFilter:['class']});
 addEventListener('resize',fit);addEventListener('orientationchange',function(){setTimeout(fit,300)});
