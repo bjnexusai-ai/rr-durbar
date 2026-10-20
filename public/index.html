@@ -10419,6 +10419,7 @@ document.addEventListener('click',function(e){
  var href=a.getAttribute('href')||'';if(/^[a-z][a-z0-9+.-]*:/i.test(href))return;
  var m=href.match(/[?&]page=([^&#]*)/);if(!m)return;
  var cur=(location.search.match(/[?&]page=([^&#]*)/)||[0,'home'])[1];if(m[1]===cur)return;
+ var mp=a.closest('.mobile-nav-panel');if(mp){var cb=mp.querySelector('.mobile-nav-close');if(cb)cb.click()}
  e.preventDefault();e.stopImmediatePropagation();
  try{document.startViewTransition(function(){window.rrGo(href)})}catch(x){window.rrGo(href)}
 },true);
