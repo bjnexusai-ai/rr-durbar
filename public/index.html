@@ -1920,6 +1920,12 @@ body.rr-route-active main>section.rr-page-visible .rr-rv.rr-in{opacity:1!importa
 .rrw-opt svg{width:20px;height:20px;flex:none}
 .rrw-order{background:linear-gradient(135deg,#6d1520,#8a2230);color:#ffe1a3;border-color:#d5b26c}
 .rrw-staff{background:linear-gradient(145deg,#25d366,#0f9f4c);color:#fff}
+.rrw-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.rrw-chip{display:flex;align-items:center;justify-content:center;min-height:48px;padding:6px 10px;border-radius:14px;border:1.5px solid #d5b26c;background:#fff;color:#6d1520;font:700 14px/1.2 'Manrope',Arial,sans-serif;text-align:center;text-decoration:none;cursor:pointer;overflow-wrap:anywhere;-webkit-tap-highlight-color:transparent;transition:transform .15s,box-shadow .15s}
+.rrw-chip:active{transform:scale(.97)}
+.rrw-chip:focus-visible{outline:3px solid #b8873d;outline-offset:2px}
+@media(hover:hover){.rrw-chip:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.18)}}
+@media(max-width:340px){.rrw-grid{grid-template-columns:1fr}}
 .rrw-form{flex:none;display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fff;border-top:1px solid rgba(98,21,32,.12)}
 .rrw-form[hidden]{display:none}
 .rrw-form input{flex:1;min-width:0;height:44px;padding:0 16px;border-radius:999px;border:1.5px solid #7e1c29;background:#fff;font:400 14.5px 'Manrope',Arial,sans-serif;color:#2b1518;outline:none}
@@ -7944,12 +7950,29 @@ var wait=function(ms){return new Promise(function(r){setTimeout(r,reduce?60:ms)}
 var toEnd=function(){body.scrollTop=body.scrollHeight};
 function bubble(text,me){var d=document.createElement('div');d.className='rrw-msg'+(me?' me':'');d.textContent=text;body.appendChild(d);toEnd();return d}
 async function bot(text){var t=document.createElement('div');t.className='rrw-typing';t.innerHTML='<i></i><i></i><i></i>';body.appendChild(t);toEnd();await wait(350);t.remove();bubble(text);await wait(150)}
+var OUTLETS=[['Singhnagar','singhnagar'],['Moghalrajpuram','moghalrajpuram'],['Bhavanipuram','bhavanipuram'],['Poranki','poranki'],['Autonagar','autonagar']];
+function clearOpts(){body.querySelectorAll('.rrw-opts').forEach(function(x){x.remove()})}
+function lnk(cls,href,label){var a=document.createElement('a');a.className=cls;a.href=href;a.textContent=label;a.addEventListener('click',close);return a}
+function btn(label,fn){var b=document.createElement('button');b.type='button';b.className='rrw-chip';b.textContent=label;b.addEventListener('click',fn);return b}
 function options(){
+ clearOpts();
  var w=document.createElement('div');w.className='rrw-opts';
- var o=document.createElement('a');o.className='rrw-opt rrw-order';o.href=ORDER_URL;o.textContent='\uD83C\uDF7D\uFE0F  Order Now';o.addEventListener('click',close);
+ var o=lnk('rrw-opt rrw-order',ORDER_URL,'🍽️  Order Now');
+ var g=document.createElement('div');g.className='rrw-grid';
+ g.append(lnk('rrw-chip','?page=menu#menu-page','📖 Menu'),btn('🥡 Pickup menu',pickOutlet),lnk('rrw-chip','?page=branches#br-locator','📍 Branches'),lnk('rrw-chip','?page=catering#catering','🎉 Catering'),lnk('rrw-chip','?page=about-us#about','👑 About us'),lnk('rrw-chip','?page=contact#contact','📞 Contact'));
  var msg="Hi RR Durbar, "+(name?"I'm "+name+". ":"")+"I'd like to talk to the restaurant staff.";
  var s=document.createElement('a');s.className='rrw-opt rrw-staff';s.target='_blank';s.rel='noopener noreferrer';s.href='https://wa.me/'+STAFF_NUMBER+'?text='+encodeURIComponent(msg);s.innerHTML=WA+'<span>Talk to restaurant staff</span>';
- w.append(o,s);body.appendChild(w);toEnd();
+ w.append(o,g,s);body.appendChild(w);toEnd();
+}
+async function pickOutlet(){
+ clearOpts();bubble('Pickup menu',true);await wait(200);
+ await bot('Which outlet will you pick up from?');
+ var w=document.createElement('div');w.className='rrw-opts';
+ var g=document.createElement('div');g.className='rrw-grid';
+ OUTLETS.forEach(function(x){g.appendChild(lnk('rrw-chip','?page=pickup-menu&outlet='+x[1],x[0]))});
+ g.appendChild(lnk('rrw-chip','tel:+'+STAFF_NUMBER,'Patamatalanka · call'));
+ g.appendChild(btn('← Back',options));
+ w.appendChild(g);body.appendChild(w);toEnd();
 }
 async function run(){
  await bot('\uD83D\uDC4B Welcome to RR Durbar!');
