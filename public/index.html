@@ -10873,6 +10873,6 @@ box.addEventListener('click',function(e){if(e.target.closest('#musicButton'))ret
 /* tell the visitor when the browser refused or the file did not load */
 btn.addEventListener('click',function(){setTimeout(function(){if(au.paused&&txt&&/^Off/.test(txt.textContent)){txt.textContent=au.error?'Music unavailable':'Tap again to play'}},1800)});
 })();</script>
-</body>
+<script id="lv-listings">(function(){var L=window.RR_LISTINGS||{};var h=document.querySelector('#m52 .ord');if(!h)return;h.querySelectorAll('a.m52-btn').forEach(function(a){var u=L[a.textContent.trim().toLowerCase()];if(!u||a.getAttribute('href'))return;a.href=u;a.target='_blank';a.rel='noopener noreferrer';a.classList.remove('off');a.removeAttribute('aria-disabled');a.removeAttribute('title')})})();</script></body>
 </html>
 
