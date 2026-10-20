@@ -9669,7 +9669,7 @@ top.appendChild(e('span','pk-no',String(r.i+1).padStart(2,'0')));top.appendChild
 if(o.id===nearId)card.appendChild(e('span','pk-ribbon','Nearest to you'));
 card.appendChild(e('p','pk-addr',o.address));card.appendChild(e('p','pk-st '+st.k,st.t));
 var act=e('div','pk-act'),go=e('a','pk-go');
-if(r.c.live){go.href='?page=order-now#ordering';go.textContent='Order pickup from '+o.name;go.addEventListener('click',function(ev){ev.preventDefault();if(window.rrOrderLive)window.rrOrderLive(o.id)})}else if(r.c.rista){go.href=r.c.rista;go.target='_blank';go.rel='noopener';go.textContent='Order pickup from '+o.name}else{go.href='tel:'+o.tel;go.className+=' off';go.textContent='Call to order · '+o.phone}
+if(r.c.live){go.href='?page=pickup-menu&outlet='+encodeURIComponent(o.id);go.textContent='Order pickup from '+o.name;go.addEventListener('click',function(ev){ev.preventDefault();if(window.rrOrderLive)window.rrOrderLive(o.id)})}else if(r.c.rista){go.href=r.c.rista;go.target='_blank';go.rel='noopener';go.textContent='Order pickup from '+o.name}else{go.href='tel:'+o.tel;go.className+=' off';go.textContent='Call to order · '+o.phone}
 var dir=e('a','pk-dir','Directions');dir.href=o.directions;dir.target='_blank';dir.rel='noopener';act.appendChild(go);act.appendChild(dir);card.appendChild(act);
 card.addEventListener('click',function(ev){if(!ev.target.closest('a'))select(o.id)});list.appendChild(card);
 var pin=e('button','pk-pin'+(o.id===nearId?' near':''));pin.type='button';pin.dataset.id=o.id;pin.style.setProperty('--x',o.pos[0]/MW*100+'%');pin.style.setProperty('--y',o.pos[1]/MH*100+'%');pin.setAttribute('aria-label',o.name);pin.innerHTML=pinSvg()+'<b>'+(r.i+1)+'</b>';
