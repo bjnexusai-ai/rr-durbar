@@ -5037,7 +5037,17 @@ html:root body nav.top-nav .mobile-menu:before{width:20px!important;height:14px!
 #lvPage.lv .p3-tot:last-child{margin-top:6px;padding-top:12px;border-top:2px solid #7E2324;font:800 21px/1.2 Arial,sans-serif;color:#7E2324}
 #lvPage.lv .p3-go{min-height:48px;padding:0 24px;border:0;border-radius:999px;background:linear-gradient(135deg,#8f2a2c,#7E2324);color:#f6e27f;font:800 15px Arial,sans-serif;cursor:pointer;box-shadow:0 8px 18px rgba(126,35,36,.25)}
 #lvPage.lv .p3-go:hover:not(:disabled){filter:brightness(1.12)}
-</style></head>
+</style><style id="lv-sig-polish">
+html body #bestsellers .rr-food-card.rr-signature-card h3{font-weight:600!important;letter-spacing:.005em!important;text-shadow:0 1px 8px rgba(10,2,4,.55)!important;font-size:clamp(16px,1.35vw,21px)!important;line-height:1.18!important}
+html body #bestsellers .rr-food-card.rr-signature-card:nth-child(1) h3{font-size:clamp(26px,3vw,44px)!important;line-height:1.02!important}
+html body #bestsellers .rr-food-card.rr-signature-card .rr-food-copy p{font-weight:500!important;text-shadow:0 1px 6px rgba(10,2,4,.6)}
+html body #bestsellers .rr-food-card.rr-signature-card:not(:nth-child(1)) .rr-food-copy p{display:none!important}
+html body #bestsellers .rr-food-card.rr-signature-card::before{background:linear-gradient(180deg,rgba(14,3,6,.16) 0,rgba(14,3,6,0) 22%,rgba(14,3,6,0) 52%,rgba(14,3,6,.78) 100%)!important}
+/*lv-sig-width*/
+html body #bestsellers .rr-container{max-width:min(1380px,calc(100% - 64px))!important;margin-left:auto!important;margin-right:auto!important}
+@media(max-width:700px){html body #bestsellers .rr-container{max-width:calc(100% - 28px)!important}}
+</style>
+</head>
 <body>
 <button type="button" class="rr-skip" id="rr-skip-btn">Skip to main content</button><script>document.getElementById("rr-skip-btn").addEventListener("click",function(){var m=document.getElementById("main-content");if(!m)return;m.setAttribute("tabindex","-1");m.focus();m.scrollIntoView({block:"start"})})</script>
 <script id="rr-v66-early-route">/* v66: mark the Home route before first paint (the router script only did this ~0.4s later, so the nav, hero line and music button jumped from the centred position to the left) */
