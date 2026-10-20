@@ -2,6 +2,7 @@
 
 <html lang="en">
 <head>
+<meta charset="utf-8"/>
 <script>/* v78 phase1: clean URLs (/about-us/ etc.) open the matching ?page= route; canonicals and sitemap use the clean URLs */(function(){try{var m=location.pathname.replace(/^\/+|\/+$/g,"");var ok=["about-us","menu","order-now","branches","catering","contact","track-order","pickup","policies","privacy-policy","terms-of-service","refund-cancellation"];if(ok.indexOf(m)>-1&&!/[?&]page=/.test(location.search)){history.replaceState(null,"","/?page="+m+location.hash)}}catch(e){}})();</script>
 
 
@@ -9,7 +10,7 @@
 window.RR_SHOW_PRICES=false;if(window.RR_SHOW_PRICES===false)document.documentElement.classList.add('rr-no-prices');</script>
 <style id="rr-no-prices-css">/* cart drawer money (not covered by the JS flag) */
 html.rr-no-prices .rr-ci-price,html.rr-no-prices aside#drawer .drawer-foot .total,html.rr-no-prices body #drawer .drawer-foot .total{display:none!important}</style>
-<meta charset="utf-8"/>
+
 
 <style id="rr-logo-critical">
 /* Logo v80: ONE image, CSS lives in <head> so it exists before the nav is painted (fixes the oversized-logo flash). */
@@ -4675,7 +4676,7 @@ html body nav.top-nav .nav-actions :is(.outlet-pill,.order-pill){
   background:rgba(24,6,8,.72)!important;border:2px solid #F3D27A!important;color:#FFE9A8!important;
   -webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);
   box-shadow:0 0 0 1px rgba(0,0,0,.45),0 6px 18px rgba(0,0,0,.45)!important}
-html body nav.top-nav .nav-actions :is(.outlet-pill,.order-pill) svg{width:26px!important;height:26px!important;stroke-width:2.2;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+html:root body nav.top-nav :is(.nav-actions,.nav-inner) :is(.outlet-pill,.order-pill) svg{width:26px!important;height:26px!important;stroke-width:2.2;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
 html body nav.top-nav .nav-actions .order-pill{background:linear-gradient(180deg,#FFE48A,#E2B23A)!important;color:#2a0d10!important;border-color:#FFF0B8!important}
 html body nav.top-nav .nav-actions .order-pill svg{filter:none}
 html body nav.top-nav .nav-actions :is(.outlet-pill,.order-pill):hover{box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 16px rgba(243,210,122,.55)!important}
@@ -4683,7 +4684,7 @@ html body:not(.rr-scrolled):has(#home.hero:not(.rr-page-hidden)) nav.top-nav .ou
 /* stronger shade only behind the nav strip, still gone well above the headline */
 #home.hero::after{height:150px;background:linear-gradient(180deg,rgba(14,6,3,.68) 0%,rgba(14,6,3,.34) 55%,rgba(14,6,3,0) 100%)}
 @media(max-width:700px){html body nav.top-nav .nav-actions :is(.outlet-pill,.order-pill){width:44px!important;height:44px!important;min-height:44px!important;flex:0 0 44px!important}
- html body nav.top-nav .nav-actions :is(.outlet-pill,.order-pill) svg{width:23px!important;height:23px!important}}
+ html:root body nav.top-nav :is(.nav-actions,.nav-inner) :is(.outlet-pill,.order-pill) svg{width:23px!important;height:23px!important}}
 
 /* v63 B. Photos: short edge fade instead of hiding almost half the picture; lighter overlays */
 :root{--rr-fade-s:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) 5%,rgba(0,0,0,.8) 11%,#000 18%)}
@@ -4801,10 +4802,10 @@ html body #home.hero .slide:after{background:linear-gradient(0deg,rgba(12,5,6,.7
 </style><style id="rr-v67-hero-once">.hero-title .rr-w>i{animation:none!important;opacity:1!important;transform:none!important}</style><style id="rr-v68-nav-icons">
 /* v68: one final size for the nav icons (desktop 56/31, tablet+phone 46/27) */
 html body nav.top-nav .nav-actions :is(.outlet-pill,.order-pill){width:56px!important;height:56px!important;min-height:56px!important;flex:0 0 56px!important;padding:0!important;display:inline-flex;align-items:center;justify-content:center}
-html body nav.top-nav .nav-actions :is(.outlet-pill,.order-pill) svg{width:31px!important;height:31px!important;stroke-width:2.4!important}
+html:root body nav.top-nav :is(.nav-actions,.nav-inner) :is(.outlet-pill,.order-pill) svg{width:31px!important;height:31px!important;stroke-width:2.4!important}
 @media(max-width:900px){
  html body nav.top-nav .nav-actions :is(.outlet-pill,.order-pill){width:46px!important;height:46px!important;min-height:46px!important;flex:0 0 46px!important}
- html body nav.top-nav .nav-actions :is(.outlet-pill,.order-pill) svg{width:27px!important;height:27px!important}
+ html:root body nav.top-nav :is(.nav-actions,.nav-inner) :is(.outlet-pill,.order-pill) svg{width:27px!important;height:27px!important}
  html body nav.top-nav .nav-actions button.mobile-menu{width:46px!important;height:46px!important;min-height:46px!important;min-width:46px!important}
  html body nav.top-nav .nav-actions button.mobile-menu:before{width:26px!important;height:19px!important;background:linear-gradient(to bottom,#fff7f0 0 3px,transparent 3px 8px,#fff7f0 8px 11px,transparent 11px 16px,#fff7f0 16px 19px)!important}
 }
@@ -4967,6 +4968,60 @@ html body #stats .rr-stats .rr-stat span{font-size:14px!important;letter-spacing
 .mobile-nav-panel a:hover .rr-ni,.mobile-nav-panel a:focus-visible .rr-ni{color:#fff}
 /* v84: 16px form text on phones stops iOS zoom-on-focus; placeholders stay readable */
 @media(max-width:700px){input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea{font-size:16px!important}input::placeholder,textarea::placeholder{opacity:1}}
+</style>
+<style id="rr-v85">
+/* v85 phones: bottom tab bar with icons, hero contrast, no overlap */
+@media(max-width:1050px) and (min-height:500px){
+html.rr-tabs body{padding-bottom:calc(64px + env(safe-area-inset-bottom))!important}
+#rr-tabbar{position:fixed;left:0;right:0;bottom:0;z-index:900;display:flex;height:calc(62px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:rgba(36,5,11,.97);border-top:1px solid rgba(233,194,122,.55);box-shadow:0 -8px 24px rgba(0,0,0,.35);transition:transform .25s ease}
+#rr-tabbar a{position:relative;flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#fff1dc;font:700 11.5px/1 'Manrope',Arial,sans-serif;letter-spacing:.02em;text-decoration:none;-webkit-tap-highlight-color:transparent}
+#rr-tabbar a svg{width:25px;height:25px;fill:none;stroke:#ffc04c;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#rr-tabbar a.on{color:#ffc04c}
+#rr-tabbar a.on:before{content:"";position:absolute;top:0;left:22%;right:22%;height:3px;border-radius:0 0 3px 3px;background:#ffc04c;box-shadow:0 0 10px rgba(255,192,76,.7)}
+#rr-tabbar a.on svg{stroke:#fff}
+html:has(.mobile-nav-panel.open) #rr-tabbar,html:has(#drawer.open) #rr-tabbar{transform:translateY(110%)}
+html.rr-tabs #home .hero-bottom{bottom:calc(70px + env(safe-area-inset-bottom))!important}
+html.rr-tabs #rrw{bottom:calc(84px + 62px + env(safe-area-inset-bottom))!important}
+}
+@media(max-width:700px){
+#home .hero-bottom:before{content:"";position:absolute;left:0;right:0;top:-120px;bottom:-80px;z-index:-1;pointer-events:none;background:linear-gradient(to top,rgba(14,3,6,.94) 0,rgba(14,3,6,.82) 48%,rgba(14,3,6,0) 100%)}
+#home .hero-first{color:#ffe3a3!important;text-shadow:0 1px 8px rgba(0,0,0,.9)}
+#home .music-box{background:rgba(24,5,9,.82)!important;border-radius:999px}
+#home .rr-hero-order .cb-pk{background:rgba(24,5,9,.88)!important;color:#ffe9b0!important;border-color:#e9c27a!important}
+#home .rr-hero-order{margin:0 54px 14px 14px!important}
+}
+</style>
+<style id="rr-v86">
+/* v86: signature dishes on white, stronger text on photos */
+#bestsellers{background:#fff!important;background-image:none!important}
+#bestsellers .rr-container{background:transparent}
+html body #bestsellers .rr-food-card.rr-signature-card::before{background:linear-gradient(180deg,rgba(14,3,6,.30) 0,rgba(14,3,6,0) 24%,rgba(14,3,6,0) 42%,rgba(14,3,6,.74) 70%,rgba(14,3,6,.94) 100%)}
+html body #bestsellers .rr-food-card.rr-signature-card h3{font-family:'Manrope',Arial,sans-serif!important;font-weight:800!important;letter-spacing:0!important;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.95),0 2px 14px rgba(0,0,0,.8)}
+html body #bestsellers .rr-food-card.rr-signature-card .rr-food-copy p{font-weight:600!important;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.95),0 1px 10px rgba(0,0,0,.7)}
+html body #bestsellers .rr-food-card.rr-signature-card .rr-edit-label{color:#ffd98a!important;font-weight:800!important;text-shadow:0 1px 3px rgba(0,0,0,.95)}
+html body #bestsellers .rr-food-card.rr-signature-card .rr-media::before{color:#fff!important;-webkit-text-stroke:0!important;font-weight:700!important;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 10px rgba(0,0,0,.6)}
+html body #bestsellers .rr-food-card.rr-signature-card .rr-qadd{background:#fff!important;color:#5a0f18!important;border-color:#fff!important;font-weight:800!important}
+@media(max-width:700px){
+html body #bestsellers .rr-grid.sig-bento{grid-auto-rows:clamp(74px,22vw,96px)!important}
+html body #bestsellers .rr-food-card.rr-signature-card h3{font-size:clamp(17px,4.6vw,20px)!important;line-height:1.15!important}
+html body #bestsellers .rr-food-card.rr-signature-card:nth-child(1) h3{font-size:clamp(22px,6vw,28px)!important}
+html body #bestsellers .rr-food-card.rr-signature-card .rr-food-copy p{font-size:13.5px!important;line-height:1.4!important}
+html body #bestsellers .rr-food-card.rr-signature-card:not(:nth-child(1)) .rr-food-copy p{max-height:0;opacity:0}
+html body #bestsellers .rr-food-card.rr-signature-card:nth-child(1) .rr-food-copy p{-webkit-line-clamp:2!important;max-height:42px}
+/* header: bigger logo, smaller round buttons */
+html:root body nav.top-nav .nav-brand{padding-left:4px!important;padding-right:6px!important;flex:1 1 0!important;width:auto!important;min-width:0!important;max-width:none!important}
+html:root body nav.top-nav .nav-brand .rr-lg{display:block!important;flex:1 1 auto!important;width:100%!important;max-width:300px!important;min-width:0!important}
+html:root body nav.top-nav .nav-brand img.nav-logo{width:100%!important;min-width:0!important;max-width:100%!important;height:auto!important;max-height:64px!important;object-fit:contain!important}
+html:root body nav.top-nav .nav-actions{gap:6px!important;flex:0 0 auto!important}
+html:root body nav.top-nav :is(.nav-actions,.nav-inner) :is(.outlet-pill,.order-pill,.mobile-menu){width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;flex:0 0 40px!important;padding:0!important}
+html:root body nav.top-nav :is(.nav-actions,.nav-inner) :is(.outlet-pill,.order-pill) :is(svg,i,img){width:22px!important;height:22px!important}
+html:root body nav.top-nav .mobile-menu:before{width:20px!important;height:14px!important;background:linear-gradient(to bottom,#fff7f0 0 2.4px,transparent 2.4px 5.8px,#fff7f0 5.8px 8.2px,transparent 8.2px 11.6px,#fff7f0 11.6px 14px)!important}
+/* hero: pull the copy up so the dish shows */
+.slide-content{padding-top:84px!important;padding-bottom:190px!important}
+.hero-copy{padding-top:14px!important;padding-bottom:20px!important}
+.hero-copy p{font-size:15px!important;line-height:1.45!important}
+.hero-copy>*,.slide-counter{text-shadow:0 1px 3px rgba(0,0,0,.85),0 2px 12px rgba(0,0,0,.6)}
+}
 </style>
 </head>
 <body>
@@ -5281,6 +5336,7 @@ html body #stats .rr-stats .rr-stat span{font-size:14px!important;letter-spacing
 <div class="m52-main"><div id="m52-pics"></div><div id="m52-list"></div><p class="note">Allergies? Please tell our staff before ordering. Prices are shown at checkout.</p></div>
 <div class="ov" id="m52-ov" role="dialog" aria-modal="true" aria-label="Dish details"><div class="sheet" id="m52-sh"></div></div></div>
 </section>
+<section class="rr-section" id="pickup-menu" data-edit-section="pickup-menu" aria-label="Pickup menu"><div class="rr-container"><div id="lvPage" class="lv" aria-live="polite"></div></div></section>
 <section class="od-page" id="ordering" data-edit-section="order-now" aria-label="Order Now">
 <div class="od-hero">
  <div class="od-hero-img" role="img" aria-label="Chicken biryani on a banana leaf with raita and salan"></div>
@@ -7709,6 +7765,7 @@ paint(0);schedule();updateMusicUI(false);raf=requestAnimationFrame(frame);
     catering: ['catering', 'catering-occasions', 'catering-serve', 'catering-why', 'catering-gallery', 'catering-cta'],
     branches: ['br-locator', 'br-list'],
     pickup: ['pickup'],
+    'pickup-menu': ['pickup-menu'],
     contact: ['contact'],
     policies: ['policies'],
     'privacy-policy': ['pol-privacy'],
@@ -7721,12 +7778,12 @@ paint(0);schedule();updateMusicUI(false);raf=requestAnimationFrame(frame);
     'menu-page': 'menu',
     ordering: 'order-now', 'cart-page': 'order-now', checkout: 'order-now',
     outlets: 'home', loyalty: 'home', awards: 'home', cta: 'home', locations: 'locations', 'track-order': 'track-order', tracking: 'track-order',
-    pickup: 'pickup', 'br-locator': 'branches', 'br-list': 'branches', catering: 'catering', 'catering-form': 'catering', 'catering-occasions': 'catering', 'catering-serve': 'catering', 'catering-why': 'catering', 'catering-gallery': 'catering', 'catering-cta': 'catering', contact: 'contact', 'contact-form': 'contact', policies: 'policies',
+    pickup: 'pickup', 'pickup-menu': 'pickup-menu', 'br-locator': 'branches', 'br-list': 'branches', catering: 'catering', 'catering-form': 'catering', 'catering-occasions': 'catering', 'catering-serve': 'catering', 'catering-why': 'catering', 'catering-gallery': 'catering', 'catering-cta': 'catering', contact: 'contact', 'contact-form': 'contact', policies: 'policies',
     'privacy-policy': 'policies', terms: 'policies', refunds: 'policies', gallery: 'home', reviews: 'home', speciality: 'home', reels: 'about-us',
   };
   const pageTitles = {
     home: 'Home', 'about-us': 'About Us', 'our-story': 'Our Story', menu: 'Menu',
-    'order-now': 'Order Now', pickup: 'Pickup', locations: 'Locations & Outlets', 'track-order': 'Track Your Order',
+    'order-now': 'Order Now', pickup: 'Pickup', 'pickup-menu': 'Pickup Menu', locations: 'Locations & Outlets', 'track-order': 'Track Your Order',
     branches: 'Branches', catering: 'Catering Enquiry', contact: 'Contact', policies: 'Policies',
     'privacy-policy': 'Privacy Policy', 'terms-of-service': 'Terms of Service', 'refund-cancellation': 'Refund & Cancellation',
   };
@@ -7746,7 +7803,7 @@ paint(0);schedule();updateMusicUI(false);raf=requestAnimationFrame(frame);
     }, 80);
   };
 
-  const pageSeo = {"pickup": {"title": "Pickup | Choose your RR Durbar outlet in Vijayawada", "desc": "Pick the RR Durbar outlet nearest you in Vijayawada and order pickup.", "path": "/pickup/"}, "home": {"title": "RR Durbar | Biryani & Andhra Food in Vijayawada", "desc": "Since 1991, RR Durbar serves royal biryani and Andhra favourites across six Vijayawada outlets. Order for pickup or on Swiggy and Zomato.", "path": "/"}, "about-us": {"title": "About RR Durbar | Vijayawada’s Royal Dining Legacy", "desc": "The story of RR Durbar: a Vijayawada family restaurant since 1991, awarded Best Restaurant in Andhra Pradesh and loved for biryani and Andhra food.", "path": "/about-us/"}, "our-story": {"title": "Our Story | RR Durbar Vijayawada", "desc": "How RR Durbar grew from a family poultry business into one of Vijayawada’s best-loved dining destinations.", "path": "/our-story/"}, "menu": {"title": "Menu | RR Durbar Vijayawada", "desc": "Browse the RR Durbar menu: signature biryanis, starters and Andhra specials. Order for pickup or on Swiggy and Zomato.", "path": "/menu/"}, "order-now": {"title": "Order Online | RR Durbar Vijayawada", "desc": "Order from RR Durbar for pickup at any of six Vijayawada outlets, or get it delivered through Swiggy and Zomato.", "path": "/order-now/"}, "locations": {"title": "Locations & Outlets | RR Durbar Vijayawada", "desc": "Find the nearest RR Durbar in Vijayawada. Six outlets with addresses, opening hours and directions.", "path": "/locations/"}, "branches": {"title": "Our 6 Outlets in Vijayawada | RR Durbar", "desc": "Singhnagar, Moghalrajpuram, Bhavanipuram, Poranki, Patamatalanka and Autonagar. Find addresses, hours and directions for every RR Durbar outlet.", "path": "/branches/"}, "track-order": {"title": "Track Your Order | RR Durbar", "desc": "Follow your RR Durbar pickup order from confirmation to collection.", "path": "/track-order/"}, "catering": {"title": "Catering in Vijayawada | RR Durbar", "desc": "RR Durbar catering for gatherings and events in Vijayawada. Royal buffet setups and live counters. Request a proposal.", "path": "/catering/"}, "contact": {"title": "Contact RR Durbar | Vijayawada", "desc": "Call RR Durbar on +91 77020 77999, send an enquiry or ask about catering. Six outlets across Vijayawada.", "path": "/contact/"}, "policies": {"title": "Policies | RR Durbar", "desc": "Privacy, terms and refund policies for rrdurbar.com and RR Durbar pickup orders.", "path": "/policies/"}, "privacy-policy": {"title": "Privacy Policy | RR Durbar", "desc": "How RR Durbar collects, uses and protects your personal data on rrdurbar.com.", "path": "/privacy-policy/"}, "terms-of-service": {"title": "Terms of Service | RR Durbar", "desc": "The terms for using rrdurbar.com, ordering for pickup and enquiring about catering with RR Durbar.", "path": "/terms-of-service/"}, "refund-cancellation": {"title": "Refund & Cancellation | RR Durbar", "desc": "How cancellations, missing or wrong items and refunds are handled for RR Durbar pickup orders and catering.", "path": "/refund-cancellation/"}};
+  const pageSeo = {"pickup-menu": {"title": "Pickup Menu | RR Durbar Vijayawada", "desc": "Choose your dishes and order pickup from your RR Durbar outlet in Vijayawada.", "path": "/pickup/"}, "pickup": {"title": "Pickup | Choose your RR Durbar outlet in Vijayawada", "desc": "Pick the RR Durbar outlet nearest you in Vijayawada and order pickup.", "path": "/pickup/"}, "home": {"title": "RR Durbar | Biryani & Andhra Food in Vijayawada", "desc": "Since 1991, RR Durbar serves royal biryani and Andhra favourites across six Vijayawada outlets. Order for pickup or on Swiggy and Zomato.", "path": "/"}, "about-us": {"title": "About RR Durbar | Vijayawada’s Royal Dining Legacy", "desc": "The story of RR Durbar: a Vijayawada family restaurant since 1991, awarded Best Restaurant in Andhra Pradesh and loved for biryani and Andhra food.", "path": "/about-us/"}, "our-story": {"title": "Our Story | RR Durbar Vijayawada", "desc": "How RR Durbar grew from a family poultry business into one of Vijayawada’s best-loved dining destinations.", "path": "/our-story/"}, "menu": {"title": "Menu | RR Durbar Vijayawada", "desc": "Browse the RR Durbar menu: signature biryanis, starters and Andhra specials. Order for pickup or on Swiggy and Zomato.", "path": "/menu/"}, "order-now": {"title": "Order Online | RR Durbar Vijayawada", "desc": "Order from RR Durbar for pickup at any of six Vijayawada outlets, or get it delivered through Swiggy and Zomato.", "path": "/order-now/"}, "locations": {"title": "Locations & Outlets | RR Durbar Vijayawada", "desc": "Find the nearest RR Durbar in Vijayawada. Six outlets with addresses, opening hours and directions.", "path": "/locations/"}, "branches": {"title": "Our 6 Outlets in Vijayawada | RR Durbar", "desc": "Singhnagar, Moghalrajpuram, Bhavanipuram, Poranki, Patamatalanka and Autonagar. Find addresses, hours and directions for every RR Durbar outlet.", "path": "/branches/"}, "track-order": {"title": "Track Your Order | RR Durbar", "desc": "Follow your RR Durbar pickup order from confirmation to collection.", "path": "/track-order/"}, "catering": {"title": "Catering in Vijayawada | RR Durbar", "desc": "RR Durbar catering for gatherings and events in Vijayawada. Royal buffet setups and live counters. Request a proposal.", "path": "/catering/"}, "contact": {"title": "Contact RR Durbar | Vijayawada", "desc": "Call RR Durbar on +91 77020 77999, send an enquiry or ask about catering. Six outlets across Vijayawada.", "path": "/contact/"}, "policies": {"title": "Policies | RR Durbar", "desc": "Privacy, terms and refund policies for rrdurbar.com and RR Durbar pickup orders.", "path": "/policies/"}, "privacy-policy": {"title": "Privacy Policy | RR Durbar", "desc": "How RR Durbar collects, uses and protects your personal data on rrdurbar.com.", "path": "/privacy-policy/"}, "terms-of-service": {"title": "Terms of Service | RR Durbar", "desc": "The terms for using rrdurbar.com, ordering for pickup and enquiring about catering with RR Durbar.", "path": "/terms-of-service/"}, "refund-cancellation": {"title": "Refund & Cancellation | RR Durbar", "desc": "How cancellations, missing or wrong items and refunds are handled for RR Durbar pickup orders and catering.", "path": "/refund-cancellation/"}};
   const rrSetMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
   const rrSeo = (p) => { const d = pageSeo[p] || pageSeo.home; document.title = d.title; rrSetMeta('meta[name="description"]', d.desc); rrSetMeta('meta[property="og:title"]', d.title); rrSetMeta('meta[property="og:description"]', d.desc);
     const url = 'https://rrdurbar.com' + d.path; const c = document.querySelector('link[rel="canonical"]'); if (c) c.setAttribute('href', url);
@@ -10478,12 +10535,49 @@ html body #catering .cx-hero-photo::after{background:none!important}}
 #rrP3.lv .lv-small{font:400 12.5px/1.4 Arial,sans-serif;color:#806e68}
 @media(max-width:560px){#rrP3.lv .lv-list{grid-template-columns:1fr}#rrP3.lv .lv-ph{flex-basis:72px;width:72px;height:72px}}
 
-#odPickupCard .od-selw{display:none}
+#odPickupCard .od-selw{display:block}
 .lv-cod{margin-top:18px;padding:14px;border:1px dashed rgba(184,134,11,.7);border-radius:14px}
 .lv-cod h4{margin:0 0 6px}
 .lv-f{display:block;margin:8px 0}.lv-f span{display:block;font-size:13px;margin-bottom:4px}
 .lv-f input{width:100%;box-sizing:border-box;min-height:44px;padding:8px 12px;border:1px solid rgba(0,0,0,.25);border-radius:10px;font:inherit}
 .lv-change{font-size:14px;text-decoration:underline}
+
+/* v87: same styles on the new Pickup Menu page */
+/* v76: live Rista menu + cart in Order Now step 3 (Moghalrajpuram only). Scoped to #lvPage.lv */
+#lvPage.lv .lv-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 12px}
+#lvPage.lv .lv-search{flex:1 1 220px;height:44px;padding:0 16px;border:1px solid rgba(197,138,42,.6);border-radius:999px;background:#fff;color:#2b1718;font:600 15px Arial,sans-serif}
+#lvPage.lv .lv-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 0 6px;scrollbar-width:thin}
+#lvPage.lv .lv-chip{flex:0 0 auto;height:40px;padding:0 16px;border:1px solid rgba(197,138,42,.6);border-radius:999px;background:#fff;color:#4a0810;font:800 13px Arial,sans-serif;cursor:pointer;white-space:nowrap}
+#lvPage.lv .lv-chip[aria-pressed="true"]{background:#7E2324;color:#f6e27f;border-color:#7E2324}
+#lvPage.lv .lv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+#lvPage.lv .lv-d{display:flex;gap:12px;padding:10px;border:1px solid #e9dcd1;border-radius:14px;background:#fff}
+#lvPage.lv .lv-ph{flex:0 0 84px;width:84px;height:84px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#f3e4c6,#e8cf9c)}
+#lvPage.lv .lv-ph img{display:block;width:100%;height:100%;object-fit:cover}
+#lvPage.lv .lv-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+#lvPage.lv .lv-n{display:flex;align-items:center;gap:8px;margin:0;font:600 18px/1.2 'Cormorant Garamond',Georgia,serif;color:#2b1718}
+#lvPage.lv .lv-veg{flex:0 0 12px;width:12px;height:12px;border-radius:3px;border:2px solid #2f8a4d;background:#2f8a4d;box-shadow:inset 0 0 0 2px #fff}
+#lvPage.lv .lv-veg.nv{border-color:#a8321f;background:#a8321f}
+#lvPage.lv .lv-ds{margin:0;font:400 13px/1.4 Arial,sans-serif;color:#6b4a3f;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#lvPage.lv .lv-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+#lvPage.lv .lv-add{min-height:40px;padding:0 14px;border:1px solid rgba(240,200,110,.85);border-radius:999px;background:linear-gradient(135deg,#ffd16a,#f68b1d);color:#341008;font:800 13px Arial,sans-serif;cursor:pointer}
+#lvPage.lv .lv-add:disabled{background:#eee3d6;border-color:#d9c9b4;color:#8a7466;cursor:not-allowed}
+#lvPage.lv .lv-off{font:800 12px Arial,sans-serif;letter-spacing:.04em;color:#8a7466}
+#lvPage.lv .lv-msg{margin:10px 0;padding:12px 14px;border-radius:12px;background:#fbf1df;color:#4a0810;font:600 14px/1.5 Arial,sans-serif}
+#lvPage.lv .lv-msg.err{background:#fde8e4;color:#7a1f10}
+#lvPage.lv .lv-msg button,#lvPage.lv .lv-msg a{margin-left:8px;color:#7E2324;font-weight:800}
+#lvPage.lv .lv-rm{border:0;background:none;color:#7E2324;font:800 12px Arial,sans-serif;text-decoration:underline;cursor:pointer}
+#lvPage.lv .p3-line.bad span:first-child{color:#a8321f}
+#lvPage.lv .p3-go:disabled{opacity:.55;cursor:not-allowed}
+#lvPage.lv .lv-small{font:400 12.5px/1.4 Arial,sans-serif;color:#806e68}
+@media(max-width:560px){#lvPage.lv .lv-list{grid-template-columns:1fr}#lvPage.lv .lv-ph{flex-basis:72px;width:72px;height:72px}}
+
+#odPickupCard .od-selw{display:block}
+.lv-cod{margin-top:18px;padding:14px;border:1px dashed rgba(184,134,11,.7);border-radius:14px}
+.lv-cod h4{margin:0 0 6px}
+.lv-f{display:block;margin:8px 0}.lv-f span{display:block;font-size:13px;margin-bottom:4px}
+.lv-f input{width:100%;box-sizing:border-box;min-height:44px;padding:8px 12px;border:1px solid rgba(0,0,0,.25);border-radius:10px;font:inherit}
+.lv-change{font-size:14px;text-decoration:underline}
+#pickup-menu{padding-top:110px;min-height:70vh}#lvPage .lv-name{margin:14px 0 4px}#lvPage .lv-name span{display:block;font-size:13px;margin-bottom:4px}#lvPage .lv-name input{width:100%;max-width:360px;box-sizing:border-box;min-height:44px;padding:8px 12px;border:1px solid rgba(0,0,0,.25);border-radius:10px;font:inherit}
 </style>
 <script id="rr-v76-live-js">
 (function(){'use strict';
@@ -10495,12 +10589,11 @@ var COD=['MR'];   /* outlets that may take the TEST order (pay at outlet) */
 var TEST=false;try{if(/[?&]test=1\b/.test(location.search))sessionStorage.setItem('rrTest','1');TEST=sessionStorage.getItem('rrTest')==='1'}catch(e){}
 var codBusy=false,codId='';
 var doc=document,$=function(i){return doc.getElementById(i)};
-var p3=$('rrP3'),sel=$('rr-order-outlet');
-if(!p3||!sel)return;
+var p3=$('lvPage'),sel=$('rr-order-outlet')||doc.createElement('select');
+if(!p3)return;
 function el(t,c,x){var n=doc.createElement(t);if(c)n.className=c;if(x!=null)n.textContent=x;return n}
 function money(n){var r=Math.round(n*100)/100;return '\u20B9'+r.toLocaleString('en-IN',{minimumFractionDigits:r%1?2:0,maximumFractionDigits:2})}
-function slugNow(){var o=sel.options[sel.selectedIndex];if(!o||!o.value)return null;var t=(o.text+' '+o.value).toLowerCase();for(var s in LIVE)if(t.indexOf(s)>-1)return s;return null}
-function isPickup(){var h=p3.querySelector('h3');return !!h&&/pickup order/i.test(h.textContent)}
+function slugNow(){var m=/[?&]outlet=([a-z]+)/.exec(location.search);return m&&LIVE[m[1]]?m[1]:null}
 function toast(m,err){if(window.rrToast)window.rrToast(m,err?{type:'error'}:undefined)}
 
 /* ---------- state (in memory only) ---------- */
@@ -10519,7 +10612,7 @@ function getMenu(code){
       if(d.variants&&d.variants.length)d.variants.forEach(function(v){dishById[v.id]={dish:d,label:v.label,v:v}});
       else dishById[d.id]={dish:d,label:'',v:d}})});
     S.loading=false;
-  }).catch(function(){S.loading=false;S.failed=true});
+  }).then(function(){if(!S.menu||S.failed)return;S.prices={};return fetch(API+'/api/prices?branch='+encodeURIComponent(code)).then(function(r){return r.ok?r.json():{}}).then(function(j){S.prices=(j&&j.prices)||{}}).catch(function(){S.prices={}})}).catch(function(){S.loading=false;S.failed=true});
 }
 var qT=null;
 function askQuote(){
@@ -10618,7 +10711,7 @@ function dishRow(d){
   n.appendChild(doc.createTextNode(d.name));b.appendChild(n);
   if(d.description)b.appendChild(el('p','lv-ds',d.description.split(/(?<=\.)\s/)[0]));
   var act=el('div','lv-act');
-  function btn(label,id,off,why){var x=el('button','lv-add',off?why:'+ '+label);x.type='button';x.disabled=!!off;if(!off){x.setAttribute('aria-label','Add '+d.name+(label!=='Add'?' ('+label+')':''));x.addEventListener('click',function(){addLine(id);toast(d.name+' added')})}return x}
+  function btn(label,id,off,why){var pr=S.prices&&S.prices[id],x=el('button','lv-add',off?why:'+ '+label+(pr?' \u00B7 '+money(pr):''));x.type='button';x.disabled=!!off;if(!off){x.setAttribute('aria-label','Add '+d.name+(label!=='Add'?' ('+label+')':''));x.addEventListener('click',function(){addLine(id);toast(d.name+' added')})}return x}
   if(d.variants&&d.variants.length){d.variants.forEach(function(v){act.appendChild(btn(v.label,v.id,v.soldOut||!v.orderable,v.soldOut?v.label+' \u00B7 sold out':v.label+' \u00B7 call'))})}
   else if(d.soldOut)act.appendChild(el('span','lv-off','Sold out'));
   else if(!d.orderable)act.appendChild(el('span','lv-off','Call to order'));
@@ -10637,12 +10730,12 @@ function note(text,err,retry){var m=el('p','lv-msg'+(err?' err':''),text);if(ret
 
 function render(){
   var slug=slugNow();
-  if(!isPickup()||!slug){p3.classList.remove('lv');p3.setAttribute('aria-live','polite');return}
+  if(!slug){obs.disconnect();p3.classList.add('lv');p3.textContent='';var mm=el('p','lv-msg','Please choose your outlet first. ');var aa=el('a','lv-change','Choose outlet');aa.href='?page=pickup';mm.appendChild(aa);p3.appendChild(mm);return}
   var code=LIVE[slug];
   obs.disconnect();
   try{
     p3.classList.add('lv');p3.setAttribute('aria-live','off');p3.textContent='';
-    p3.appendChild(el('h3','','Step 3 \u00B7 Build your pickup order \u00B7 '+NAMES[slug]));
+    p3.appendChild(el('p','rr-eyebrow','Pickup'));p3.appendChild(el('h1','rr-heading','Your pickup order \u00B7 '+NAMES[slug]));
     p3.appendChild(el('p','p3-sub','Live menu from the outlet. Add dishes, then send the order to the outlet on WhatsApp.'));
     var cpar=el('p','lv-small'),chg=el('a','lv-change','Change outlet');chg.href='?page=pickup';cpar.appendChild(chg);p3.appendChild(cpar);
     if(window.RRCart&&RRCart.count()>0){var w=el('p','lv-msg','Dishes you added from the menu page are not in this order. ');var cb=el('button','','Remove them');cb.type='button';cb.addEventListener('click',function(){RRCart.clear();w.remove()});w.appendChild(cb);p3.appendChild(w)}
@@ -10659,14 +10752,17 @@ function render(){
     S.menu.categories.forEach(function(c,i){var ch=el('button','lv-chip',c.name);ch.type='button';ch.setAttribute('aria-pressed',String(i===S.cat));ch.addEventListener('click',function(){S.cat=i;[].forEach.call(chips.children,function(x,j){x.setAttribute('aria-pressed',String(j===i))});paintList()});chips.appendChild(ch)});
     p3.appendChild(chips);
     listBox=el('div','lv-list');p3.appendChild(listBox);paintList();
+    p3.appendChild(el('p','lv-small','Item prices are before GST where applicable. The final amount with GST is shown in your cart.'));
     if(S.menu.soldOutKnown===false)p3.appendChild(el('p','lv-small','Sold-out marks are not available right now. The outlet will confirm each dish.'));
     cartBox=el('div','p3-cart');cartBox.id='rrP3Cart';p3.appendChild(cartBox);
+    var nw=el('label','lv-name');nw.appendChild(el('span','','Your name'));var ni=el('input');ni.type='text';ni.autocomplete='name';ni.value=S.name||'';ni.addEventListener('input',function(){S.name=ni.value});nw.appendChild(ni);p3.appendChild(nw);
     goBtn=el('button','p3-go','Review & send on WhatsApp');goBtn.type='button';goBtn.id='rrP3Go';
     goBtn.addEventListener('click',function(){
       if(!count()){toast('Add at least one dish first',true);return}
       var q=S.quote&&S.quoteFor===sig()?S.quote:null;if(!q||!q.allOk){toast('Please wait for the prices',true);return}
-      var r=$('odRight');if(!$('odName').value.trim()){if(r)r.scrollIntoView({behavior:'smooth',block:'nearest'});$('odName').focus({preventScroll:true});toast('Add your name, then tap Send on WhatsApp');return}
-      feedNote();$('odWA').click()});
+      if(!(S.name||'').trim()){ni.focus();toast('Add your name first',true);return}
+      var tx="Hi RR Durbar, I'd like to place a pickup order.\nOutlet: "+NAMES[slug]+"\nName: "+S.name.trim()+"\nOrder: "+S.order.map(function(id){return S.lines[id].qty+' x '+lineName(id)}).join(', ')+"\nTotal: "+money(q.total)+' (incl. GST)';
+      window.open('https://wa.me/917702077999?text='+encodeURIComponent(tx),'_blank','noopener')});
     p3.appendChild(goBtn);
     p3.appendChild(el('p','p3-note','Online payment is not live yet. The outlet confirms your order on WhatsApp or by phone. Prices come from the outlet\u2019s system.'));
     if(TEST&&COD.indexOf(code)>-1)p3.appendChild(codBox(code));
@@ -10675,15 +10771,22 @@ function render(){
 }
 
 /* The existing script rebuilds #rrP3 whenever the step changes. We watch it and put the live panel back. */
-var obs=new MutationObserver(function(){if(p3.classList.contains('on'))render()});
-obs.observe(p3,{childList:true});
-sel.addEventListener('change',function(){setTimeout(function(){if(p3.classList.contains('on'))render()},30)});
+var obs=new MutationObserver(function(){});
+var pg=$('pickup-menu'),lastKey='';
+function onPage(){if(pg.classList.contains('rr-page-visible')){var k=location.search;if(k!==lastKey||!p3.firstChild){lastKey=k;render()}}else lastKey=''}
+new MutationObserver(onPage).observe(pg,{attributes:true,attributeFilter:['class']});window.addEventListener('popstate',function(){setTimeout(onPage,50)});onPage();
 
 /* Pickup page: "Order pickup" for a live outlet goes to Order Now, step 3, with the outlet chosen */
-window.rrOrderLive=function(slug){
-  var pick=function(){for(var i=1;i<sel.options.length;i++){if((sel.options[i].text+' '+sel.options[i].value).toLowerCase().indexOf(slug)>-1){sel.selectedIndex=i;sel.dispatchEvent(new Event('change',{bubbles:true}));return true}}return false};
-  if(window.rrGo)window.rrGo('?page=order-now#ordering');else location.href='?page=order-now#ordering';
-  var n=0,t=setInterval(function(){if(pick()||++n>30)clearInterval(t)},150)};
+window.rrOrderLive=function(slug){var h='?page=pickup-menu&outlet='+slug;if(window.rrGo)window.rrGo(h);else location.href=h};
+/* v88: picking an outlet in the Order Now dropdown goes straight to its menu page (no location wait) */
+var osel=$('rr-order-outlet');
+if(osel)osel.addEventListener('change',function(e){
+  var o=osel.options[osel.selectedIndex];if(!o||!o.value)return;
+  e.stopImmediatePropagation();
+  var t=(o.text+' '+o.value).toLowerCase(),slug=null;for(var k in LIVE)if(t.indexOf(k)>-1)slug=k;
+  osel.selectedIndex=0;
+  if(slug)window.rrOrderLive(slug);else toast('This outlet takes orders by phone: 7702077999',true)
+},true);
 window.RR_LIVE_OUTLETS=LIVE;
 })();
 </script>
@@ -10711,6 +10814,37 @@ function key(t){t=(t||'').toLowerCase();return t.indexOf('home')>-1?'home':t.ind
 function icons(){document.querySelectorAll('.mobile-nav-panel a').forEach(function(a){if(a.querySelector('.rr-ni'))return;var k=key(a.textContent);if(!k)return;var s=document.createElement('span');s.className='rr-ni';s.setAttribute('aria-hidden','true');s.innerHTML='<svg viewBox="0 0 24 24" focusable="false">'+P[k]+'</svg>';a.insertBefore(s,a.firstChild)})}
 icons();addEventListener('load',function(){icons();setTimeout(icons,600)});
 var pn=document.querySelector('.mobile-nav-panel');if(pn&&window.MutationObserver)new MutationObserver(icons).observe(pn,{childList:true});
+})();</script>
+<script id="rr-v85-js">(function(){
+if(!matchMedia('(max-width:1050px) and (min-height:500px)').matches)return;
+var P={Home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+Menu:'<path d="M7 3v8a2 2 0 0 0 2 2v8"/><path d="M5 3v6M9 3v6"/><path d="M17 21V3c-2 1-3 4-3 8h3"/>',
+Order:'<path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/>',
+Branches:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+Contact:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>'};
+var T=[['Home','Home'],['Menu','Menu'],['Order Now','Order'],['Branches','Branches'],['Contact','Contact']];
+var src=document.querySelectorAll('.nav-links a');if(!src.length)return;
+var bar=document.createElement('nav');bar.id='rr-tabbar';bar.setAttribute('aria-label','Main navigation');
+T.forEach(function(t){var a=[].filter.call(src,function(x){return x.textContent.trim().toLowerCase()===t[0].toLowerCase()})[0];if(!a)return;
+ var l=document.createElement('a');l.setAttribute('href',a.getAttribute('href'));l.dataset.k=t[1];
+ l.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+P[t[1]]+'</svg><span>'+t[0]+'</span>';bar.appendChild(l)});
+if(bar.children.length<3)return;
+document.body.appendChild(bar);document.documentElement.classList.add('rr-tabs');
+function sync(){var q=location.search+location.hash,cur='Home';
+ if(/page=menu/.test(q))cur='Menu';else if(/page=order|page=pickup|ordering/.test(q))cur='Order';else if(/page=branches|br-locator/.test(q))cur='Branches';else if(/page=contact|#contact/.test(q))cur='Contact';
+ else if(/page=home/.test(q))cur='Home';else if(/page=/.test(q))cur='';
+ [].forEach.call(bar.children,function(a){var on=a.dataset.k===cur;a.classList.toggle('on',on);if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')})}
+sync();['popstate','hashchange','click'].forEach(function(e){addEventListener(e,function(){setTimeout(sync,60);setTimeout(sync,500)})});
+setInterval(sync,1500);
+})();</script>
+<script id="rr-v86-js">(function(){
+var box=document.getElementById('musicBox'),btn=document.getElementById('musicButton'),txt=document.getElementById('musicText'),au=document.getElementById('royalAudio');
+if(!box||!btn||!au)return;
+/* the whole pill is the button, not just the small circle */
+box.style.cursor='pointer';
+box.addEventListener('click',function(e){if(e.target.closest('#musicButton'))return;btn.click()});
+/* tell the visitor when the browser refused or the file did not load */
+btn.addEventListener('click',function(){setTimeout(function(){if(au.paused&&txt&&/^Off/.test(txt.textContent)){txt.textContent=au.error?'Music unavailable':'Tap again to play'}},1800)});
 })();</script>
 </body>
 </html>
