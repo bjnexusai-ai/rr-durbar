@@ -7506,7 +7506,7 @@ paint(0);schedule();updateMusicUI(false);raf=requestAnimationFrame(frame);
       dir.target = '_blank'; dir.rel = 'noopener noreferrer'; actions.append(dir);
       if (digits) { const call = makeElement('a', '', 'Call'); call.href = 'tel:+91' + digits; actions.append(call); }
       const orderLink = makeElement('a', '', 'Order pickup');
-      orderLink.href = '?page=order-now#ordering';
+      orderLink.href = (function(){var k=String(outlet.name||'').toLowerCase().replace(/[^a-z]/g,'');return {singhnagar:1,moghalrajpuram:1,bhavanipuram:1,poranki:1,autonagar:1}[k]?'?page=pickup-menu&outlet='+k:'?page=order-now#ordering'})();
       orderLink.dataset.outletChoice = outlet.branch_label || '';
       actions.append(orderLink);
       card.append(actions);
