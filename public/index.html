@@ -8020,7 +8020,7 @@ function scan(){document.querySelectorAll('main>section.rr-page-visible:not(#hom
  var kids=(/grid|flex/.test(getComputedStyle(ch).display)&&ch.children.length>1)?Array.prototype.slice.call(ch.children):[ch];
  kids.forEach(function(k,i){if(k.dataset.rrs)return;k.dataset.rrs='1';k.classList.add('rr-rv');k.style.setProperty('--rd',(Math.min(i,8)*70)+'ms');io.observe(k)})})}
 scan();
-new MutationObserver(function(){scan()}).observe(document.querySelector('main')||document.body,{attributes:true,attributeFilter:['class'],subtree:true});
+var rrq=0;new MutationObserver(function(){if(rrq)return;rrq=setTimeout(function(){rrq=0;scan()},250)}).observe(document.querySelector('main')||document.body,{attributes:true,attributeFilter:['class'],subtree:true});
 })();</script>
 
 
@@ -10485,13 +10485,13 @@ function reveal(h){if(h.__v77d)return;h.__v77d=1;
 var hio=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;hio.unobserve(e.target);reveal(e.target)})},{threshold:.35});
 /* safety sweep: headings cloned/re-rendered by other scripts keep hidden words; re-adopt them, and force-show anything stuck in view for >1.5s */
 setInterval(function(){
- var vh=innerHeight,now=Date.now();
+ if(document.hidden)return;var vh=innerHeight,now=Date.now();
  document.querySelectorAll('.v77h').forEach(function(h){
   var hidden=h.querySelector('.v77w[style*="opacity: 0"]');if(!hidden){h.__v77t0=0;return}
   if(!h.__v77){h.__v77=1;h.__v77d=0;hio.observe(h)}
   var r=h.getBoundingClientRect();if(r.height&&r.bottom<0){h.querySelectorAll('.v77w').forEach(function(w){w.style.opacity=''});return}if(!r.height||r.top>vh){h.__v77t0=0;return}
   if(!h.__v77t0)h.__v77t0=now;else if(now-h.__v77t0>1500){h.__v77d=0;reveal(h);h.__v77t0=0}
- })},700);
+ })},1000);
 function prep(h){
  if(h.__v77||!h.textContent.trim()||h.closest('#home'))return;h.__v77=1;h.classList.add('v77h');
  if(reduce()||!words(h)){h.__v77t='rise';io.observe(h);return}
