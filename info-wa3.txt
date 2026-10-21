@@ -1,0 +1,150 @@
+=== 390x844
+{
+ "rrw": {
+  "computed": {
+   "position": "fixed",
+   "bottom": "146px",
+   "top": "654px",
+   "right": "12px",
+   "left": "334px",
+   "height": "44px",
+   "max-height": "none",
+   "width": "44px",
+   "transform": "none",
+   "scale": "none",
+   "inset": "654px 12px 146px 334px",
+   "zoom": "1"
+  },
+  "rules": [
+   ".rrw => {\"position\":\"fixed\",\"bottom\":\"max(16px,env(safe-area-inset-bottom))\",\"right\":\"max(16px,env(safe-area-inset-right))\"}",
+   "[(max-width: 480px)] .rrw => {\"bottom\":\"max(12px,env(safe-area-inset-bottom))\",\"right\":\"max(12px,env(safe-area-inset-right))\"}",
+   "[(min-width: 601px)] .rrw => {\"bottom\":\"max(104px,env(safe-area-inset-bottom)) !imp\"}",
+   "[(max-width: 600px)] .rrw => {\"bottom\":\"max(84px,env(safe-area-inset-bottom)) !imp\",\"transform\":\"scale(0.86)\"}",
+   "[(max-width: 480px)] .rrw.open => {\"transform\":\"none !imp\"}",
+   "[(max-width: 1050px) and (min-height: 500] html.rr-tabs #rrw => {\"bottom\":\"calc(84px + 62px + env(safe-area-inset-bottom)) !imp\"}"
+  ]
+ },
+ "rrw-panel": {
+  "computed": {
+   "position": "fixed",
+   "bottom": "145.88px",
+   "top": "178.125px",
+   "right": "12px",
+   "left": "12px",
+   "height": "520px",
+   "max-height": "none",
+   "width": "366px",
+   "transform": "none",
+   "scale": "none",
+   "inset": "178.125px 12px 145.88px",
+   "zoom": "1"
+  },
+  "rules": [
+   ".rrw-panel => {\"position\":\"absolute\",\"bottom\":\"78px\",\"right\":\"0px\",\"height\":\"min(540px, 100dvh - 130px)\",\"width\":\"min(370px, -32px + 100vw)\",\"transform\":\"translateY(16px) scale(0.94)\"}",
+   ".rrw.open .rrw-panel => {\"transform\":\"none\"}",
+   "[(max-width: 480px)] .rrw-panel => {\"position\":\"fixed\",\"bottom\":\"88px\",\"right\":\"12px\",\"left\":\"12px\",\"height\":\"min(520px, 100dvh - 110px)\",\"width\":\"auto\"}",
+   ".rrw-panel => {\"bottom\":\"60px !imp\"}",
+   "[(max-width: 480px)] .rrw-panel => {\"bottom\":\"68px !imp\"}",
+   "[(max-width: 480px)] .rrw.open .rrw-panel => {\"bottom\":\"calc(145.88px) !imp\",\"right\":\"12px !imp\",\"left\":\"12px !imp\",\"height\":\"min(520px, 100dvh - 250px) !imp\",\"width\":\"auto !imp\"}"
+  ]
+ },
+ "rrw-launch": {
+  "computed": {
+   "position": "relative",
+   "bottom": "0px",
+   "top": "0px",
+   "right": "0px",
+   "left": "0px",
+   "height": "44px",
+   "max-height": "none",
+   "width": "44px",
+   "transform": "matrix(0.86, 0, 0, 0.86, 0, 0)",
+   "scale": "none",
+   "inset": "0px",
+   "zoom": "1"
+  },
+  "rules": [
+   ".rrw-launch => {\"position\":\"relative\",\"height\":\"62px\",\"width\":\"62px\"}",
+   ".rrw-launch:hover => {\"transform\":\"scale(1.08) rotate(-6deg)\"}",
+   "[(max-width: 480px)] .rrw-launch => {\"height\":\"58px\",\"width\":\"58px\"}",
+   ".rrw-launch => {\"height\":\"56px\",\"width\":\"56px\"}",
+   ".rrw-launch => {\"height\":\"44px !imp\",\"width\":\"44px !imp\"}",
+   "[(max-width: 480px)] .rrw.open .rrw-launch => {\"transform\":\"scale(0.86)\"}"
+  ]
+ }
+}
+=== 740x360
+{
+ "rrw": {
+  "computed": {
+   "position": "fixed",
+   "bottom": "104px",
+   "top": "212px",
+   "right": "16px",
+   "left": "680px",
+   "height": "44px",
+   "max-height": "none",
+   "width": "44px",
+   "transform": "none",
+   "scale": "none",
+   "inset": "212px 16px 104px 680px",
+   "zoom": "1"
+  },
+  "rules": [
+   ".rrw => {\"position\":\"fixed\",\"bottom\":\"max(16px,env(safe-area-inset-bottom))\",\"right\":\"max(16px,env(safe-area-inset-right))\"}",
+   "[(max-width: 480px)] .rrw => {\"bottom\":\"max(12px,env(safe-area-inset-bottom))\",\"right\":\"max(12px,env(safe-area-inset-right))\"}",
+   "[(min-width: 601px)] .rrw => {\"bottom\":\"max(104px,env(safe-area-inset-bottom)) !imp\"}",
+   "[(max-width: 600px)] .rrw => {\"bottom\":\"max(84px,env(safe-area-inset-bottom)) !imp\",\"transform\":\"scale(0.86)\"}",
+   "[(max-width: 480px)] .rrw.open => {\"transform\":\"none !imp\"}"
+  ]
+ },
+ "rrw-panel": {
+  "computed": {
+   "position": "absolute",
+   "bottom": "60px",
+   "top": "-236px",
+   "right": "0px",
+   "left": "-326px",
+   "height": "220px",
+   "max-height": "220px",
+   "width": "370px",
+   "transform": "none",
+   "scale": "none",
+   "inset": "-236px 0px 60px -326px",
+   "zoom": "1"
+  },
+  "rules": [
+   ".rrw-panel => {\"position\":\"absolute\",\"bottom\":\"78px\",\"right\":\"0px\",\"height\":\"min(540px, 100dvh - 130px)\",\"width\":\"min(370px, -32px + 100vw)\",\"transform\":\"translateY(16px) scale(0.94)\"}",
+   ".rrw.open .rrw-panel => {\"transform\":\"none\"}",
+   "[(max-width: 480px)] .rrw-panel => {\"position\":\"fixed\",\"bottom\":\"88px\",\"right\":\"12px\",\"left\":\"12px\",\"height\":\"min(520px, 100dvh - 110px)\",\"width\":\"auto\"}",
+   ".rrw-panel => {\"bottom\":\"60px !imp\"}",
+   "[(max-width: 480px)] .rrw-panel => {\"bottom\":\"68px !imp\"}",
+   "[(max-width: 480px)] .rrw.open .rrw-panel => {\"bottom\":\"calc(145.88px) !imp\",\"right\":\"12px !imp\",\"left\":\"12px !imp\",\"height\":\"min(520px, 100dvh - 250px) !imp\",\"width\":\"auto !imp\"}"
+  ]
+ },
+ "rrw-launch": {
+  "computed": {
+   "position": "relative",
+   "bottom": "0px",
+   "top": "0px",
+   "right": "0px",
+   "left": "0px",
+   "height": "44px",
+   "max-height": "none",
+   "width": "44px",
+   "transform": "matrix(1.07408, -0.112891, 0.112891, 1.07408, 0, 0)",
+   "scale": "none",
+   "inset": "0px",
+   "zoom": "1"
+  },
+  "rules": [
+   ".rrw-launch => {\"position\":\"relative\",\"height\":\"62px\",\"width\":\"62px\"}",
+   ".rrw-launch:hover => {\"transform\":\"scale(1.08) rotate(-6deg)\"}",
+   "[(max-width: 480px)] .rrw-launch => {\"height\":\"58px\",\"width\":\"58px\"}",
+   ".rrw-launch => {\"height\":\"56px\",\"width\":\"56px\"}",
+   ".rrw-launch => {\"height\":\"44px !imp\",\"width\":\"44px !imp\"}",
+   "[(max-width: 480px)] .rrw.open .rrw-launch => {\"transform\":\"scale(0.86)\"}"
+  ]
+ }
+}
+DONE

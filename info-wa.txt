@@ -1,0 +1,195 @@
+== W: widget script
+bot() at line 7946
+  const updateLinks = () => {
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      const sectionId = link.getAttribute('href')?.slice(1);
+      if (!sectionId) return;
+      const destinationPage = routeForSection(sectionId);
+      link.href = destinationPage === page
+        ? `#${encodeURIComponent(sectionId)}`
+        : `?page=${encodeURIComponent(destinationPage)}#${encodeURIComponent(sectionId)}`;
+      link.target = '_self';
+    });
+  };
+
+  applyPage(grab(window.location.search, /[?&]page=([^&#]*)/) || (window.location.hash ? routeForSection(grab(window.location.hash, /^#(.*)$/)) : 'home'));
+  scrollToHash(window.location.hash);
+  updateLinks();
+  new MutationObserver(updateLinks).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+<script>(function(){var el=document.getElementById('rr-connect');if(!el)return;if(!('IntersectionObserver' in window)){el.classList.add('in');return}var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){el.classList.add('in');io.disconnect()}},{threshold:.25});io.observe(el)})();</scri
+<div class="rrw" id="rrw">
+<div class="rrw-panel" id="rrw-panel" role="dialog" aria-label="Chat with RR Durbar" aria-hidden="true">
+<div class="rrw-head"><span class="rrw-avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761
+<div class="rrw-body" id="rrw-body" aria-live="polite"></div>
+<form class="rrw-form" id="rrw-form" hidden><input id="rrw-name" type="text" placeholder="Enter your name..." autocomplete="given-name" maxlength="40" aria-label="Your name"><button type="submit" class="rrw-send">Send</button><button type="button" class="rrw-skip" id="rrw-skip">Skip</button></form>
+</div>
+<div class="rrd" id="rrd" role="group" aria-label="Contact RR Durbar">
+<a class="rrd-btn rrd-ig" href="https://www.instagram.com/rr_durbar/" target="_blank" rel="noopener noreferrer" aria-label="Follow RR Durbar on Instagram"><span class="rrd-tip">Instagram</span><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-lin
+<a class="rrd-btn rrd-tel" href="tel:+917702077999" aria-label="Call RR Durbar"><span class="rrd-tip">Call us</span><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19
+</div>
+<button type="button" class="rrw-launch" id="rrw-launch" aria-label="Chat with RR Durbar" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347
+</div>
+<script>(function(){
+var STAFF_NUMBER='917702077999';
+var ORDER_URL='?page=order-now#ordering';
+var root=document.getElementById('rrw'),panel=document.getElementById('rrw-panel'),body=document.getElementById('rrw-body'),form=document.getElementById('rrw-form'),input=document.getElementById('rrw-name'),launch=document.getElementById('rrw-launch');
+var WA='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.60
+var started=false,name='',reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var wait=function(ms){return new Promise(function(r){setTimeout(r,reduce?60:ms)})};
+var toEnd=function(){body.scrollTop=body.scrollHeight};
+function bubble(text,me){var d=document.createElement('div');d.className='rrw-msg'+(me?' me':'');d.textContent=text;body.appendChild(d);toEnd();return d}
+async function bot(text){var t=document.createElement('div');t.className='rrw-typing';t.innerHTML='<i></i><i></i><i></i>';body.appendChild(t);toEnd();await wait(350);t.remove();bubble(text);await wait(150)}
+function options(){
+ var w=document.createElement('div');w.className='rrw-opts';
+ var o=document.createElement('a');o.className='rrw-opt rrw-order';o.href=ORDER_URL;o.textContent='\uD83C\uDF7D\uFE0F  Order Now';o.addEventListener('click',close);
+ var msg="Hi RR Durbar, "+(name?"I'm "+name+". ":"")+"I'd like to talk to the restaurant staff.";
+ var s=document.createElement('a');s.className='rrw-opt rrw-staff';s.target='_blank';s.rel='noopener noreferrer';s.href='https://wa.me/'+STAFF_NUMBER+'?text='+encodeURIComponent(msg);s.innerHTML=WA+'<span>Talk to restaurant staff</span>';
+ w.append(o,s);body.appendChild(w);toEnd();
+}
+async function run(){
+ await bot('\uD83D\uDC4B Welcome to RR Durbar!');
+ await bot('How can we assist you today?');
+ await bot('First, may I have your name?');
+ form.hidden=false;setTimeout(function(){input.focus({preventScroll:true})},50);
+}
+async function proceed(n){
+ form.hidden=true;name=n;
+ if(n){bubble(n,true);await wait(300);await bot('Nice to meet you, '+n+'! Choose an option below.')}
+ else{await bot('No problem! Choose an option below.')}
+ options();
+}
+function open(){root.classList.add('open');panel.setAttribute('aria-hidden','false');launch.setAttribute('aria-expanded','true');if(!started){started=true;run()}}
+function close(){root.classList.remove('open');panel.setAttribute('aria-hidden','true');launch.setAttribute('aria-expanded','false')}
+launch.addEventListener('click',function(){root.classList.contains('open')?close():open()});
+document.getElementById('rrw-close').addEventListener('click',close);
+form.addEventListener('submit',function(e){e.preventDefault();proceed(input.value.trim())});
+document.getElementById('rrw-skip').addEventListener('click',function(){proceed('')});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+})();</script>
+<script>(function(){var el=document.getElementById('awards');if(!el)return;if(!('IntersectionObserver' in window)){el.classList.add('rrA-in');return}var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){el.classList.add('rrA-in');io.disconnect()}},{threshold:.12});io.observe(el)})();</
+<script id="rrC-js">(function(){
+var MAP=[['#bestsellers .rr-food-card','?page=menu#menu-page','View menu'],['#why-us .rr-card','?page=about-us#story','Our story'],['#awards .rrA-card','?page=about-us#story','Our story']];
+MAP.forEach(function(m){document.querySelectorAll(m[0]).forEach(function(el){
+ if(el.dataset.rrc)return;el.dataset.rrc=m[1];el.tabIndex=0;el.setAttribute('role','link');
+ var host=el.querySelector('figcaption')||el;var more=document.createElement('span');more.className='rrC-more';more.textContent=m[2];host.appendChild(more);
+ var go=function(){if(window.rrGo&&/^[?#]/.test(m[1]))window.rrGo(m[1]);else location.href=m[1]};
+ el.addEventListener('click',function(e){if(e.target.closest('a,button'))return;go()});
+ el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+})});
+/* mobile nav parity: add the 3 pages the desktop bar does not list */
+var panel=document.querySelector('.mobile-nav-panel');
+if(panel){[['Track Order','?page=track-order#track-order'],['Catering','?page=catering#catering'],['Policies','?page=policies#policies']].forEach(function(l){if(panel.querySelector('a[href="'+l[1]+'"]'))return;var a=document.createElement('a');a.setAttribute('href',l[1]);a.textContent=l[0];a.addEven
+/* reveal + count-up */
+if(!('IntersectionObserver' in window)||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+function count(el){var t=el.textContent.trim();var mm=t.match(/^(\d+)(.*)$/);if(!mm)return;var end=+mm[1],suf=mm[2],t0=performance.now();(function f(n){var p=Math.min(1,(n-t0)/1100);el.textContent=Math.round(end*(1-Math.pow(1-p,3)))+suf;if(p<1)requestAnimationFrame(f)})(t0)}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var el=e.target;io.unobserve(el);el.classList.add('rr-in');
+ if(el.classList.contains('rr-stat')){var st=el.querySelector('strong');if(st)count(st)}
+ setTimeout(function(){el.classList.remove('rr-rv','rr-in')},1400+(parseInt(el.style.getPropertyValue('--rd'))||0))})},{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+function scan(){document.querySelectorAll('main>section.rr-page-visible:not(#home):not(#awards) .rr-container>*').forEach(function(ch){
+ var kids=(/grid|flex/.test(getComputedStyle(ch).display)&&ch.children.length>1)?Array.prototype.slice.call(ch.children):[ch];
+ kids.forEach(function(k,i){if(k.dataset.rrs)return;k.dataset.rrs='1';k.classList.add('rr-rv');k.style.setProperty('--rd',(Math.min(i,8)*70)+'ms');io.observe(k)})})}
+scan();
+new MutationObserver(function(){scan()}).observe(document.querySelector('main')||document.body,{attributes:true,attributeFilter:['class'],subtree:true});
+})();</script>
+
+
+<script id="rr-v10-js">
+(()=>{
+/* Ordering chips: set real listing URLs here when the client supplies them (never guess). */
+window.RR_LISTINGS=window.RR_LISTINGS||{swiggy:'https://www.swiggy.com/city/vijayawada/rr-durbar-siddhartha-nagar-labbipet-rest68611',zomato:'https://www.zomato.com/vijayawada/restaurants/rrs-durbar?category=1'};
+/* Form delivery: set to the WordPress endpoint (wp_mail via WP Mail SMTP) at conversion.
+   Expected: POST JSON {form,fields}; respond 200 {ok:true}. Empty = not connected, and NO success is ever shown. */
+const RR_FORM_ENDPOINT='';
+const WA='917702077999';
+const msgs={catering:'Online enquiries are not live yet. Please use Send on WhatsApp or call 77020 77999.',contact:'Online messages are not live yet. Please use Send on WhatsApp or call 77020 77999.',checkout:'Online payment is not live yet. Please call 77020 77999 to place your pickup order.'};
+function vals(f){const o={};f.querySelectorAll('input,select,textarea').forEach(e=>{if(e.name)o[e.name]=e.value.trim()});return o}
+function validate(f){let ok=true;f.querySelectorAll('.rr-err').forEach(e=>e.remove());
+ f.querySelectorAll('input,select,textarea').forEach(e=>{e.removeAttribute('aria-invalid');let m='';const v=e.value.trim();
+  if(e.required&&!v)m='This field is required.';
+  else if(e.type==='tel'&&v&&!/^\+?[\d\s-]{10,14}$/.test(v))m='Enter a valid phone number.';
+  else if(e.type==='email'&&v&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v))m='Enter a valid email address.';
+  if(m){ok=false;e.setAttribute('aria-invalid','true');const s=document.createElement('small');s.className='rr-err';s.textContent=m;e.after(s)}});
+ if(!ok){const b=f.querySelector('[aria-invalid]');b&&b.focus()}return ok}
+function status(f,t,tone){const p=f.querySelector('.rr-form-status');if(!p)return;p.textContent=t;p.hidden=!t;p.dataset.tone=tone||''}
+document.querySelectorAll('form[data-rr-form]').forEach(f=>{
+ const kind=f.dataset.rrForm,btn=f.querySelector('[data-rr-submit]');let busy=false;
+ f.addEventListener('submit',async e=>{e.preventDefault();if(busy||!validate(f))return;
+  if(!RR_FORM_ENDPOINT){status(f,msgs[kind],'notice');return}
+  busy=true;btn.disabled=true;const label=btn.textContent;btn.textContent='Sending…';status(f,'');
+  try{const r=await fetch(RR_FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({form:kind,fields:vals(f)})});
+   if(!r.ok)throw 0;status(f,'Thank you. We have received your request and will get back to you shortly.');f.reset()}
+  catch(_){status(f,'Something went wrong, so your request was not sent. Please try again, or use WhatsApp or call.','error')}
+  finally{busy=false;btn.disabled=false;btn.textContent=label}});
+ const wa=f.querySelector('[data-rr-wa]');
+ if(wa)wa.addEventListener('click',e=>{if(!validate(f)){e.preventDefault();return}
+  const v=vals(f),t='Hi RR Durbar, '+(kind==='catering'?'catering enquiry':'message')+':\n'+Object.entries(v).filter(([,x])=>x).map(([k,x])=>k+': '+x).join('\n');
+  wa.href='https://wa.me/'+WA+'?text='+encodeURIComponent(t)})});
+/* page H1: first heading on routed (non-home) pages */
+function h1(){document.querySelectorAll('.rr-h1').forEach(e=>e.classList.remove('rr-h1'));
+ if(document.body.classList.contains('rr-home-route'))return;
+ const first=[...document.querySelectorAll('main>section.rr-page-visible')].sort((a,b)=>(+a.style.order||0)-(+b.style.order||0))[0];
+ const h=first&&first.querySelector('.rr-heading');if(h)h.classList.add('rr-h1')}
+== X: widget css
+671:.hero-primary,.rr-gold-button:not(.rr-ghost),.order-pill,.pbtn.gold,.rrA-btn-gold,.add,.checkout,.rr-menu-add,.rr-order-pickup,.rrw-send,.rrw-order,.rrm-btn{background:linear-gradient(180deg,#F6E27F,#D4AF37)!important;color:#2a0d10!important;border-color:t
+672:.hero-primary:hover,.rr-gold-button:not(.rr-ghost):hover,.order-pill:hover,.pbtn.gold:hover,.rrA-btn-gold:hover,.add:hover,.checkout:hover,.rr-order-pickup:hover,.rrw-send:hover,.rrw-order:hover,.rrm-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20
+1890:.rrw-launch{position:relative;display:grid;place-items:center;width:62px;height:62px;padding:0;border:0;border-radius:50%;background:linear-gradient(145deg,#33e37a,#0f9f4c);color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.4
+1891:.rrw-launch:hover{transform:scale(1.08) rotate(-6deg)}
+1892:.rrw-launch svg{width:32px;height:32px;position:relative;z-index:2}
+1893:.rrw-launch::before,.rrw-launch::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #33e37a;opacity:0;animation:rrwRing 2.8s ease-out infinite}
+1894:.rrw-launch::after{animation-delay:1.4s}
+1896:.rrw-badge{position:absolute;top:-2px;right:-2px;z-index:3;width:18px;height:18px;border-radius:50%;background:#e23744;border:2px solid #fff;color:#fff;font-size:15px;font-weight:800;display:grid;place-items:center}
+1897:.rrw.open .rrw-badge{display:none}
+1898:.rrw-panel{position:absolute;right:0;bottom:78px;width:min(370px,calc(100vw - 32px));height:min(540px,calc(100dvh - 130px));display:flex;flex-direction:column;overflow:hidden;border-radius:24px;background:#faf4ea;box-shadow:0 30px 80px rgba(0,0,0,.5);bord
+1899:.rrw.open .rrw-panel{opacity:1;visibility:visible;transform:none}
+1900:.rrw-head{flex:none;display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px;background:linear-gradient(135deg,#4A0810,#7e1c29);border-bottom:3px solid #d5b26c;color:#FDF5E7}
+1901:.rrw-avatar{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#33e37a,#0f9f4c);color:#fff;box-shadow:0 0 0 2px rgba(242,209,138,.7)}
+1902:.rrw-avatar svg{width:24px;height:24px}
+1903:.rrw-title{flex:1;min-width:0}
+1904:.rrw-title strong{display:block;font:600 18px 'Cormorant Garamond',Georgia,'Times New Roman',serif;color:#FDF5E7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+1905:.rrw-title span{display:flex;align-items:center;gap:6px;font-size:15px;color:#f3dfd6;margin-top:2px}
+1906:.rrw-title span::before{content:"";width:8px;height:8px;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 3px rgba(61,220,132,.25)}
+1907:.rrw-close{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:24.2px;line-height:1;transition:background .2s,transform .3s}
+1908:.rrw-close:hover{background:rgba(255,255,255,.24);transform:rotate(90deg)}
+1909:.rrw-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:16px 14px 8px;display:flex;flex-direction:column;gap:9px;scroll-behavior:smooth;background:#faf4ea}
+1910:.rrw-msg{max-width:86%;padding:11px 15px;border-radius:18px 18px 18px 5px;background:#fff;border:1px solid rgba(98,21,32,.1);box-shadow:0 2px 6px rgba(52,18,15,.06);color:#2b1518;font-size:16px;line-height:1.45;word-wrap:break-word;overflow-wrap:anywhere;
+1911:.rrw-msg.me{align-self:flex-end;border-radius:18px 18px 5px 18px;background:linear-gradient(135deg,#6d1520,#8a2230);border-color:transparent;color:#FDF5E7}
+1912:.rrw-typing{align-self:flex-start;display:flex;gap:5px;padding:14px 16px;border-radius:18px 18px 18px 5px;background:#fff;border:1px solid rgba(98,21,32,.1)}
+1913:.rrw-typing i{width:7px;height:7px;border-radius:50%;background:#c9922f;animation:rrwDot 1s infinite ease-in-out}
+1914:.rrw-typing i:nth-child(2){animation-delay:.15s}.rrw-typing i:nth-child(3){animation-delay:.3s}
+1917:.rrw-opts{display:flex;flex-direction:column;gap:10px;padding:6px 0 8px;animation:rrwPop .4s ease}
+1918:.rrw-opt{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:48px;padding:0 18px;border-radius:999px;border:1.5px solid transparent;font:700 14px 'Manrope',Arial,sans-serif;text-decoration:none;text-align:center;transitio
+1919:.rrw-opt:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 22px rgba(0,0,0,.22)}
+1920:.rrw-opt svg{width:20px;height:20px;flex:none}
+1921:.rrw-order{background:linear-gradient(135deg,#6d1520,#8a2230);color:#ffe1a3;border-color:#d5b26c}
+1922:.rrw-staff{background:linear-gradient(145deg,#25d366,#0f9f4c);color:#fff}
+1923:.rrw-form{flex:none;display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fff;border-top:1px solid rgba(98,21,32,.12)}
+1924:.rrw-form[hidden]{display:none}
+1925:.rrw-form input{flex:1;min-width:0;height:44px;padding:0 16px;border-radius:999px;border:1.5px solid #7e1c29;background:#fff;font:400 14.5px 'Manrope',Arial,sans-serif;color:#2b1518;outline:none}
+1926:.rrw-form input:focus{box-shadow:0 0 0 3px rgba(201,146,47,.35)}
+1927:.rrw-send{flex:none;height:44px;padding:0 18px;border:0;border-radius:999px;background:#7e1c29;color:#FDF5E7;font:700 13px 'Manrope',Arial,sans-serif}
+1928:.rrw-skip{flex:none;height:44px;padding:0 6px;border:0;background:transparent;color:#7e1c29;font:600 13px 'Manrope',Arial,sans-serif;text-decoration:underline}
+1929:@media (max-width:480px){.rrw{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom))}.rrw-panel{position:fixed;left:12px;right:12px;width:auto;bottom:88px;height:min(520px,calc(100dvh - 110px))}.rrw-launch{width:58px;heigh
+2042:.rrw-badge{display:none!important}
+== Y: widget markup
+7925:<div class="rrw" id="rrw">
+7926:<div class="rrw-panel" id="rrw-panel" role="dialog" aria-label="Chat with RR Durbar" aria-hidden="true">
+7927:; usually replies instantly</span></div><button type="button" class="rrw-close" id="rrw-close" aria-label="Close chat">&times;</button></div>
+7928:<div class="rrw-body" id="rrw-body" aria-live="polite"></div>
+== Z: page names
+     34 ?page=menu
+     26 ?page=order-now
+     10 ?page=branches
+      9 ?page=home
+      8 ?page=privacy-policy
+      5 ?page=policies
+      5 ?page=pickup
+      5 ?page=about-us
+      4 ?page=terms-of-service
+      4 ?page=refund-cancellation
+      3 ?page=contact
+      3 ?page=catering
+      2 ?page=track-order
+      2 ?page=pickup-menu
+      1 ?page=locations

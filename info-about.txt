@@ -1,0 +1,31 @@
+== M: stat text
+5362:staurant, the RR story has grown around quality, consistency and a royal dining experience.</p><div class="rra-cta"><a class="rra-btn-gold" href="#story">Our journey &darr;</a><a class="rra-ghost" href="?page=branches#br-list">Find an outlet</a></div><ul class="rra-facts"><li><b>Since 1991</b><span>A family story</span></li><li><b>6 outlets</b><span>Across Vijayawada</span></li><li><b>First</b><span>Theme-based restaurant in the city</span></li></ul></div><figure class="rra-photo"><span class="rra-frame"><img alt="The RR Durbar dining hall in Vijayawada" src="assets/36250155b7.jpg" width="1400" height="933"
+== N: about hero css
+== O: stat number css
+336:.states{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.state-card{min-height:220px;border:1px dashed #cbb7a9;border-radius:24px;padding:22px;background:#fff}.state-card strong{display:block;font:500 24px 'Cormorant Garamond',Georgia,serif;margin:30px 0 8px}.state-card p{font-size:15px;line-height:1.6;co
+405:.rr-timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:34px;border-top:1px solid #d0ad6b}.rr-timeline article{padding:20px 20px 0 0}.rr-timeline b{display:block;margin-bottom:8px;color:#9c692b;font-size:15px;letter-spacing:.1em;text-transform:uppercase}.rr-timeline h3{font:500 22px
+579:.rr-section:not(.rr-dark):not(.rr-cta) .rr-stat strong{color:#7E2324}.rr-section:not(.rr-dark):not(.rr-cta) .rr-stat span{color:#6f5a50}
+705:.brx .rr-heading,.brx-body h3,.brx-fact b{font-family:'Cormorant Garamond',Georgia,serif!important;font-weight:700!important}
+707:.brx-fact b{font-size:15.5px!important;line-height:1.25!important}
+1184:body #stats .rr-stat strong{color:#7E2324!important;-webkit-text-fill-color:#7E2324!important;background:none!important}
+1185:body #stats .rr-stat span{color:#5a1a1c!important;font-weight:700}
+1380:.rra-facts b{display:block;font:600 26px/1.1 'Cormorant Garamond',Georgia,serif;color:#f2d99b}
+1381:.rra-facts span{display:block;margin-top:4px;font-size:12.5px;line-height:1.35;color:#ecdccf}
+1382:@media(max-width:980px){html body #about .rra-hero{width:calc(100% - 40px)!important;min-height:0;padding-block:40px;display:block!important}.rra-facts li{padding:0 10px}.rra-facts b{font-size:22px}}
+1709:body #musicBox .music-info strong,body #musicText,body #honours figcaption em,body #honours .wh-stats small,body #honours .wh-pl-in strong,body #honours .wh-fr span,body #reviews .rv-by span,body #reviews .rv-brush .t small,body #loyalty .lc-card .lc-from,body #loyalty li b small,body .rr-sig-badge{font-size:12px!
+1713:body .hero-eyebrow,body .hero-primary,body .hero-secondary,body .rr-eyebrow,body .rr-gold-button,body .rr-outline-link,body .ig-follow,body .rv-wa,body .rv-wa span,body .rv-eye span,body .lc-eye span,body #honours .wh-stats span,body #honours .wh-fr span,body #reviews .rv-brush .t small,body #loyalty .lc-card .lc-
+1881:.category small{font-size:15px!important}.rr-order-chip{font-size:15px!important}.rr-stat span{font-size:15.5px!important}
+2158:body main>section.rr-tone-a .rr-stat,body main>section.rr-tone-b .rr-stat{background:#fff;border:1px solid rgba(157,105,43,.3);color:#4A0810}
+2429:.brx-fact+.brx-fact{border-left:1px solid rgba(138,90,32,.45)}
+2430:.brx-fact b{font:600 15px 'Cormorant Garamond',serif;color:var(--b)}
+2431:.brx-fact span{font-size:15px;line-height:1.4;color:#4A3B36}
+2468:.brx-fact-d b{font:600 12px 'Manrope',sans-serif;color:#FFFDF8}
+2469:.brx-fact-d .brx-ic{background-color:transparent;border:1px solid var(--g);box-shadow:none;width:40px;height:40px}
+2553:body #stats .rr-stat strong{font:600 clamp(48px,6vw,84px)/1 "Cormorant Garamond",'Cormorant Garamond',Georgia,serif!important;background:linear-gradient(180deg,#E7B85C,#7E2324 92%);background-size:100% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transition:transform .
+2554:body #stats .rr-stat:hover strong{transform:scale(1.1)}
+2555:body #stats .rr-stat span{color:#7E2324!important;font-weight:700;letter-spacing:.14em}
+3746:#honours .wh-stats b{display:block;font:600 clamp(46px,5vw,72px)/1 'Cormorant Garamond',Georgia,serif;color:#F8EFDF;text-shadow:0 0 22px rgba(231,184,92,.35)}
+3748:#honours .wh-stats span{display:block;margin-top:4px;font:800 14px/1.2 'Manrope',Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#F8EFDF}
+4868:html body #stats .rr-stats .rr-stat strong{font:600 clamp(56px,7vw,92px)/1 "Cormorant Garamond",Georgia,serif!important;background:linear-gradient(180deg,#E7B85C,#9a3a2a 60%,#7E2324)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:
+4869:html body #stats .rr-stats .rr-stat span{font-size:14px!important;letter-spacing:.16em;text-transform:uppercase}
+10219:.rr-stat strong,.rr-stat b,[class*="stat"] strong,[class*="count"],.rr-trust-grid strong{font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-variant-numeric:lining-nums;letter-spacing:-.01em}

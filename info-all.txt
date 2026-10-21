@@ -1,0 +1,137 @@
+== TESTS
+BAR 390x844 {"tabs":"Home,About Us,Menu,Order Now,Branches,Catering,Contact","scroll":[518,390],"menuBtn":"none","docW":[390,390],"trackLinks":1,"tabH":61}
+ after Catering tap: ?page=catering#catering | active: Catering
+ singhnagar: {"rows":0,"greyed":0,"notice":false}
+ errors: none
+BAR 320x568 {"tabs":"Home,About Us,Menu,Order Now,Branches,Catering,Contact","scroll":[518,320],"menuBtn":"none","docW":[320,320],"trackLinks":1,"tabH":61}
+ after Catering tap: ?page=catering#catering | active: Catering
+ singhnagar: {"rows":0,"greyed":0,"notice":false}
+ errors: none
+BAR DONE
+CHAT 390x844 {"panel":[12,250,378,770],"skip":[325,715,365,759]} | pickup chips 7 | url ?page=pickup-menu&outlet=poranki | panelOpen false | errors none
+CHAT 320x568 {"panel":[12,96,308,494],"skip":[255,439,295,483]} | pickup chips 7 | url ?page=pickup-menu&outlet=poranki | panelOpen false | errors none
+CHAT 740x360 {"panel":[358,134,728,352],"skip":[675,297,715,341]} | pickup chips 7 | url ?page=pickup-menu&outlet=poranki | panelOpen false | errors none
+CHAT 568x320 {"panel":[186,92,556,312],"skip":[503,257,543,301]} | pickup chips 7 | url ?page=pickup-menu&outlet=poranki | panelOpen false | errors none
+CHAT DONE
+
+== ASSETS (largest 25)
+918993 public/assets/c077145f2c.mp4
+715320 public/assets/841cd67814.mp4
+680179 public/assets/995b413995.mp4
+626621 public/assets/6c6e7337d7.mp4
+333742 public/assets/rg-moment.mp4
+274830 public/assets/br-poranki.webp
+271218 public/assets/e519dd787a.jpg
+269602 public/assets/br-autonagar.webp
+261788 public/assets/br-singhnagar.webp
+245863 public/assets/7d65f8be8a.jpg
+243603 public/assets/80b2ac6240.jpg
+241095 public/assets/36250155b7.jpg
+234833 public/assets/b5f4c3c66b.mp3
+229055 public/assets/dc33ad1081.jpg
+228104 public/assets/br-patamatalanka.webp
+224409 public/assets/a9f6768a06.jpg
+221320 public/assets/54dfd81795.webp
+220126 public/assets/7c01b77a60.jpg
+214220 public/assets/9b53331477.jpg
+213856 public/assets/ca0edf2252.jpg
+210189 public/assets/f969dd5283.png
+208278 public/assets/256dbe56b2.jpg
+200058 public/assets/14637ae90d.jpg
+195601 public/assets/81d00a8cf7.jpg
+194199 public/assets/5c9f81d658.jpg
+14680	public/assets
+== GIT
+?? info-about.txt
+?? info-all.txt
+?? info-close.txt
+?? info-hero.txt
+?? info-hero2.txt
+?? info-hero3.txt
+?? info-nav.txt
+?? info-tab.txt
+?? info-wa.txt
+?? info-wa3.txt
+?? old-v79d.html
+c0ab8c4 feat: scrollable 7-item phone tab bar; sold-out dishes greyed not hidden; Track Order unlinked
+8155bdd fix: chat closes after link tap; landscape panel fits (original rules)
+2535bda fix: chat panel no longer covers launch/Skip on phones; taller panel above tab bar
+== PERF
+CSS total KB 591 used KB 292 unused % 51
+transfer KB by type {"document":0,"font":294,"image":6069,"script":0}
+top 15 requests:
+  268KB image /assets/br-poranki.webp
+  265KB image /assets/e519dd787a.jpg
+  263KB image /assets/br-autonagar.webp
+  256KB image /assets/br-singhnagar.webp
+  238KB image /assets/80b2ac6240.jpg
+  223KB image /assets/br-patamatalanka.webp
+  205KB image /assets/f969dd5283.png
+  152KB image /assets/629d63c5ee.jpg
+  137KB image /assets/7fb76668ea.jpg
+  137KB image /assets/5c2cbda940.jpg
+  121KB image /assets/3cdaef5d34.jpg
+  121KB image /assets/efd4ef3fc6.jpg
+  118KB image /assets/a8491ca2a2.jpg
+  116KB image /assets/ff842b48f2.jpg
+  114KB image /assets/12fef046b6.jpg
+images shown: 60 | eager: 18
+oversized (natural > 2.6x box):
+  assets/e25922deb3.jpg nat 1000 box 244 auto
+  assets/191374656f.jpg nat 720 box 198 auto
+  assets/1536fbc3b8.jpg nat 720 box 198 auto
+  assets/9e736b8248.jpg nat 720 box 198 auto
+  assets/139c081150.jpg nat 900 box 198 auto
+  assets/12fef046b6.jpg nat 640 box 198 auto
+  assets/17a81a9bcc.jpg nat 640 box 198 auto
+  assets/03560c44b7.jpg nat 640 box 198 auto
+  assets/7fb76668ea.jpg nat 900 box 198 auto
+  assets/4603529a0e.png nat 480 box 96 lazy
+  assets/6fcf094484.png nat 216 box 50 lazy
+  assets/efd4ef3fc6.jpg nat 900 box 258 lazy
+  assets/7fb76668ea.jpg nat 900 box 258 lazy
+  assets/398782e278.jpg nat 900 box 258 lazy
+  assets/efd4ef3fc6.jpg nat 900 box 258 lazy
+  assets/7fb76668ea.jpg nat 900 box 258 lazy
+  assets/398782e278.jpg nat 900 box 258 lazy
+  assets/139c081150.jpg nat 900 box 304 lazy
+  assets/7fb76668ea.jpg nat 900 box 304 lazy
+  assets/398782e278.jpg nat 900 box 304 lazy
+eager images:
+  logo/rr-logo-480.webp nat 240 box 247
+  assets/hero-m-0.webp nat 780 box 390
+  assets/hero-m-1.webp nat 780 box 390
+  assets/hero-m-2.webp nat 780 box 390
+  assets/hero-m-3.webp nat 780 box 406
+  assets/hero-m-4.webp nat 780 box 406
+  assets/hero-m-5.webp nat 780 box 419
+  assets/hero-m-6.webp nat 780 box 406
+  assets/hero-m-7.webp nat 780 box 406
+  assets/e25922deb3.jpg nat 1000 box 244
+  assets/191374656f.jpg nat 720 box 198
+  assets/1536fbc3b8.jpg nat 720 box 198
+  assets/9e736b8248.jpg nat 720 box 198
+  assets/139c081150.jpg nat 900 box 198
+  assets/12fef046b6.jpg nat 640 box 198
+  assets/17a81a9bcc.jpg nat 640 box 198
+  assets/03560c44b7.jpg nat 640 box 198
+  assets/7fb76668ea.jpg nat 900 box 198
+STYLE blocks 149 total KB 591
+  rr-v52-menu 26KB
+  (no id) 23KB
+  rr-system 22KB
+  rr-catering-v6 19KB
+  rr-v39-awards 19KB
+  rr-policy-pages 18KB
+  rr-about-remodel 18KB
+  rr-branches-v10 17KB
+  rr-order-now-v2 13KB
+  rr-v24-menu-cart 13KB
+  rrmz-css 11KB
+  (no id) 11KB
+DUP keyframes: rrhPushx2, rrBouncex2, rrTiltx2, rrRingPhonex2, rrShinex2, rrDrawx2
+SCRIPT src tags:
+  <script src="assets/js/gsap.min.js">
+  <script src="assets/js/ScrollTrigger.min.js">
+  <script src="assets/js/SplitText.min.js">
+GSAP context: meout(function(){if(run())mo.disconnect()},0);else document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){if(run())mo.disconnect()},0)}); })(); </script> <script src="assets/js/gsap.min.js"></script><script src="assets/js/ScrollTrigger.min.js"></script><script src="assets/js/SplitText.min.js"></script> <script id="fnd-js"> /* v71 founder reveal. WebGL fragment shader: noise-driven draw order for the gold sketch, engraved hatching from the photo's own tones,    a light sweep that wakes the portrait in gold monochrome, a colour bloom spreading from the eyes, then the signature drawn from the 
