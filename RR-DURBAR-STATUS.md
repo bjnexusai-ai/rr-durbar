@@ -1,6 +1,6 @@
 # RR Durbar: project status (for any Claude session)
 
-Last updated: 2026-10-21 (IST, evening). Owner: Alekya (BJNEXUS AI, Hyderabad).
+Last updated: 2026-10-21 (IST, late). Owner: Alekya (BJNEXUS AI, Hyderabad).
 Read `CLAUDE-README.md` (working rules, deploy steps) and `RISTA-INTEGRATION.md` too. This file is the current state; if it conflicts with older notes, this file wins.
 
 ## 1. How Alekya wants you to work (mandatory)
@@ -34,13 +34,15 @@ RR Durbar: restaurant, 6 Vijayawada outlets. Static single-page site (`public/in
 
 | Item | Value |
 |---|---|
-| `main` / live code | `7d39db3` |
-| Live Worker version | `d7d8bdfc-be0f-43c1-8cf4-2b98e105ffc2` |
-| Previous live versions (rollback) | `8a702877` (images), `d489fb9b` (scan throttle), `37afafd5` (before this session's perf work) |
-| Preview version | `f5ede6d9` (branch `br-order`, NOT merged) |
-| Pending branch | `br-order`: patch applied in working tree, NOT committed |
+| `main` / live code | `d85aadc` (latest commit that changed `public/index.html`) |
+| Live Worker version | newest in the Cloudflare dashboard (Worker `rr-durbar`); `d7d8bdfc` was live before the outlet-button change |
+| Previous live versions (rollback) | `d7d8bdfc` (menu tile fix), `8a702877` (images), `d489fb9b` (scan throttle), `37afafd5` (before this session's perf work) |
+| Preview version | `4c4f8700` (same code as `main`) |
+| Pending branch | none (`br-order` merged into `main`) |
 
 Recent commits on `main` (newest first):
+- `d85aadc` outlet "Order pickup" buttons open that outlet's pickup menu (Patamatalanka unchanged)
+- `c748a62` docs: add this status file
 - `7d39db3` menu tiles use one reveal only (removed duplicate JS rise)
 - `42a280f` webp card images and footer logo (originals kept)
 - `ff722cc` throttle rrC scan observer; pause v77 sweep when tab hidden
@@ -63,6 +65,7 @@ This session (2026-10-21):
 - `ff722cc`: `rrC-js` MutationObserver callback throttled to 250 ms (headless profile 1,510 ms to about 700-840 ms); `rr-v77-motion-js` safety sweep skips when tab hidden, interval 700 to 1000 ms.
 - `42a280f`: 24 card images and the footer logo converted to `NAME-w.webp` (max 900 px, footer logo 700 px, quality 76); 2,451 KB to 1,861 KB; 25 references swapped; originals kept. Preview test: 24,137 KB vs 26,929 KB over six pages, no broken images.
 - `7d39db3`: menu tiles had TWO reveal systems on the same elements (CSS `m52reveal` scroll-timeline and the JS rise in `rr-v77-motion-js` via the `RISE` selector). Removed `#m52 .m52-t` from `RISE`. Measured with `getAnimations()` on desktop: before, 57 of 204 visible-tile samples had 2 animations (max 2); after, 0 (max 1). Found from Alekya's screen recording of the desktop Menu page (washed-out tiles and doubled captions while scrolling).
+- `d85aadc`: on `?page=locations`, the six outlet "Order pickup" buttons are built by `rr-section-controls` (`makeOutletCard`, `orderLink.href`). Singhnagar, Moghalrajpuram, Bhavanipuram, Poranki and Autonagar now open `?page=pickup-menu&outlet=<slug>`; Patamatalanka stays on `?page=order-now#ordering` (not connected to Rista). Verified on preview: all six hrefs correct and a click lands on the pickup menu.
 
 ## 5. PageSpeed (mobile, Lighthouse via pagespeed.web.dev)
 
@@ -79,7 +82,7 @@ Accessibility 100, Best Practices 100, SEO 69 (the `noindex` header; returns to 
 
 ## 6. In progress
 
-**Branches "Order from outlet" buttons.** The six outlet cards are in one line (about line 5556 of `public/index.html`), each with `<a class="rr-outline-link" href="?page=order-now#ordering">Order from outlet</a>`. Decision made: the 5 live outlets should open `?page=pickup-menu&outlet=<slug>` (singhnagar, moghalrajpuram, bhavanipuram, poranki, autonagar); Patamatalanka stays on `?page=order-now#ordering` (not connected to Rista). Patch is applied on branch `br-order` (5 anchors, each count 1) and deployed to preview `f5ede6d9`, but NOT verified: the test script looked at `?page=branches` and found no such links; the cards are probably on `?page=locations` (guess). Next: run `br.js` against `?page=locations`; on pass, commit `public/index.html` by explicit path, ff-merge to main, deploy live. Rollback: `git revert`, or Cloudflare version `d7d8bdfc`.
+**Outlet "Order pickup" buttons: done and live** (commit `d85aadc`, see section 4). Lesson: the "Order from outlet" markup around line 5556 of `public/index.html` is static HTML that a script replaces at load, so editing it has no visible effect; the real buttons are on `?page=locations`, built in `rr-section-controls`. The Branches page (`?page=branches`) only has the generic Order Now and Order Pickup links. Alekya has not yet checked it on her phone.
 
 **Alekya's live check of the Menu scroll** (is the jerk gone after `7d39db3`?) has not been reported. If blank/white tiles still appear on fast scroll, a guess is the lazy tile images arriving late; the fix would be to load images for tiles near the viewport earlier.
 
@@ -98,7 +101,7 @@ Accessibility 100, Best Practices 100, SEO 69 (the `noindex` header; returns to 
 
 ## 9. Open items
 
-1. Finish `br-order` (section 6).
+1. Outlet pickup buttons: done (section 6); Alekya to check on her phone.
 2. Re-run PageSpeed and record numbers; then TBT / main-thread work; delay non-first-screen scripts (cart, search, Instagram, reviews).
 3. Phone checks on live not yet reported: swipe tab bar, chat flow, crest sharpness in header, founder reveal. Hero screenshots (2-3 slides) still to send so focal points can be checked.
 4. Stock data: API available dishes (evening): MR 233, SN 13, BH 236, PO 44, AT 13, PL 0. Later live pickup showed MR and SN all greyed. Hypothesis (unverified): outlets closed so Rista stock reads zero. Recheck after 11:00 IST with `curl /api/menu?branch=MR|SN|BH|PO|AT|PL` and count available.
@@ -126,4 +129,4 @@ Accessibility 100, Best Practices 100, SEO 69 (the `noindex` header; returns to 
 cd /workspaces/RR-Durbar && git status --short; git branch; git log --oneline -5
 ```
 
-Then: ask Alekya for the live Menu scroll result and PageSpeed numbers, and finish `br-order` (section 6).
+Then: ask Alekya for the live Menu scroll result and PageSpeed numbers, and record them in section 5.
