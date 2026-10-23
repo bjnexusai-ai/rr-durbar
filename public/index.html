@@ -4994,9 +4994,7 @@ html body #bestsellers .rr-food-card.rr-signature-card:nth-child(1) h3{font-size
 <div class="wh-modal" id="wh-modal" role="dialog" aria-modal="true" aria-label="Award details" hidden><div class="wh-card"><button type="button" class="wh-x" aria-label="Close">&times;</button><div class="wh-card-pl"></div><h3></h3><p></p><small></small></div></div>
 </section>
 
-<section class="rr-section" id="updates" data-edit-section="home-latest-updates">
-<div class="rr-container"><p class="rr-eyebrow">Latest updates</p><h2 class="rr-heading">News &amp; announcements.</h2><p class="rr-copy">New outlets, new dishes and celebrations from the Durbar family.</p><div class="rr-updates-grid"><article class="rr-card rr-update"><span class="rr-media"><img data-scene="0" alt="Sample photo; replace with the announcement image." loading="lazy" decoding="async"/></span><div class="rr-update-body"><span class="rr-badge ">New outlet</span><span class="rr-edit-label">Announcement 01 · Replace photo + text</span><h3>Add announcement headline</h3><p>Add the approved announcement text, such as a new outlet opening, a new menu launch or an offer. Include the outlet name and date only after verification.</p></div></article><article class="rr-card rr-update"><span class="rr-media"><img data-scene="1" alt="Sample photo; replace with the announcement image." loading="lazy" decoding="async"/></span><div class="rr-update-body"><span class="rr-badge soon">Opening soon</span><span class="rr-edit-label">Announcement 02 · Replace photo + text</span><h3>Add announcement headline</h3><p>Add the approved announcement text, such as a new outlet opening, a new menu launch or an offer. Include the outlet name and date only after verification.</p></div></article></div></div>
-</section>
+
 <section class="section" id="menu" data-edit-section="home-categories">
 <div class="rrm-strip" aria-hidden="true"></div>
 <img loading="lazy" class="rrm-orn rrm-fl rrm-tl" src="assets/cddfd70129.svg" alt="" aria-hidden="true"><img loading="lazy" class="rrm-orn rrm-fl rrm-tr" src="assets/accb2d062c.svg" alt="" aria-hidden="true"><img loading="lazy" width="480" height="234" class="rrm-orn rrm-sp rrm-bl" src="assets/4603529a0e-w.webp" alt="" aria-hidden="true"><img loading="lazy" width="216" height="240" class="rrm-orn rrm-sp rrm-br" src="assets/6fcf094484.png" alt="" aria-hidden="true">
@@ -7638,7 +7636,7 @@ paint(0);schedule();updateMusicUI(false);raf=requestAnimationFrame(frame);
 <script id="rr-page-router">
 (() => {
   const pageSections = {
-    home: ['home', 'updates', 'bestsellers', 'menu', 'trust', 'honours', 'reviews', 'gallery', 'loyalty', 'outlets', 'cta'],
+    home: ['home', 'bestsellers', 'menu', 'trust', 'honours', 'reviews', 'gallery', 'loyalty', 'outlets', 'cta'],
     'about-us': ['about', 'story', 'foundation', 'family', 'why-us', 'about-sig', 'about-go', 'purpose', 'promise-green', 'stats', 'awards', 'reels'],
     'our-story': ['about', 'story', 'foundation', 'family', 'why-us', 'about-sig', 'about-go', 'purpose', 'promise-green', 'stats', 'awards', 'reels'],
     menu: ['menu-page'],
@@ -7656,7 +7654,7 @@ paint(0);schedule();updateMusicUI(false);raf=requestAnimationFrame(frame);
     'refund-cancellation': ['pol-refund'],
   };
   const sectionPages = {
-    home: 'home', updates: 'home', trust: 'home', foundation: 'about-us', social: 'about-us', founder: 'about-us', purpose: 'about-us', menu: 'home', bestsellers: 'home', 'outlets-green': 'home',
+    home: 'home', trust: 'home', foundation: 'about-us', social: 'about-us', founder: 'about-us', purpose: 'about-us', menu: 'home', bestsellers: 'home', 'outlets-green': 'home',
     'promise-green': 'about-us', family: 'about-us', 'about-sig': 'about-us', 'about-go': 'about-us', 'why-us': 'about-us', stats: 'about-us', about: 'about-us', story: 'about-us',
     'menu-page': 'menu',
     ordering: 'order-now', outlets: 'home', loyalty: 'home', awards: 'home', cta: 'home', locations: 'locations', 'track-order': 'track-order', tracking: 'track-order',
@@ -8150,28 +8148,7 @@ if(host){scan();new MutationObserver(scan).observe(host,{childList:true,subtree:
 </script>
 
 
-<script id="rr-stage5d-clean-js">
-(function(){
- 
- document.documentElement.classList.add('rr-clean');
- var re=/^(PLACEHOLDER|Replace with|Add the approved|Add an approved)/i;
- function run(){
-  document.querySelectorAll('.rr-card p, p.rr-copy').forEach(function(p){
-   if(re.test(p.textContent.trim())){(p.closest('.rr-card')||p).classList.add('rr-ph')}
-  });
-  document.querySelectorAll('.rr-grid, .rr-updates-grid').forEach(function(g){
-   var k=[].slice.call(g.children);
-   if(k.length&&k.every(function(c){return c.classList.contains('rr-ph')||/^(Photo slot|Approved content required)$/.test((c.querySelector('.rr-edit-label')||{}).textContent||'')&&/^Add an? approved/i.test((c.querySelector('p')||{}).textContent||'')}))g.classList.add('rr-ph-hide');
-  });
-  document.querySelectorAll('section').forEach(function(sec){
-   var c=sec.querySelector('.rr-container');if(!c)return;
-   var kids=[].slice.call(c.children).filter(function(e){return !e.classList.contains('rr-ph')&&!e.classList.contains('rr-ph-hide')});
-   if(kids.length&&kids.every(function(e){return e.matches('.rr-eyebrow,.rr-heading,.rr-copy')})&&c.querySelector('.rr-ph,.rr-ph-hide'))sec.classList.add('rr-ph-hide');
-  });
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
-})();
-</script><script id="rr-stage5e-a11y-js">
+<script id="rr-stage5e-a11y-js">
 (function(){
  function vis(e){return e.offsetParent!==null&&!e.closest('.rr-page-hidden')}
  function fix(){
