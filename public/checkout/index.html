@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Checkout | RR Durbar</title>
+<style>
+:root{--m:#4a0e1a;--m2:#6e1a2a;--g:#d5b26c;--g2:#b78f3a;--cream:#fbf5ea;--ink:#2a1a1a;--ok:#1f7a4d;--bad:#b3261e;--line:#e6d9bf}
+*{box-sizing:border-box}html,body{margin:0}body{font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--cream);color:var(--ink);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+header{background:var(--m);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+header a{color:var(--g);text-decoration:none;font-weight:700;letter-spacing:.04em}
+header b{font:700 18px Georgia,serif;letter-spacing:.02em}
+#testbar{background:#fff3cd;color:#664d03;border-bottom:1px solid #ffe69c;padding:8px 16px;font-size:14px;text-align:center}
+main{max-width:560px;margin:0 auto;padding:16px}
+.prog{display:flex;gap:4px;margin:6px 0 16px}.prog i{flex:1;height:4px;border-radius:2px;background:var(--line)}.prog i.on{background:var(--g2)}
+h1{font:700 26px/1.2 Georgia,serif;color:var(--m);margin:4px 0 6px}h2{font:700 18px Georgia,serif;margin:0 0 8px;color:var(--m)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 1px 3px rgba(74,14,26,.06)}
+label{display:block;font-weight:600;margin:12px 0 4px}small,.muted{color:#6b5b5b;font-size:14px}
+input,select{width:100%;font:inherit;padding:12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+input:focus,select:focus,button:focus-visible{outline:3px solid var(--g);outline-offset:1px}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-weight:400}.chk input{width:auto;margin-top:4px}
+button{font:700 16px system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;border:0;border-radius:12px;padding:14px 18px;cursor:pointer;width:100%;margin-top:14px}
+.pri{background:linear-gradient(135deg,#e6c068,#b78f3a);color:#2a1a1a}.sec{background:#fff;border:1.5px solid var(--m);color:var(--m)}.lnk{background:none;color:var(--m2);text-decoration:underline;width:auto;padding:6px;margin:0;font-weight:600}
+button[disabled]{opacity:.5;cursor:not-allowed}
+.row{display:flex;justify-content:space-between;gap:12px;padding:6px 0}.row b,.row>span:last-child{white-space:nowrap}.row.t{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;font-weight:700;font-size:18px}
+.q{display:inline-flex;align-items:center;gap:8px}.q button{width:34px;height:34px;padding:0;margin:0;border-radius:50%;background:var(--cream);border:1px solid var(--line);font-size:18px}
+.err{color:var(--bad);font-weight:600;margin:8px 0}.ok{color:var(--ok);font-weight:700}
+.opt{display:block;border:1.5px solid var(--line);border-radius:12px;padding:12px;margin:8px 0;cursor:pointer;font-weight:400}.opt input{width:auto;margin-right:8px}.opt.sel{border-color:var(--g2);background:#fffaf0}
+.slots{display:flex;flex-wrap:wrap;gap:8px}.slots label{margin:0;border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}.slots input{display:none}.slots label.sel{border-color:var(--g2);background:#fffaf0}
+.pill{display:inline-block;background:var(--m);color:#fff;border-radius:99px;padding:2px 10px;font-size:13px;font-weight:700}.big{font:700 30px Georgia,serif;color:var(--m)}
+.otp{letter-spacing:.5em;font-size:24px;text-align:center}
+#mockpay{border:2px dashed var(--g2);background:#fffaf0}
+</style>
+</head>
+<body>
+<header><b>RR Durbar</b><a href="/?page=menu">Menu</a></header>
+<div id="testbar" hidden></div>
+<main>
+<div class="prog" id="prog" aria-hidden="true"></div>
+<div id="app" aria-live="polite"></div>
+</main>
+<script>
+(function(){
+'use strict';
+/* ===== CONFIG ===== */
+var CFG={
+  LIVE:false,                 /* true only when the real /api is ready and owner approves (plan 4.3 flags). */
+  API:'/api',
+  COD_MAX:1000,               /* Rs, total including taxes (D9) */
+  TERMS_VER:'2026-10-22-v1',  /* wording version stored with consent */
+  OUTLETS:[{c:'singhnagar',n:'Singhnagar'},{c:'moghalrajpuram',n:'Moghalrajpuram'},{c:'bhavanipuram',n:'Bhavanipuram'},{c:'poranki',n:'Poranki'},{c:'autonagar',n:'Autonagar'}]  /* branch codes are placeholders until 4.3 */
+};
+var Q=new URLSearchParams(location.search);
+var MOCK=!CFG.LIVE;
+var $=function(s,r){return(r||document).querySelector(s)};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var rs=function(n){return'Rs '+Number(n).toFixed(2)};
+var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+/* ===== STATE ===== */
+var S={step:'outlet',cart:[],outlet:'',slot:'',quote:null,mode:'',phone:'',name:'',email:'',terms:false,mkt:false,token:'',loy:null,pay:'',order:null,err:'',busy:false,otpTries:0,resend:0};
+function loadCart(){try{var c=JSON.parse(localStorage.getItem('rr_cart_v2')||'null');if(c&&c.items&&c.items.length){S.cart=c.items;if(c.outlet)S.outlet=c.outlet}}catch(e){}}
+function saveCart(){try{localStorage.setItem('rr_cart_v2',JSON.stringify({items:S.cart,outlet:S.outlet}))}catch(e){}}
+/* ===== ADAPTER: mock (default) and live. Same shapes; reconcile with the API contract in task 4.3 ===== */
+var DB={orders:{},otp:{}},SAMPLE=[{id:'d1',name:'Chicken Dum Biryani (Regular)',qty:1,p:349},{id:'d2',name:'Chicken Lollipops',qty:1,p:299}];
+var MEMBERS={'9999900001':{name:'Test Member',points:240,first:false}};
+var API={
+ slots:function(o){if(!MOCK)return post('/slots',null,'GET',{query:{branch:o},noAuth:true}).then(function(r){return r.slots||[]});var out=[],d=new Date(Date.now()+30*60000);d.setMinutes(Math.ceil(d.getMinutes()/15)*15,0,0);for(var i=0;i<8;i++){out.push({id:d.toISOString(),label:d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})});d=new Date(d.getTime()+15*60000)}return sleep(250).then(function(){return out})},
+ quote:function(){if(!MOCK)return post('/quote',{branch:S.outlet,items:S.cart.map(function(i){return{id:i.id,qty:i.qty}})},'POST',{noAuth:true}).then(function(q){return{items:q.items.map(function(i){return{id:i.id,name:i.displayName||i.name,qty:i.qty,price:i.unitPaise/100}}),subtotal:q.subtotalPaise/100,tax:q.taxPaise/100,total:q.totalPaise/100,earn:q.earnPoints||0}});
+  return sleep(300).then(function(){if(Q.get('mock')==='rista_down')throw down('Rista');var sub=S.cart.reduce(function(a,i){return a+i.p*i.qty},0),tax=Math.round(sub*5)/100;return{items:S.cart.map(function(i){return{id:i.id,name:i.name,qty:i.qty,price:i.p}}),subtotal:sub,tax:tax,total:Math.round((sub+tax)*100)/100,earn:Math.floor(sub)}})},
+ otpSend:function(ph){if(!MOCK)return post('/otp/send',{phone:ph,purpose:'checkout',turnstileToken:window.rrTurnstileToken||''},'POST',{noAuth:true});return sleep(400).then(function(){DB.otp[ph]='123456';return{sent:true}})},
+ otpVerify:function(ph,c){if(!MOCK)return post('/otp/verify',{phone:ph,code:c},'POST',{noAuth:true});return sleep(300).then(function(){if(DB.otp[ph]===c)return{token:'mock.'+ph+'.'+Date.now()};throw {code:'otp_bad',msg:'That code is not right.'}})},
+ lookup:function(ph){if(!MOCK)return post('/loyalty/lookup',{branch:S.outlet}).then(function(r){if(r.available===false)throw down('Rewards');return{member:r.member===true,name:'',balance:r.balance||0,firstOrder:false}});return sleep(300).then(function(){if(Q.get('mock')==='reelo_down')throw down('Rewards');var m=MEMBERS[ph];return m?{member:true,name:m.name,balance:m.points,firstOrder:m.first}:{member:false,balance:0,firstOrder:true}})},
+ start:function(){var body={outlet:S.outlet,slot:S.slot,items:S.cart.map(function(i){return{id:i.id,qty:i.qty}}),method:S.pay,token:S.token,customer:{phone:S.phone,name:S.name,email:S.email},consent:{terms:S.terms,marketing:S.mkt,version:CFG.TERMS_VER,at:new Date().toISOString()}};
+  if(!MOCK)return post('/checkout/start',{branch:S.outlet,slotId:S.slot,items:S.cart.map(function(i){return{id:i.id,qty:i.qty}}),method:S.pay,customer:{name:S.name,email:S.email},consent:{terms:S.terms,marketing:S.mkt,version:CFG.TERMS_VER}},'POST',{headers:{'Idempotency-Key':S.idem}}).then(function(r){return{orderId:r.orderId,statusToken:r.statusToken,state:r.state,redirect:!!r.payment,payu:r.payment}});
+  return sleep(400).then(function(){var total=S.quote.total;/* server re-checks the rule, never trusts the browser */if(S.pay==='cod'&&total>CFG.COD_MAX)throw{code:'cod_not_allowed',msg:'Pay at pickup is only for orders up to Rs '+CFG.COD_MAX+'. Please pay online.'};
+   if(S.pay==='payu'&&Q.get('mock')==='payu_down')throw down('PayU');
+   var id='RR-'+(1000+Object.keys(DB.orders).length+1);DB.orders[id]={id:id,state:S.pay==='cod'?'CONFIRMED':'PAYMENT_PENDING',total:total,outlet:S.outlet,slot:S.slot,method:S.pay,earn:S.loy&&S.loy.member?S.quote.earn:0};return{orderId:id,state:DB.orders[id].state,redirect:S.pay==='payu'}})},
+ status:function(id){if(!MOCK)return post('/order/status',null,'GET',{query:{id:id,t:(S.order&&S.order.statusToken)||''},noAuth:true}).then(function(o){return{id:o.orderId,state:o.state,method:o.method,total:o.totalPaise/100,earn:o.earnPoints||0,branchName:o.branchName,slotLabel:o.slotLabel}});return sleep(500).then(function(){return DB.orders[id]})},
+ mockPay:function(id,ok){DB.orders[id].state=ok?'CONFIRMED':'PAYMENT_FAILED';return sleep(300)}
+};
+function down(w){return{code:'down',msg:w+' is not responding right now. Nothing has been charged or placed. Please try again in a few minutes.'}}
+function post(path,body,method,x){x=x||{};var m=method||'POST',url=CFG.API+path,h={'Content-Type':'application/json'};if(S.token&&!x.noAuth)h.Authorization='Bearer '+S.token;if(x.headers)for(var k in x.headers)h[k]=x.headers[k];if(x.query)url+='?'+new URLSearchParams(x.query).toString();return fetch(url,{method:m,headers:h,body:m==='GET'?undefined:JSON.stringify(body)}).then(function(r){return r.json().then(function(j){if(!r.ok){var e=(j&&j.error)||{};throw{code:e.code||'http_'+r.status,msg:e.message||'Something went wrong. Please try again.'}}return j},function(){if(r.ok)throw down('The server');throw{code:'http_'+r.status,msg:'Something went wrong. Please try again.'}})},function(){throw down('The server')})}
+function fail(e){S.busy=false;S.err=(e&&e.msg)||'Something went wrong. Please try again.';render()}
+/* ===== RENDER ===== */
+var STEPS=['outlet','cart','who','phone','otp','rewards','pay','done'];
+function progress(){var i=STEPS.indexOf(S.step);if(i<0)i=STEPS.length;$('#prog').innerHTML=STEPS.map(function(_,k){return'<i class="'+(k<=i?'on':'')+'"></i>'}).join('')}
+function uuid(){return window.crypto&&crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)})}
+function submitPayu(p){if(!p||!/^https:\/\/(secure|test)\.payu\.in\//.test(p.action||'')){return fail({msg:'The payment could not be started. Nothing has been charged.'})}var f=document.createElement('form');f.method='POST';f.action=p.action;f.style.display='none';Object.keys(p.fields||{}).forEach(function(k){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=p.fields[k];f.appendChild(i)});document.body.appendChild(f);f.submit()}
+function go(s){if(s==='pay')S.idem=uuid();S.step=s;S.err='';S.busy=false;history.replaceState(null,'','#'+s);render();window.scrollTo(0,0)}
+function errb(){return S.err?'<p class="err" role="alert">'+esc(S.err)+'</p>':''}
+function render(){progress();var v=VIEW[S.step]||VIEW.outlet;$('#app').innerHTML=v();var f=$('#app [autofocus]');if(f)f.focus();bind()}
+var VIEW={
+ outlet:function(){if(!S.cart.length)return'<h1>Your order</h1><div class="card"><p>Your cart is empty.</p><a href="/?page=pickup-menu"><button class="pri">Choose dishes</button></a>'+(MOCK?'<button class="sec" data-a="sample">Load a sample cart (test)</button>':'')+'</div>';
+  return'<h1>Pickup details</h1><div class="card"><label for="o">Outlet</label><select id="o"><option value="">Choose an outlet</option>'+CFG.OUTLETS.map(function(o){return'<option value="'+o.c+'"'+(S.outlet===o.c?' selected':'')+'>'+o.n+'</option>'}).join('')+'</select><div id="slots"></div>'+errb()+'<button class="pri" data-a="toCart"'+(S.outlet&&S.slot?'':' disabled')+'>Continue</button></div>'},
+ cart:function(){var q=S.quote;return'<h1>Your order</h1><div class="card">'+(q?q.items.map(function(i,k){return'<div class="row"><span>'+esc(i.name)+'<br><span class="q"><button data-a="dec" data-k="'+k+'" aria-label="Fewer">-</button> <b>'+i.qty+'</b> <button data-a="inc" data-k="'+k+'" aria-label="More">+</button></span></span><b>'+rs(i.price*i.qty)+'</b></div>'}).join('')+'<div class="row"><span>Subtotal</span><span>'+rs(q.subtotal)+'</span></div><div class="row"><span>Taxes</span><span>'+rs(q.tax)+'</span></div><div class="row t"><span>Total</span><span>'+rs(q.total)+'</span></div><p class="muted">Pickup: '+esc(outName())+', '+esc(slotLabel())+'. Price confirmed by our system.</p>':'<p>Checking prices…</p>')+errb()+'<button class="pri" data-a="toWho"'+(q&&q.items.length?'':' disabled')+'>Continue</button><button class="lnk" data-a="back" data-s="outlet">Change outlet or time</button></div>'},
+ who:function(){return'<h1>How would you like to order?</h1><div class="card"><button class="pri" data-a="mode" data-m="guest">Continue as guest</button><p class="muted">Just your mobile number. Name and email are optional.</p></div><div class="card"><button class="sec" data-a="mode" data-m="member">Sign in or join for rewards</button><p class="muted">Earn points on every order. We verify your mobile with a one-time code.</p></div>'},
+ phone:function(){var m=S.mode==='member';return'<h1>'+(m?'Sign in or join':'Your mobile number')+'</h1><div class="card"><label for="ph">Mobile number</label><input id="ph" inputmode="numeric" autocomplete="tel-national" maxlength="10" placeholder="10-digit mobile" value="'+esc(S.phone)+'" autofocus><label for="nm">Name'+(m?'':' (optional)')+'</label><input id="nm" autocomplete="name" value="'+esc(S.name)+'"><label for="em">Email (optional)</label><input id="em" type="email" autocomplete="email" value="'+esc(S.email)+'"><label class="chk"><input type="checkbox" id="tc"'+(S.terms?' checked':'')+'><span>I accept the <a href="/?page=terms-of-service" target="_blank" rel="noopener">Terms</a> and <a href="/?page=privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label><label class="chk"><input type="checkbox" id="mk"'+(S.mkt?' checked':'')+'><span>Send me offers and updates on WhatsApp or SMS (optional).</span></label>'+errb()+'<button class="pri" data-a="sendOtp"'+(S.busy?' disabled':'')+'>'+(S.busy?'Sending…':'Send code')+'</button></div>'},
+ otp:function(){return'<h1>Enter the code</h1><div class="card"><p>We sent a 6-digit code to <b>'+esc(S.phone)+'</b>.'+(MOCK?' <span class="pill">TEST</span> Use 123456.':'')+'</p><label for="cd">Code</label><input id="cd" class="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" autofocus>'+errb()+'<button class="pri" data-a="verify"'+(S.busy?' disabled':'')+'>'+(S.busy?'Checking…':'Verify')+'</button><button class="lnk" data-a="resend"'+(S.resend>0?' disabled':'')+'>Send again'+(S.resend>0?' in '+S.resend+'s':'')+'</button><button class="lnk" data-a="back" data-s="phone">Change number</button></div>'},
+ rewards:function(){var l=S.loy,q=S.quote;if(!l)return'<h1>Checking rewards…</h1>';if(S.rwErr)return'<h1>Your rewards</h1><div class="card"><p>'+esc(S.rwErr)+'</p><button class="pri" data-a="toPay">Continue to payment</button></div>';
+  var h='<h1>Your rewards</h1><div class="card">';
+  if(l.member)h+='<p>Welcome back'+(l.name?', '+esc(l.name):'')+'.</p><div class="row"><span>Points balance</span><b>'+l.balance+'</b></div><div class="row"><span>You will earn with this order</span><b class="ok">+'+q.earn+' points</b></div>'+(l.firstOrder?'<p class="ok">First-order reward applies to this order.</p>':'');
+  else h+='<p>You would earn <b>'+q.earn+' points</b> with this order.</p><p class="muted">Join RR Durbar rewards to collect them. Points are added after your order is paid or settled at pickup.</p>'+(S.mode==='guest'?'<button class="sec" data-a="join">Join to earn points</button>':'');
+  return h+(S.rwErr?'<p class="muted">'+esc(S.rwErr)+'</p>':'')+'<button class="pri" data-a="toPay">Continue to payment</button></div>'},
+ pay:function(){var q=S.quote,cod=q.total<=CFG.COD_MAX&&!!pickCod();return'<h1>Payment</h1><div class="card"><div class="row t"><span>Total to pay</span><span>'+rs(q.total)+'</span></div>'+
+  '<label class="opt'+(S.pay==='payu'?' sel':'')+'"><input type="radio" name="pm" value="payu"'+(S.pay==='payu'?' checked':'')+'> Pay online (PayU)<br><small>UPI, cards, netbanking</small></label>'+
+  (cod?'<label class="opt'+(S.pay==='cod'?' sel':'')+'"><input type="radio" name="pm" value="cod"'+(S.pay==='cod'?' checked':'')+'> Pay at pickup<br><small>Pay at the counter when you collect</small></label>':'<p class="muted">Pay at pickup is available for orders up to Rs '+CFG.COD_MAX+'. Your order is above that, so please pay online.</p>')+errb()+'<button class="pri" data-a="place"'+(S.pay&&!S.busy?'':' disabled')+'>'+(S.busy?'Placing…':(S.pay==='cod'?'Place order':'Pay '+rs(q.total)))+'</button><button class="lnk" data-a="back" data-s="rewards">Back</button></div>'},
+ mockpay:function(){return'<h1>PayU</h1><div class="card" id="mockpay"><p><span class="pill">TEST</span> This is a simulated PayU page. No money moves.</p><div class="row t"><span>Order '+esc(S.order.orderId)+'</span><span>'+rs(S.quote.total)+'</span></div><button class="pri" data-a="mp" data-ok="1">Simulate successful payment</button><button class="sec" data-a="mp" data-ok="0">Simulate failed payment</button></div>'},
+ wait:function(){return'<h1>Confirming your payment…</h1><div class="card"><p>Please wait. Do not close this page.</p></div>'},
+ done:function(){var o=S.order;return'<h1>'+(o.method==='cod'?'Order placed':'Order confirmed')+(MOCK?' <span class="pill">TEST</span>':'')+'</h1><div class="card"><p class="big">'+esc(o.id)+'</p><div class="row"><span>Outlet</span><b>'+esc(o.branchName||outName())+'</b></div><div class="row"><span>Pickup time</span><b>'+esc(o.slotLabel||slotLabel())+'</b></div><div class="row"><span>Payment</span><b>'+(o.method==='cod'?'Pay at pickup, '+rs(o.total):'Paid online, '+rs(o.total))+'</b></div>'+(o.earn?'<div class="row"><span>Points</span><b class="ok">+'+o.earn+(o.method==='cod'?' after you pay at the counter':' credited')+'</b></div>':'')+'<a href="/?page=track-order"><button class="pri">Track this order</button></a></div>'},
+ failed:function(){return'<h1>Payment not completed</h1><div class="card"><p>Your payment was not completed and your order has not been placed. You have not been charged.</p><button class="pri" data-a="back" data-s="pay">Try again</button><a href="/"><button class="sec">Back to home</button></a></div>'}
+};
+function pickCod(){return true}
+function outName(){var o=CFG.OUTLETS.filter(function(x){return x.c===S.outlet})[0];return o?o.n:''}
+function slotLabel(){var el=S.slots&&S.slots.filter(function(x){return x.id===S.slot})[0];return el?el.label:''}
+/* ===== ACTIONS ===== */
+function bind(){
+ var o=$('#o');if(o)o.onchange=function(){S.outlet=o.value;S.slot='';saveCart();loadSlots()};if(o&&S.outlet)loadSlots();
+ var ph=$('#ph');if(ph)ph.oninput=function(){ph.value=ph.value.replace(/\D/g,'')};
+ var cd=$('#cd');if(cd)cd.oninput=function(){cd.value=cd.value.replace(/\D/g,'')};
+ [].forEach.call(document.querySelectorAll('input[name=pm]'),function(r){r.onchange=function(){S.pay=r.value;render()}});
+ [].forEach.call(document.querySelectorAll('[data-a]'),function(b){b.onclick=function(){act(b.getAttribute('data-a'),b)}})}
+function loadSlots(){var box=$('#slots');if(!box||!S.outlet){if(box)box.innerHTML='';return}box.innerHTML='<label>Pickup time</label><p class="muted">Loading times…</p>';API.slots(S.outlet).then(function(s){S.slots=s;box.innerHTML='<label>Pickup time</label><div class="slots">'+s.map(function(x){return'<label class="'+(S.slot===x.id?'sel':'')+'"><input type="radio" name="sl" value="'+esc(x.id)+'">'+esc(x.label)+'</label>'}).join('')+'</div>';[].forEach.call(box.querySelectorAll('input'),function(i){i.onchange=function(){S.slot=i.value;render()}});var b=$('[data-a=toCart]');if(b)b.disabled=!(S.outlet&&S.slot)},function(e){box.innerHTML='<p class="err">'+esc((e&&e.msg)||'Could not load pickup times.')+'</p>'})}
+function tick(){clearInterval(tick.t);tick.t=setInterval(function(){if(S.resend>0){S.resend--;if(S.step==='otp')render()}else clearInterval(tick.t)},1000)}
+function act(a,b){
+ if(a==='sample'){S.cart=SAMPLE.map(function(x){return Object.assign({},x)});saveCart();return render()}
+ if(a==='toCart'){S.err='';S.quote=null;go('cart');return API.quote().then(function(q){S.quote=q;render()},fail)}
+ if(a==='inc'||a==='dec'){var k=+b.getAttribute('data-k'),it=S.cart[k];if(!it)return;it.qty+=a==='inc'?1:-1;if(it.qty<=0)S.cart.splice(k,1);saveCart();S.quote=null;render();return API.quote().then(function(q){S.quote=q;if(!q.items.length)return go('outlet');render()},fail)}
+ if(a==='back'){var to=b.getAttribute('data-s');if(to==='pay'&&!S.token)to='outlet';return go(to)}
+ if(a==='toWho')return go('who');
+ if(a==='mode'){S.mode=b.getAttribute('data-m');return go('phone')}
+ if(a==='sendOtp'){S.phone=$('#ph').value;S.name=$('#nm').value.trim();S.email=$('#em').value.trim();S.terms=$('#tc').checked;S.mkt=$('#mk').checked;
+  if(!/^[6-9]\d{9}$/.test(S.phone)){S.err='Enter a valid 10-digit mobile number.';return render()}
+  if(S.mode==='member'&&!S.name){S.err='Please enter your name to join.';return render()}
+  if(S.email&&!/^\S+@\S+\.\S+$/.test(S.email)){S.err='That email does not look right.';return render()}
+  if(!S.terms){S.err='Please accept the Terms and Privacy Policy to continue.';return render()}
+  S.busy=true;S.err='';render();return API.otpSend(S.phone).then(function(){S.resend=30;tick();go('otp')},fail)}
+ if(a==='resend'){S.busy=true;return API.otpSend(S.phone).then(function(){S.busy=false;S.resend=30;tick();render()},fail)}
+ if(a==='verify'){var c=$('#cd').value;if(c.length!==6){S.err='Enter the 6-digit code.';return render()}if(S.otpTries>=5){S.err='Too many attempts. Please request a new code.';return render()}
+  S.busy=true;S.err='';render();return API.otpVerify(S.phone,c).then(function(r){S.token=r.token;S.otpTries=0;S.loy=null;S.rwErr='';go('rewards');return API.lookup(S.phone).then(function(l){S.loy=l;render()},function(e){S.loy={member:false,balance:0,firstOrder:false};S.rwErr='Rewards are unavailable right now. You can still order; points will not be shown for this order.';render()})},function(e){S.otpTries++;fail(e)})}
+ if(a==='join'){S.mode='member';return go('phone')}
+ if(a==='toPay'){S.pay='';return go('pay')}
+ if(a==='place'){S.busy=true;S.err='';render();return API.start().then(function(r){S.order=r;if(r.redirect){if(MOCK){S.step='mockpay';S.busy=false;return render()}submitPayu(r.payu)}else return poll(r.orderId)},fail)}
+ if(a==='mp'){var ok=b.getAttribute('data-ok')==='1';S.step='wait';render();return API.mockPay(S.order.orderId,ok).then(function(){return poll(S.order.orderId)})}
+}
+function poll(id,n){n=n||0;S.step='wait';progress();$('#app').innerHTML=VIEW.wait();return API.status(id).then(function(o){
+ if(o&&o.state==='CONFIRMED'){S.order=o;try{localStorage.removeItem('rr_cart_v2')}catch(e){}return go('done')}   /* paid-looking state only after the server says CONFIRMED */
+ if(o&&(o.state==='PAYMENT_FAILED'||o.state==='EXPIRED'))return go('failed');
+ if(n>=20){S.err='We could not confirm your order yet. If money was deducted, it will be refunded or the order confirmed shortly. Please check Track Order.';return go('failed')}
+ return sleep(1500).then(function(){return poll(id,n+1)})},fail)}
+/* ===== INIT ===== */
+(function(){loadCart();if(!MOCK&&Q.get('order')&&Q.get('t')){S.order={orderId:Q.get('order'),statusToken:Q.get('t')};history.replaceState(null,'',location.pathname);return poll(S.order.orderId)}if(MOCK){var t=$('#testbar');t.hidden=false;t.innerHTML='<b>TEST MODE</b>: fake OTP, fake payment, fake rewards. No real orders or money.'}
+ var h=location.hash.replace('#','');S.step=(h==='failed'||h==='done')?'outlet':(h&&VIEW[h]&&h==='outlet'?h:'outlet');render()})();
+})();
+</script>
+</body>
+</html>
