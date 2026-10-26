@@ -1,0 +1,161 @@
+RR Durbar: sitegate PRE-CHECK BASELINE (plan task 3.0), 26 Oct 2026
+Run by the builder on the two LIVE files only: public/index.html (b1d4b89eae0468a6) and public/checkout/index.html (e6587fd842fe79bb).
+Image, font and logo files were NOT available to the builder, so these lines are NOT real problems and must be re-checked by the full run in the Codespace:
+  static.asset_broken, static.img_broken, build.required_assets (fonts, images, logo "missing").
+Expected until the Phase 3 split (not to be "fixed" in index.html): build.required_pages (13 routes do not exist yet), HTML_HEAVY and size_budgets (one 1.1 MB file), H1_MULTIPLE (14 h1 in one file), NO_404_PAGE, NO_ROBOTS, NO_SITEMAP, ORPHAN_PAGE on /checkout/ (unlinked on purpose).
+menu.data fails only because menu-snapshot.json does not exist yet (run tools/sitegate/menu-snapshot.mjs).
+NOINDEX is ignored in this config on purpose: order pages MUST stay noindex; seocheck.mjs checks noindex per page.
+
+REAL FINDINGS to carry into the plan (rechecked 26 Oct afternoon: items 3 and 4 corrected, item 12 added):
+  1. No analytics snippet (BLOCKER P10)                                   -> task 3.6
+  2. No Search Console proof                                              -> task 3.6 / G1
+  3. JSON-LD (CORRECTED after a second look): the 6 Restaurant entries DO have address, phone, hours, servesCuisine, hasMenu and FSSAI.
+     Missing on them: image, priceRange, geo (GPS, C32), sameAs (only the Organization has Instagram), and each one's url points to the home page (C23).
+     The 'missing address' line is about the Organization entry only.                       -> task 3.4
+  4. Links with href="#" (Order on Swiggy/Zomato, Directions, Send pickup order on WhatsApp, Get directions): CHECKED, scripts fill them when the page runs,
+     so they work for people. A crawler without JavaScript sees '#'. Put the real links in the HTML during the page split.  -> 3.1 / 16.3 P13
+  5. 16 font sizes under 12 px (9 to 11 px)                               -> 2b.4 / P16
+  6. CORRECTED: the site DOES have a skip link (<button class="rr-skip" id="rr-skip-btn">). The kit only looks for an <a> link. Nothing to fix.
+  7. WhatsApp links have no pre-filled ?text= message                     -> P7
+  8. width:100vw in CSS (sideways scroll risk)                            -> P16
+  9. 4 images below the fold without loading=lazy; some images without width/height -> 2b.3 / P12
+ 10. Heading skip h1 -> h3 ("Order reference")                            -> P17
+ 11. Checkout page: h1 is drawn by JavaScript only, no meta description, no favicon link (noindex page, low priority) -> 6.10
+ 12. NEW: the Organization JSON-LD says "foundingDate": "1991". Decision D5 says do not print the year until the owner confirms it. -> D5, C25, 3.4
+PASSED: reduced motion handled, opening hours on the page and in JSON-LD, no dev leftovers, Instagram linked, menu names present.
+
+----- raw output -----
+
+Site audit (static)
+  FAIL  static.asset_broken                ASSET_BROKEN
+        - /index.html: Missing file (404): /assets/fonts/cormorant-garamond-latin-600-normal.woff2
+        - /index.html: Missing file (404): /assets/fonts/cormorant-garamond-latin-700-normal.woff2
+        - /index.html: Missing file (404): /assets/fonts/manrope-latin-500-normal.woff2
+        - /index.html: Missing file (404): /assets/fonts/manrope-latin-600-normal.woff2
+        - /index.html: Missing file (404): /assets/fonts/manrope-latin-700-normal.woff2
+        - /index.html: Missing file (404): /assets/hero-m-0.webp
+        - ... and 6 more
+  FAIL  static.desc_missing                DESC_MISSING
+        - /checkout/index.html: No meta description
+  FAIL  static.h1_missing                  H1_MISSING
+        - /checkout/index.html: No <h1>
+  FAIL  static.img_broken                  IMG_BROKEN
+        - /index.html: Missing file (404): assets/logo/rr-logo-800.webp
+        - /index.html: Missing file (404): assets/a72557d0ea.jpg
+        - /index.html: Missing file (404): assets/9b53331477.jpg
+        - /index.html: Missing file (404): assets/f8820a1495.jpg
+        - /index.html: Missing file (404): assets/ca0edf2252.jpg
+        - /index.html: Missing file (404): assets/6820bd4f15.jpg
+        - ... and 50 more
+  WARN  static.dead_link                   DEAD_LINK
+        - /index.html: Placeholder link (href='#') text='Order on Swiggy'
+        - /index.html: Placeholder link (href='#') text='Order on Zomato'
+        - /index.html: Placeholder link (href='#') text='Directions ↗'
+        - /index.html: Placeholder link (href='#') text='Send pickup order on WhatsApp'
+        - /index.html: Placeholder link (href='#') text='Quick OrderFaster. Easier. Tas'
+        - /index.html: Placeholder link (href='#') text='Get directions'
+        - ... and 1 more
+  WARN  static.h1_multiple                 H1_MULTIPLE
+        - /index.html: 14 <h1> tags
+  WARN  static.heading_skip                HEADING_SKIP
+        - /index.html: h1 -> h3 ('Order reference')
+  WARN  static.html_heavy                  HTML_HEAVY
+        - /index.html: HTML is 1135 KB
+  WARN  static.no_404_page                 NO_404_PAGE
+        - (site): No 404.html
+  WARN  static.no_canonical                NO_CANONICAL
+        - /checkout/index.html: No canonical link
+  WARN  static.no_favicon_link             NO_FAVICON_LINK
+        - /checkout/index.html: No favicon <link>
+  WARN  static.no_robots                   NO_ROBOTS
+        - (site): robots.txt missing (run with --gen-seo)
+  WARN  static.no_sitemap                  NO_SITEMAP
+        - (site): sitemap.xml missing (run with --gen-seo)
+  WARN  static.og_missing                  OG_MISSING
+        - /checkout/index.html: Missing og:title (link previews on WhatsApp/social)
+        - /checkout/index.html: Missing og:description (link previews on WhatsApp/social)
+        - /checkout/index.html: Missing og:image (link previews on WhatsApp/social)
+        - /checkout/index.html: Missing og:url (link previews on WhatsApp/social)
+  WARN  static.schema_field                SCHEMA_FIELD
+        - /index.html: Business schema missing 'address'
+  WARN  static.schema_name_mismatch        SCHEMA_NAME_MISMATCH
+        - /index.html: Schema name 'RR Durbar Singhnagar' != config 'RR Durbar'
+        - /index.html: Schema name 'RR Durbar Moghalrajpuram' != config 'RR Durbar'
+        - /index.html: Schema name 'RR Durbar Bhavanipuram' != config 'RR Durbar'
+        - /index.html: Schema name 'RR Durbar Poranki' != config 'RR Durbar'
+        - /index.html: Schema name 'RR Durbar Patamatalanka' != config 'RR Durbar'
+        - /index.html: Schema name 'RR Durbar Autonagar' != config 'RR Durbar'
+  WARN  static.small_font                  SMALL_FONT
+        - /index.html <style>: 16 font-size value(s) under 12px (unreadable on phones): [9.0, 9.5, 10.0, 11.0]
+  INFO  static.img_no_dims                 IMG_NO_DIMS
+        - /index.html: No width/height (layout shift): assets/cddfd70129.svg
+        - /index.html: No width/height (layout shift): assets/accb2d062c.svg
+        - /index.html: No width/height (layout shift): images/menu/m/murgh-musallam-biryani.webp
+        - /index.html: No width/height (layout shift): images/menu/m/murgh-mehfil-biryani.webp
+        - /index.html: No width/height (layout shift): images/menu/m/naatu-naatu-special-wings-8-pcs.webp
+        - /index.html: No width/height (layout shift): images/menu/m/durbar-s-supreme-chicken.webp
+        - ... and 2 more
+  INFO  static.img_no_lazy                 IMG_NO_LAZY
+        - /index.html: 4 below-the-fold image(s) without loading=lazy, auto-fixable
+  INFO  static.orphan_page                 ORPHAN_PAGE
+        - /checkout/index.html: Page not linked from any other page
+  INFO  static.vw_overflow                 VW_OVERFLOW
+        - /index.html <style>: width:100vw causes sideways scroll when a scrollbar exists - prefer 100%
+  INFO  static.wa_no_prefill               WA_NO_PREFILL
+        - /index.html: WhatsApp link has no pre-filled ?text= message
+        - /index.html: WhatsApp link has no pre-filled ?text= message
+        - /index.html: WhatsApp link has no pre-filled ?text= message
+        - /index.html: WhatsApp link has no pre-filled ?text= message
+        - /index.html: WhatsApp link has no pre-filled ?text= message
+        - /index.html: WhatsApp link has no pre-filled ?text= message
+        - ... and 4 more
+
+sitegate - Accessibility
+  PASS  a11y.reduced_motion                If the site animates, it respects prefers-reduced-motion
+  INFO  a11y.skip_link                     Home page starts with a 'skip to content' link
+        - no skip-to-content link at the top of the home page
+
+sitegate - Build
+  PASS  build.no_dev_leftovers             No source maps, .env, .git or other dev leftovers ship in the build
+  FAIL  build.required_assets              Every asset in required_assets (panoramas, hero films, posters...) exi
+        - missing assets/logo/rr-logo-800.webp
+  FAIL  build.required_pages               Every page in required_pages exists in the build
+        - missing page /about-us/
+        - missing page /menu/
+        - missing page /order-now/
+        - missing page /pickup/
+        - missing page /branches/
+        - missing page /catering/
+        - ... and 6 more
+  WARN  build.size_budgets                 HTML, JavaScript and video files stay inside their size budgets
+        - index.html: 1136 KB html
+
+sitegate - Measurement
+  FAIL  measure.analytics                  An analytics snippet (GA4, Cloudflare, Plausible...) ships in the buil
+        - no analytics snippet found in any html/js file
+  WARN  measure.gsc_verify                 Search Console proof is in the build (meta tag or google*.html file); 
+        - no google-site-verification meta tag or google*.html file
+
+sitegate - Post-launch
+  INFO  launch.checklist                   Manual launch items done: Search Console, indexing, Business Profile, 
+        - 13 of 13 pending: G1 Add rrdurbar.com to Google Search Console as ; G2 Submit https://rrdurbar.com/sitemap.xml in Se; G3 Request indexing for Home, Menu, Branch
+
+sitegate - Restaurant
+  FAIL  menu.data                          Menu data file is valid: every item has a name and at least one price 
+        - cannot read menu-snapshot.json: [Errno 2] No such file or directory: 'menu-snapshot.json'
+  PASS  menu.on_site                       At least 90% of the menu items appear in the built pages (so prices on
+  PASS  restaurant.hours_visible           Opening hours are written on the site
+  PASS  restaurant.schema_hours            Local-business structured data carries opening hours and matches a con
+  WARN  restaurant.schema_rich             Structured data also has image, servesCuisine, priceRange, menu and sa
+        - JSON-LD missing image
+        - JSON-LD missing priceRange
+        - JSON-LD missing sameAs
+
+sitegate - Social
+  PASS  social.links                       Every configured social profile is linked from the site
+  WARN  social.sameas                      Structured data sameAs lists the configured social profiles
+        - sameAs missing rr_durbar
+
+6/38 checks passed - 8 blocker(s), 17 warning(s)
+GATE FAILED
+Fix first: static.asset_broken, static.desc_missing, static.h1_missing, static.img_broken, build.required_assets, build.required_pages, measure.analytics, menu.data
