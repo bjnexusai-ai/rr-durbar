@@ -1,0 +1,9 @@
+# never commit these (keys, local builds, generated files)
+.env
+.env.*
+.dev.vars
+node_modules/
+.wrangler/
+cms-out/
+__pycache__/
+tools/sitegate/menu-snapshot.json

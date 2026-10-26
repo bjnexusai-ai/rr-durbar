@@ -1,0 +1,31 @@
+{
+  "business_name": "RR Durbar",
+  "domain": "rrdurbar.com",
+  "city": "Vijayawada",
+  "phones": ["+917702077999"],
+  "whatsapp": "917702077999",
+  "email": "orders@rrdurbar.com",
+  "address_parts": ["Moghalrajpuram", "Vijayawada", "520010"],
+  "require_whatsapp": true,
+  "forbidden_text": ["Grievance officer name", "Add verified contact details", "PLACEHOLDER", "Gallery caption", "sample photo"],
+  "allow_text": [],
+  "ignore": ["NOINDEX"],
+  "lang": "en",
+  "og_image": "",
+  "country_code": "91",
+  "schema_type": "Restaurant",
+  "profile": "restaurant",
+  "required_pages": [
+    "/", "/about-us/", "/menu/", "/order-now/", "/pickup/", "/branches/", "/catering/",
+    "/contact/", "/loyalty/", "/policies/", "/privacy-policy/", "/terms-of-service/",
+    "/refund-cancellation/", "/checkout/"
+  ],
+  "required_assets": [
+    {"path": "assets/logo/rr-logo-800.webp", "max_kb": 400}
+  ],
+  "socials": {"instagram": ["rr_durbar"]},
+  "analytics": true,
+  "menu_json": "menu-snapshot.json",
+  "budgets": {"js_kb": 400, "html_kb": 250, "video_mb": 8},
+  "checklist": "launch-checklist.json"
+}

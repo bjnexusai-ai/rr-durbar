@@ -1,0 +1,94 @@
+{
+  "outlets": {
+    "singhnagar": {
+      "ristaCode": "SN",
+      "street": "42-3-3, Budameru Centre, Ramakrishnapuram",
+      "pincode": "520011",
+      "lat": 16.5332,
+      "lng": 80.6358
+    },
+    "moghalrajpuram": {
+      "ristaCode": "MR",
+      "street": "40-7-3, Near Jammichettu Centre, Moghalrajpuram",
+      "pincode": "520010",
+      "lat": 16.5057,
+      "lng": 80.6384
+    },
+    "bhavanipuram": {
+      "ristaCode": "BH",
+      "street": "D.No 76/8/15, Taruni Nilayam, Crombay Road, Bhavanipuram",
+      "pincode": "520012",
+      "lat": 16.5369,
+      "lng": 80.5898
+    },
+    "poranki": {
+      "ristaCode": "PO",
+      "street": "15-160, Vijayawada Rd, Poranki",
+      "pincode": "521137",
+      "lat": 16.4801,
+      "lng": 80.6922
+    },
+    "patamatalanka": {
+      "ristaCode": "PL",
+      "street": "FMR4+G2F, Krishnaveni School Road, Patamatalanka",
+      "pincode": "520010",
+      "lat": 16.4912,
+      "lng": 80.6554
+    },
+    "autonagar": {
+      "ristaCode": "AT",
+      "street": "Besides RR Chickens, Ballemvari Street, Murali Nagar, Auto Nagar",
+      "pincode": "520007",
+      "lat": 16.5161,
+      "lng": 80.6728
+    }
+  },
+  "dishes": [
+    "bhimavaram kodi vepudu",
+    "butta biryani",
+    "butter garlic chicken",
+    "chicken & paneer tikka",
+    "chicken 555",
+    "chicken dum biryani regular",
+    "chicken fry biryani (regular)",
+    "chicken fry biryani regular",
+    "chicken gulzara",
+    "chilli chicken",
+    "crispy baby corn",
+    "curd rice",
+    "dilkush chicken biryani",
+    "durbar s supreme chicken",
+    "durbar supreme chicken",
+    "durbar's supreme chicken",
+    "egg 65",
+    "egg biryani",
+    "guntur chilli chicken",
+    "gutti vankaya pulao",
+    "kaju paneer biryani",
+    "kaju paneer curry",
+    "lemon heaven fish",
+    "maharaja tawa fish",
+    "murgh mehfil biryani",
+    "murgh musallam biryani",
+    "mutton fry biryani (regular)",
+    "mutton fry biryani regular",
+    "mutton keema biryani",
+    "naatu naatu special wings",
+    "naatu naatu special wings (8 pcs)",
+    "naatu naatu special wings 8 pcs",
+    "naatu naatu wings",
+    "nalla kaaram paneer vepudu",
+    "nalla karam paneer vepudu",
+    "non veg butta biryani",
+    "paneer tikka",
+    "peanut masala",
+    "plain palak",
+    "raju gari kodi vepudu",
+    "raju garu kodi vepudu",
+    "special chicken biryani (regular)",
+    "special chicken biryani family",
+    "special chicken biryani regular",
+    "vankay biryani",
+    "veg noodles"
+  ]
+}

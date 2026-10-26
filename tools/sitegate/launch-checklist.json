@@ -1,0 +1,15 @@
+[
+  {"id": "gsc_property", "text": "G1 Add rrdurbar.com to Google Search Console as a domain property and verify it (DNS TXT record in the Cloudflare zone)", "done": false},
+  {"id": "gsc_sitemap", "text": "G2 Submit https://rrdurbar.com/sitemap.xml in Search Console", "done": false},
+  {"id": "gsc_indexing", "text": "G3 Request indexing for Home, Menu, Branches, Order Now, Catering, Contact, About; use View crawled page on /about-us/ and /menu/; re-check Page indexing after a few days", "done": false},
+  {"id": "site_search", "text": "G4 Search site:rrdurbar.com in Google and confirm the pages appear", "done": false},
+  {"id": "analytics_live", "text": "G5 Open the site and confirm the analytics tool shows the visit in Realtime", "done": false},
+  {"id": "gbp", "text": "G6 A verified Google Business Profile for EACH outlet (MR, SN, BH, PO, AT, PL): name, address, phone and hours identical to its branch page; photos; menu link; order link to /order-now/", "done": false},
+  {"id": "gsc_social", "text": "G7 Link Instagram @rr_durbar (and any other profiles) in Search Console and keep them in the JSON-LD sameAs", "done": false},
+  {"id": "reviews", "text": "G8 A Google review link per outlet on the site; ask the first 20 guests per outlet for a review; reply to every review", "done": false},
+  {"id": "listings", "text": "G9 Identical name, address and phone on Zomato, Swiggy, Justdial, TripAdvisor and the Instagram bio link", "done": false},
+  {"id": "backlinks", "text": "G10 3 or more links from Vijayawada food bloggers, local directories, catering and event directories, partners", "done": false},
+  {"id": "alerts", "text": "G11 Google Alerts for \"RR Durbar\" and the signature dishes", "done": false},
+  {"id": "content", "text": "G12 First posts on the site and on each Business Profile (offer, event, menu update)", "done": false},
+  {"id": "audit", "text": "G13 PageSpeed Insights and the Core Web Vitals report on the live domain; fix anything red", "done": false}
+]
