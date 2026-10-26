@@ -1,0 +1,9 @@
+{
+  "name": "rr-durbar-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "RR Durbar content Studio (Sanity). Versions pinned to ones that installed cleanly for the sister Swagramam Studio.",
+  "scripts": { "dev": "sanity dev", "build": "sanity build", "deploy": "sanity deploy" },
+  "dependencies": { "sanity": "3.99.0", "react": "18.3.1", "react-dom": "18.3.1", "styled-components": "6.6.0" }
+}
