@@ -6,7 +6,8 @@ For every page:
   ERROR  file missing (the new loyalty page is only a WARN until task 9.4)
   ERROR  not exactly one <title>, empty title, or the same title as another page
   ERROR  canonical missing or not https://rrdurbar.com/<route>/ (home: https://rrdurbar.com/)
-  ERROR  not exactly one <h1>
+  ERROR  not exactly one <h1> (order pages: WARN, they are not in Google)
+  (links inside <script> are handled by the page router at run time; empty hidden section stubs are not content)
   ERROR  order pages (order-now, pickup, pickup-menu, track-order) without noindex; any other page WITH noindex
   ERROR  a section of this page missing, or a section that belongs only to another page present (the old one-page leftovers)
   ERROR  links of the old ?page= kind
@@ -59,18 +60,21 @@ def check(public, repo=None):
         can = [attr(l, 'href') for l in re.findall(r'<link\b[^>]*>', head, re.I) if (attr(l, 'rel') or '').lower() == 'canonical']
         want = f'{SITE}/' if r == 'home' else f'{SITE}/{r}/'
         if can != [want]: E(f'canonical is {can or "missing"}, should be {want}')
-        h1 = re.findall(r'<h1\b', src, re.I)
-        if len(h1) != 1: E(f'{len(h1)} <h1> tags (need 1)')
+        nojs = re.sub(r'<script\b.*?</script>', '', src, flags=re.S | re.I)
+        # an EMPTY hidden stub (<section id=x ... hidden></section>) carries no content: the split keeps them for the site's CSS and scripts
+        content = re.sub(r'<section\b[^>]*\bhidden\b[^>]*>\s*</section>', '', nojs, flags=re.I)
+        h1 = re.findall(r'<h1\b', content, re.I)
+        if len(h1) != 1: (warns.append(f'{r}: {len(h1)} <h1> tags (order page, not in Google)') if r in noindex else E(f'{len(h1)} <h1> tags (need 1)'))
         m = metas(head)
         robots = ' '.join(m.get('robots', [])).lower()
         if r in noindex and 'noindex' not in robots: E('order page without <meta name="robots" content="noindex">')
         if r not in noindex and 'noindex' in robots: E('Google page carries noindex')
-        ids = set(re.findall(r'\bid\s*=\s*["\']([^"\']+)["\']', src))
+        ids = set(re.findall(r'\bid\s*=\s*["\']([^"\']+)["\']', content))
         for s in secs:
             if s not in ids: E(f'section #{s} is missing')
         foreign = sorted(s for s in ids if s in owner and r not in owner[s])
         if foreign: E('sections from other pages are still inside: ' + ', '.join('#' + s for s in foreign))
-        if re.search(r'href\s*=\s*["\'][^"\']*\?page=', src, re.I): E('old ?page= links are still there')
+        if re.search(r'href\s*=\s*["\'][^"\']*\?page=', nojs, re.I): E('old ?page= links are still there')
         if r not in noindex:
             d = (m.get('description') or [''])[0].strip()
             if not d: E('no meta description')
