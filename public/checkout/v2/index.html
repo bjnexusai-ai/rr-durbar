@@ -141,6 +141,8 @@ select,input[type=tel],input[type=text]{width:100%;padding:12px;border:1.5px sol
 .ck-chip.tip[aria-pressed=true]{background:var(--wine);border-color:var(--wine);color:#fff}
 .ck-chip.tip .x{font-size:18px;line-height:1}
 .tipother{display:flex;gap:8px;align-items:center;margin-top:8px}.tipother input{max-width:140px}
+.rwlist{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:10px 12px}.rwl-h{display:block;font:700 15px/1.3 var(--serif);color:var(--wine);margin-bottom:6px}
+.rwi{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}.rwi:first-of-type{border-top:0}.rwi.lock{opacity:.6}.rwi.on{background:rgba(160,120,40,.08);border-radius:10px;padding:8px}.rwi>span{flex:1 1 auto;min-width:0}.rwi .need{white-space:nowrap;color:var(--muted,#7a6a5a);flex:0 0 auto}.rwi .btn{flex:0 0 auto;width:auto;min-width:0;padding:8px 18px;font-size:14px}
 .offbtn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
 .offbtn .btn{width:auto;margin:0;min-height:40px;padding:8px 16px}
 .cptag{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#eef7f1;border:1.5px dashed var(--ok);border-radius:12px;padding:8px 12px;margin:8px 0;font-weight:700;color:var(--ok)}
@@ -213,10 +215,17 @@ var DEMO_COUPONS = [
   { code: 'FLAT75', title: 'Rs 75 off', desc: 'Rs 75 off on orders of Rs 600 or more.', type: 'flat', val: 7500, minPaise: 60000 },
   { code: 'FEAST20', title: '20% off family feasts', desc: '20% off, up to Rs 200, on orders of Rs 1,200 or more.', type: 'pct', val: 20, capPaise: 20000, minPaise: 120000 },
   { code: 'DIWALI25', title: 'Diwali 25% off', desc: '25% off, up to Rs 150.', type: 'pct', val: 25, capPaise: 15000, minPaise: 0, expired: true }];
-var DEMO_POINTS = { paisePerPoint: 5, min: 200, step: 20, maxPctOfBill: 50 };   // 1 point = Rs 0.05 (placeholder)
+/* RR Durbar Royal Club rewards, exactly as on the home page (Rs 1 spent = 1 point). One reward OR one coupon per order.
+   'off' = money off the entire purchase; 'item' = a free item the counter adds at pickup (no money changes on the website). */
+var RR_REWARDS = [
+  { id: 'drink500', pts: 500, kind: 'item', title: '1 FREE drink', note: 'The counter adds your drink at pickup.' },
+  { id: 'off1000', pts: 1000, kind: 'off', paise: 7500, title: '\u20B975 off entire purchase' },
+  { id: 'off2000', pts: 2000, kind: 'off', paise: 15000, title: '\u20B9150 off entire purchase' },
+  { id: 'treat3000', pts: 3000, kind: 'item', title: '1 FREE starter or dessert', note: 'Choose it at the counter when you collect.' },
+  { id: 'off5000', pts: 5000, kind: 'off', paise: 50000, title: '\u20B9500 off entire purchase' }];
+function rewardById(id) { return RR_REWARDS.filter(function (r) { return r.id === id; })[0] || null; }
 function cpSave(c, sub) { return c.type === 'pct' ? Math.min(c.capPaise || Infinity, Math.round(sub * c.val / 100)) : c.val; }
 function cpWhy(c, sub) { if (c.expired) return 'This offer has expired.'; if (sub < c.minPaise) return 'Add ' + rs(c.minPaise - sub) + ' more to use this.'; return ''; }
-function ptsMax(sub, bal, r) { var cap = Math.floor(sub * r.maxPctOfBill / 100 / r.paisePerPoint); var m = Math.min(bal, cap); return m - (m % r.step); }
 function dErr(code, msg, field) { return { code: code, msg: msg, field: field }; }
 var demo = {
   config: function () { return sleep(150).then(function () { return { orderingOpen: true, termsVersion: '2026-10-22-v1', codMaxPaise: 100000, branches: DEMO_OUTLETS }; }); },
@@ -229,15 +238,17 @@ var demo = {
     var disc = 0, label = '', offErr = '', o = body.offer;
     if (o && o.kind === 'coupon') { var c = DEMO_COUPONS.filter(function (x) { return x.code === String(o.code || '').toUpperCase(); })[0];
       if (!c) offErr = 'That code is not valid.'; else if (cpWhy(c, sub)) offErr = cpWhy(c, sub); else { disc = cpSave(c, sub); label = 'Coupon ' + c.code; } }
-    if (o && o.kind === 'points') { var bal = DEMO.members[S.phone] || 0, mx = ptsMax(sub, bal, DEMO_POINTS), p = Math.min(o.points | 0, mx);
-      if (p < DEMO_POINTS.min) offErr = 'You need at least ' + DEMO_POINTS.min + ' points for this order.'; else { disc = p * DEMO_POINTS.paisePerPoint; label = p + ' points'; } }
+    var free = '', used = 0;
+    if (o && o.kind === 'reward') { var rw = rewardById(o.rewardId), bal = DEMO.members[S.phone] || 0;
+      if (!rw) offErr = 'That reward is not available.'; else if (bal < rw.pts) offErr = 'You need ' + (rw.pts - bal) + ' more points for this reward.';
+      else { used = rw.pts; if (rw.kind === 'off') { disc = rw.paise; label = rw.title.replace(' entire purchase', '') + ', ' + rw.pts + ' points'; } else free = rw.title + ': ' + rw.note; } }
     disc = Math.max(0, Math.min(disc, sub));
     var taxable = sub - disc, tax = Math.round(taxable * 5 / 100), tip = 0, tp = body.tip;
     if (tp && tp.pct) tip = Math.round(sub * Math.min(30, Math.max(0, tp.pct)) / 100);
     if (tp && tp.paise) tip = Math.min(tp.paise | 0, 50000, Math.round(sub * 30 / 100));
-    return { items: items, subtotalPaise: sub, discountPaise: disc, discountLabel: label, offerError: offErr, taxPaise: tax, tipPaise: tip, totalPaise: taxable + tax + tip, earnPoints: Math.floor(taxable / 100) }; }); },
+    return { items: items, subtotalPaise: sub, discountPaise: disc, discountLabel: label, offerError: offErr, taxPaise: tax, tipPaise: tip, totalPaise: taxable + tax + tip, earnPoints: Math.floor(taxable / 100), pointsUsed: used, freeItem: free }; }); },
   offers: function () { return sleep(250).then(function () { var sub = S.quote ? S.quote.subtotalPaise : 0;
-    return { coupons: DEMO_COUPONS.map(function (c) { var why = cpWhy(c, sub); return { code: c.code, title: c.title, desc: c.desc, eligible: !why, reason: why, youSavePaise: why ? 0 : cpSave(c, sub) }; }), points: DEMO_POINTS, onePerOrder: true }; }); },
+    return { coupons: DEMO_COUPONS.map(function (c) { var why = cpWhy(c, sub); return { code: c.code, title: c.title, desc: c.desc, eligible: !why, reason: why, youSavePaise: why ? 0 : cpSave(c, sub) }; }), rewards: RR_REWARDS, onePerOrder: true }; }); },
   otpSend: function (b) { return sleep(300).then(function () { if (Q.get('mock') === 'sms_down') throw dErr('provider_down', 'We could not send the code right now. Please try again in a minute.'); return { sent: true, resendAfterSeconds: 30 }; }); },
   otpVerify: function (b) { return sleep(400).then(function () { if (b.code !== DEMO.code) throw dErr('otp_wrong', 'That code is not right.'); return { token: 'demo.' + b.phone }; }); },
   lookup: function () { return sleep(300).then(function () { if (Q.get('mock') === 'reelo_down') return { available: false }; var bal = DEMO.members[S.phone]; return bal ? { available: true, member: true, balance: bal } : { available: true, member: false, balance: 0 }; }); },
@@ -246,7 +257,7 @@ var demo = {
     if (b.method === 'cod' && total > S.cfg.codMaxPaise) throw dErr('cod_not_allowed', 'Pay at pickup is only for orders up to Rs ' + (S.cfg.codMaxPaise / 100) + '. Please pay online.');
     if (b.method === 'payu' && Q.get('mock') === 'payu_down') throw dErr('provider_down', 'Online payment is not responding right now. Nothing has been charged. Please try again in a few minutes.');
     var q = S.quote, id = 'RR-' + (++DEMO.seq); DEMO.orders[id] = { orderId: id, state: b.method === 'cod' ? 'CONFIRMED' : 'PAYMENT_PENDING', method: b.method, totalPaise: total, branchName: outName(), slotLabel: slotLabel(), earnPoints: S.loy && S.loy.member ? q.earnPoints : 0,
-      tipPaise: q.tipPaise || 0, discountPaise: q.discountPaise || 0, discountLabel: q.discountLabel || '', items: q.items.map(function (i) { return { name: i.displayName || i.name, qty: i.qty }; }) };
+      tipPaise: q.tipPaise || 0, discountPaise: q.discountPaise || 0, discountLabel: q.discountLabel || '', freeItem: q.freeItem || '', pointsUsed: q.pointsUsed || 0, items: q.items.map(function (i) { return { name: i.displayName || i.name, qty: i.qty }; }) };
     return { orderId: id, statusToken: 'demo-t', state: DEMO.orders[id].state, totalPaise: total, payment: b.method === 'payu' ? { type: 'payu', demo: true } : null }; }); },
   status: function (id) { return sleep(400).then(function () { var o = DEMO.orders[id]; if (!o) throw dErr('not_found', 'Order not found.'); return o; }); },
   pay: function (id, ok) { DEMO.orders[id].state = ok ? 'CONFIRMED' : 'PAYMENT_FAILED'; return sleep(250); }
@@ -290,7 +301,7 @@ function feat(k) { if (MOCK) return true; var f = S.cfg && S.cfg.features; retur
 function quoteBody() {
   var b = { branch: S.outlet, items: S.cart.map(function (i) { return { id: i.id, qty: i.qty }; }) };
   if (feat('tip') && S.tip) b.tip = S.tip.pct ? { pct: S.tip.pct } : { paise: S.tip.paise };
-  if (feat('offers') && S.offer && verified()) b.offer = S.offer.kind === 'coupon' ? { kind: 'coupon', code: S.offer.code } : { kind: 'points', points: S.offer.points };
+  if (feat('offers') && S.offer && verified()) b.offer = S.offer.kind === 'coupon' ? { kind: 'coupon', code: S.offer.code } : { kind: 'reward', rewardId: S.offer.rewardId };
   return b;
 }
 function step() { if (!S.outlet || !S.slot) return 0; if (!verified()) return 1; if (!S.method) return 2; return 3; }
@@ -429,24 +440,25 @@ function paintOffers() {
   var l = S.loy || {}, earn = S.quote ? S.quote.earnPoints || 0 : 0;
   if (feat('offers')) return paintOffersOn(b, l, earn);
   b.innerHTML = (l.available ? '<div class="row"><span>Your points</span><b>' + (l.balance || 0) + '</b></div>' : '<p class="muted">Rewards are unavailable right now.</p>') +
-    '<label class="chk"><input type="checkbox" id="ck-usepts" disabled><span>Use my points on this order <span class="pill">Coming soon</span></span></label>' +
+    '<label class="chk"><input type="checkbox" id="ck-usepts" disabled><span>Use a Royal Club reward on this order <span class="pill">Coming soon</span></span></label>' +
     '<p id="ck-pts" class="okmsg">' + (earn ? 'You will earn ' + earn + ' points with this order.' : '') + '</p>' +
     '<p class="muted">Coupons and points redemption will appear here once the rewards club is switched on.</p>';
 }
 function paintOffersOn(b, l, earn) {
   var o = S.offer, r = S.offers && S.offers.points, sub = S.quote ? S.quote.subtotalPaise : 0;
-  var mx = r && l.available ? ptsMax(sub, l.balance || 0, r) : 0, canPts = r && l.available && l.member && mx >= r.min;
-  var h = (l.available ? '<div class="row"><span>Your points</span><b>' + (l.balance || 0) + '</b></div>' : '<p class="muted">Rewards are unavailable right now. You can still order.</p>');
+    var h = (l.available ? '<div class="row"><span>Your points</span><b>' + (l.balance || 0) + '</b></div>' : '<p class="muted">Rewards are unavailable right now. You can still order.</p>');
   h += '<div class="offbtn"><span><b>Apply coupon</b><br><small>Offers for your number</small></span><button class="btn btn-sec" type="button" data-act="coupons">' + (o && o.kind === 'coupon' ? 'Change' : 'Apply') + '</button></div>';
   if (o && o.kind === 'coupon') h += '<div class="cptag"><span>' + esc(o.code) + ' applied' + (S.quote && S.quote.discountPaise ? ' &middot; you save ' + rs(S.quote.discountPaise) : '') + '</span><button type="button" data-act="rmoffer">Remove</button></div>';
-  if (canPts) {
-    var use = o && o.kind === 'points', pts = use ? Math.min(o.points, mx) : mx;
-    h += '<label class="chk" style="margin-top:10px"><input type="checkbox" id="ck-usepts"' + (use ? ' checked' : '') + '><span>Use my points <small>(1 point = ' + rs(r.paisePerPoint) + ')</small></span></label>';
-    if (use) h += '<div class="ptsbox"><input type="range" id="ck-ptr" min="' + r.min + '" max="' + mx + '" step="' + r.step + '" value="' + pts + '" aria-label="Points to use"><div id="ck-ptslab"><b>' + pts + ' points</b> = ' + rs(pts * r.paisePerPoint) + ' off</div></div>';
-  } else if (l.available && l.member && r) h += '<p class="muted">Points can be used from ' + r.min + ' points on bigger orders.</p>';
-  else if (l.available && !l.member) h += '<p class="muted">You are new: points from this order are added after it is paid or settled at pickup.</p>';
+  var rws = (S.offers && S.offers.rewards) || [];
+  if (l.available && l.member && rws.length) {
+    h += '<div class="rwlist" role="group" aria-label="Royal Club rewards"><b class="rwl-h">Royal Club rewards</b>' + rws.map(function (r) {
+      var on = o && o.kind === 'reward' && o.rewardId === r.id, short = r.pts - (l.balance || 0);
+      return '<div class="rwi' + (on ? ' on' : '') + (short > 0 ? ' lock' : '') + '"><span><b>' + esc(r.title) + '</b><br><small>' + r.pts + ' points' + (r.kind === 'item' ? ' &middot; at pickup' : '') + '</small></span>' +
+        (on ? '<button type="button" class="btn btn-sec" data-act="rmoffer">Remove</button>' : short > 0 ? '<small class="need">' + short + ' more points</small>' : '<button type="button" class="btn btn-pri" data-act="reward" data-id="' + r.id + '">Use</button>') + '</div>'; }).join('') + '</div>';
+    if (o && o.kind === 'reward' && S.quote && S.quote.freeItem) h += '<p class="okmsg">' + esc(S.quote.freeItem) + '</p>';
+  } else if (l.available && !l.member) h += '<p class="muted">You are new: points from this order are added after it is paid or settled at pickup. Rewards start at 500 points.</p>';
   if (S.quote && S.quote.offerError) h += '<p class="err">' + esc(S.quote.offerError) + '</p>';
-  h += '<p id="ck-pts" class="okmsg">' + (earn ? 'You will earn ' + earn + ' points with this order.' : '') + '</p><p class="muted" style="margin:0">One offer per order: a coupon or points.</p>';
+  h += '<p id="ck-pts" class="okmsg">' + (earn ? 'You will earn ' + earn + ' points with this order.' : '') + '</p><p class="muted" style="margin:0">One offer per order: a coupon or a Royal Club reward. You earn 1 point for every \u20B91.</p>';
   b.innerHTML = h;
 }
 function openCoupons() {
@@ -467,6 +479,7 @@ function paintSummary() {
   if (!q || S.quoteErr) { b.innerHTML = '<h2>Summary</h2><p class="muted">Your total appears here.</p>'; return; }
   b.innerHTML = '<h2>Summary</h2><div class="row"><span>Item total</span><span>' + rs(q.subtotalPaise) + '</span></div>' +
     (q.discountPaise ? '<div class="row disc"><span>Discount (' + esc(q.discountLabel || 'offer') + ')</span><span>&minus; ' + rs(q.discountPaise) + '</span></div>' : '') +
+    (q.freeItem ? '<div class="row disc"><span>' + esc(q.freeItem.split(':')[0]) + ' (' + q.pointsUsed + ' points)</span><span>Free at pickup</span></div>' : '') +
     '<div class="row"><span>GST' + (q.discountPaise ? ' (after discount)' : '') + '</span><span id="ck-gst">' + rs(q.taxPaise) + '</span></div>' +
     (q.chargesPaise ? '<div class="row"><span>Charges</span><span>' + rs(q.chargesPaise) + '</span></div>' : '') +
     (q.tipPaise ? '<div class="row"><span>Tip' + (S.tip && S.tip.pct ? ' (' + S.tip.pct + '%)' : '') + '</span><span id="ck-tipsum">' + rs(q.tipPaise) + '</span></div>' : '') +
@@ -607,6 +620,7 @@ function view(v) {
     '<div class="done-no" id="h-id">' + esc(o.orderId) + '</div><p class="muted" style="margin:0 0 10px">Show this number at the counter.</p></div>' +
     '<div class="row"><span>Outlet</span><b>' + esc(o.branchName || outName()) + '</b></div><div class="row"><span>Ready at</span><b>' + esc(o.slotLabel || slotLabel()) + '</b></div>' +
     (o.discountPaise ? '<div class="row disc"><span>Discount' + (o.discountLabel ? ' (' + esc(o.discountLabel) + ')' : '') + '</span><span>&minus; ' + rs(o.discountPaise) + '</span></div>' : '') +
+    (o.freeItem ? '<div class="row disc"><span>' + esc(o.freeItem.split(':')[0]) + '</span><span>Collect at the counter</span></div>' : '') +
     (o.tipPaise ? '<div class="row"><span>Tip</span><b>' + rs(o.tipPaise) + '</b></div>' : '') +
     '<div class="row t"><span>' + (cod ? 'To pay at pickup' : 'Total paid') + '</span><span>' + rs(o.totalPaise || (S.quote && S.quote.totalPaise) || 0) + '</span></div>' +
     (o.items && o.items.length ? '<p class="done-items">' + o.items.map(function (i) { return i.qty + ' x ' + esc(i.name); }).join(', ') + '</p>' : '') +
@@ -654,6 +668,7 @@ document.addEventListener('click', function (ev) {
     if (a === 'cpcode' && hit && !hit.eligible) { $('#ck-cperr').textContent = hit.reason; return; }
     var dd = $('#ck-dlg'); if (dd.close) dd.close(); else dd.removeAttribute('open'); return setOffer({ kind: 'coupon', code: cc }); }
   if (a === 'rmoffer') return setOffer(null);
+  if (a === 'reward') return setOffer({ kind: 'reward', rewardId: t.getAttribute('data-id') });
 });
 document.addEventListener('click', function (ev) {
   var t = ev.target.closest('[data-tip]'); if (!t) return;
@@ -666,14 +681,11 @@ document.addEventListener('change', function (ev) {
   if (t.id === 'ck-outlet') return chooseOutlet(t.value);
   if (t.id === 'ck-terms') { S.terms = t.checked; if (t.checked) { $('#ck-formerr').textContent = ''; if (S.pendingSend || (phoneOk() && !S.sent)) maybeSend(); } return; }
   if (t.name === 'ck-pm') { S.method = t.value; S.err = ''; S.idem = ''; return paintPay(); }
-  if (t.id === 'ck-usepts') { var r = S.offers && S.offers.points; return setOffer(t.checked && r ? { kind: 'points', points: ptsMax(S.quote.subtotalPaise, (S.loy && S.loy.balance) || 0, r) } : null); }
-  if (t.id === 'ck-ptr') return setOffer({ kind: 'points', points: +t.value });
 });
 document.addEventListener('input', function (ev) {
   var t = ev.target;
   if (t.id === 'ck-ph') { t.value = t.value.replace(/\D/g, '').slice(0, 10); S.phone = t.value; $('#ck-formerr').textContent = ''; if (S.phone.length === 10 && !S.sent) maybeSend(); return; }
   if (t.id === 'ck-nm') { S.name = t.value.trim().slice(0, 60); return; }
-  if (t.id === 'ck-ptr') { var r2 = S.offers && S.offers.points, lab = $('#ck-ptslab'); if (lab && r2) lab.innerHTML = '<b>' + t.value + ' points</b> = ' + rs(t.value * r2.paisePerPoint) + ' off'; return; }
   if (t.id === 'ck-tipamt') { t.value = t.value.replace(/\D/g, '').slice(0, 3); var rup = +t.value || 0; S.tip = rup > 0 ? { paise: Math.min(rup, 500) * 100 } : null; S.idem = ''; clearTimeout(requote.t); requote.t = setTimeout(function () { requote(true); }, 400); return; }
   if (/^ck-o\d$/.test(t.id)) {
     var v = t.value.replace(/\D/g, '');
