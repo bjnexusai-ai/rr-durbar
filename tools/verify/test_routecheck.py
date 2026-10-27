@@ -36,7 +36,7 @@ with tempfile.TemporaryDirectory() as tmp:
     e, _ = run({'about-us': page('about-us', ROUTES['about-us'], h1=2)}); case('two h1 tags is an error', any('2 <h1>' in x for x in e))
     e, _ = run({'catering': page('catering', ROUTES['catering'], canon=f'{rc.SITE}/')}); case('wrong canonical is an error', any('catering: canonical' in x for x in e))
     e, _ = run({'menu': page('menu', ROUTES['menu'] + ['catering-cta'])}); case('a section from another page is an error', any('#catering-cta' in x for x in e))
-    e, _ = run({'home': page('home', ROUTES['home'][:-1])}); case('a missing section is an error', any('#cta is missing' in x for x in e))
+    e, _ = run({'home': page('home', ROUTES['home'][:-1])}); case('a missing section is an error', any('#outlets is missing' in x for x in e))
     e, _ = run({'track-order': page('track-order', ROUTES['track-order']).replace('<meta name="robots" content="noindex">', '')}); case('order page without noindex is an error', any('track-order: order page' in x for x in e))
     e, _ = run({'contact': page('contact', ROUTES['contact'], extra_head='<meta name="robots" content="noindex">')}); case('Google page with noindex is an error', any('contact: Google page carries noindex' in x for x in e))
     e, _ = run({'contact': page('contact', ROUTES['contact'], body_extra='<a href="/?page=menu">m</a>')}); case('old ?page= link is an error', any('?page=' in x for x in e))

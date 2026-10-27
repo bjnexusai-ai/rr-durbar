@@ -1,5 +1,7 @@
 {
   "name": "rr-durbar",
   "compatibility_date": "2026-10-01",
-  "assets": { "directory": "./public", "not_found_handling": "single-page-application" }
+  "assets": { "directory": "./public", "not_found_handling": "single-page-application" },
+  // needed by Cloudflare branch previews (`wrangler preview`, the PR preview build). Empty on purpose: previews use the settings above.
+  "previews": {}
 }
