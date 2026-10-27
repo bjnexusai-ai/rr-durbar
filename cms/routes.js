@@ -13,7 +13,7 @@ export const ROUTES = {
   locations: { title: 'Locations (to merge into Branches, plan 3.1)', sections: ['locations'] },
   catering: { title: 'Catering', sections: ['catering', 'catering-occasions', 'catering-why', 'catering-gallery', 'catering-cta'] },
   contact: { title: 'Contact', sections: ['contact'] },
-  loyalty: { title: 'Loyalty Program (new page, plan 9.4)', sections: ['loyalty'] },
+  loyalty: { title: 'Loyalty / Rewards (also /rewards/)', sections: ['loyalty'] },
   'track-order': { title: 'Track order', sections: ['track-order', 'tracking'] },
   policies: { title: 'Policies', sections: ['policies'] },
   'privacy-policy': { title: 'Privacy policy', sections: ['pol-privacy'] },

@@ -98,6 +98,19 @@ ROUTER_PATCHES = [
      "      const isActive = href.includes(`page=${page}`) || href.startsWith(`/${page}/`) || (page === 'home' && link.classList.contains('nav-home'));"),
 ]
 
+# Pages whose main heading is an h2 in the one-page site: on their own page it becomes the one h1 (Google), same look.
+H1_FROM_H2 = {'loyalty': ('<h2 id="lc-h">', '#loyalty .lc-head h2')}
+
+def promote_h1(s, route):
+    if route not in H1_FROM_H2: return s
+    tag, css = H1_FROM_H2[route]
+    i = s.find(tag)
+    if i < 0 or s.count(tag) != 1: sys.exit(f'STOP: heading {tag} not found exactly once for {route}')
+    j = s.index('</h2>', i)
+    s = s[:i] + '<h1' + s[i + 3:j] + '</h1>' + s[j + 5:]
+    if css not in s: sys.exit(f'STOP: heading style {css} not found')
+    return s.replace(css + '{', css + ',' + css[:-2] + 'h1{').replace(css + ' em{', css + ' em,' + css[:-2] + 'h1 em{').replace(css + ' em::after{', css + ' em::after,' + css[:-2] + 'h1 em::after{')
+
 def build(src, route, sections_for, seo):
     keep = set(sections_for[route])
     secs = Sections(src).found
@@ -118,6 +131,7 @@ def build(src, route, sections_for, seo):
         if s.count(old) != 1: sys.exit(f'STOP: router line not found exactly once (public/index.html changed?): {old[:70]}')
         s = s.replace(old, new)
     s = rewrite_page_links(s)
+    s = promote_h1(s, route)
     head_end = s.index('</head>')
     head, body = s[:head_end], s[head_end:]
     d = seo.get(route) or {}

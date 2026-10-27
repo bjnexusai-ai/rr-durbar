@@ -1,0 +1,3 @@
+# Loyalty page: the client wants both addresses (26 Oct). /loyalty/ is the main one; /rewards/ forwards to it.
+/rewards /loyalty/ 301
+/rewards/ /loyalty/ 301
