@@ -241,6 +241,7 @@ var demo = {
     var free = '', used = 0;
     if (o && o.kind === 'reward') { var rw = rewardById(o.rewardId), bal = DEMO.members[S.phone] || 0;
       if (!rw) offErr = 'That reward is not available.'; else if (bal < rw.pts) offErr = 'You need ' + (rw.pts - bal) + ' more points for this reward.';
+      else if (rw.kind === 'off' && sub <= rw.paise) offErr = 'Add ' + rs(rw.paise - sub + 100) + ' more to the order to use ' + rw.title.replace(' entire purchase', '') + '.';
       else { used = rw.pts; if (rw.kind === 'off') { disc = rw.paise; label = rw.title.replace(' entire purchase', '') + ', ' + rw.pts + ' points'; } else free = rw.title + ': ' + rw.note; } }
     disc = Math.max(0, Math.min(disc, sub));
     var taxable = sub - disc, tax = Math.round(taxable * 5 / 100), tip = 0, tp = body.tip;
@@ -445,16 +446,16 @@ function paintOffers() {
     '<p class="muted">Coupons and points redemption will appear here once the rewards club is switched on.</p>';
 }
 function paintOffersOn(b, l, earn) {
-  var o = S.offer, r = S.offers && S.offers.points, sub = S.quote ? S.quote.subtotalPaise : 0;
+  var o = S.offer, sub = S.quote ? S.quote.subtotalPaise : 0;
     var h = (l.available ? '<div class="row"><span>Your points</span><b>' + (l.balance || 0) + '</b></div>' : '<p class="muted">Rewards are unavailable right now. You can still order.</p>');
   h += '<div class="offbtn"><span><b>Apply coupon</b><br><small>Offers for your number</small></span><button class="btn btn-sec" type="button" data-act="coupons">' + (o && o.kind === 'coupon' ? 'Change' : 'Apply') + '</button></div>';
   if (o && o.kind === 'coupon') h += '<div class="cptag"><span>' + esc(o.code) + ' applied' + (S.quote && S.quote.discountPaise ? ' &middot; you save ' + rs(S.quote.discountPaise) : '') + '</span><button type="button" data-act="rmoffer">Remove</button></div>';
   var rws = (S.offers && S.offers.rewards) || [];
   if (l.available && l.member && rws.length) {
     h += '<div class="rwlist" role="group" aria-label="Royal Club rewards"><b class="rwl-h">Royal Club rewards</b>' + rws.map(function (r) {
-      var on = o && o.kind === 'reward' && o.rewardId === r.id, short = r.pts - (l.balance || 0);
+      var on = o && o.kind === 'reward' && o.rewardId === r.id, short = r.pts - (l.balance || 0), addMore = r.kind === 'off' && sub <= r.paise ? r.paise - sub + 100 : 0;   // money off only when the order is bigger than the reward (never a Rs 0 bill)
       return '<div class="rwi' + (on ? ' on' : '') + (short > 0 ? ' lock' : '') + '"><span><b>' + esc(r.title) + '</b><br><small>' + r.pts + ' points' + (r.kind === 'item' ? ' &middot; at pickup' : '') + '</small></span>' +
-        (on ? '<button type="button" class="btn btn-sec" data-act="rmoffer">Remove</button>' : short > 0 ? '<small class="need">' + short + ' more points</small>' : '<button type="button" class="btn btn-pri" data-act="reward" data-id="' + r.id + '">Use</button>') + '</div>'; }).join('') + '</div>';
+        (on ? '<button type="button" class="btn btn-sec" data-act="rmoffer">Remove</button>' : short > 0 ? '<small class="need">' + short + ' more points</small>' : addMore ? '<small class="need">Add ' + rs(addMore) + ' more</small>' : '<button type="button" class="btn btn-pri" data-act="reward" data-id="' + r.id + '">Use</button>') + '</div>'; }).join('') + '</div>';
     if (o && o.kind === 'reward' && S.quote && S.quote.freeItem) h += '<p class="okmsg">' + esc(S.quote.freeItem) + '</p>';
   } else if (l.available && !l.member) h += '<p class="muted">You are new: points from this order are added after it is paid or settled at pickup. Rewards start at 500 points.</p>';
   if (S.quote && S.quote.offerError) h += '<p class="err">' + esc(S.quote.offerError) + '</p>';

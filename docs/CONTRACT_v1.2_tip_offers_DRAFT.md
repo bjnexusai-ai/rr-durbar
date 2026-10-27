@@ -53,3 +53,4 @@ Earning: Rs 1 spent = 1 point (on the item total after any discount; no points o
 Rewards (spend points): 500 = 1 FREE drink (at pickup), 1000 = Rs 75 off, 2000 = Rs 150 off, 3000 = 1 FREE starter or dessert (at pickup), 5000 = Rs 500 off.
 The per-point value slider (1 point = Rs 0.05) is REMOVED. TO CONFIRM with Reelo/owner: whether online orders may redeem (R1), whether points are spent when the
 reward is used or only counted for the tier, and whether "Rs 1 spent" includes GST.
+Rule (server must enforce too): a money-off reward is usable only when the item total is MORE than the reward (no Rs 0 bills, no 5000 points spent on a Rs 249 order); otherwise `offerError` "Add Rs X more to the order to use Rs 500 off." TO CONFIRM with the owner: a different minimum order, if the client wants one.

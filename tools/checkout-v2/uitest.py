@@ -149,6 +149,11 @@ with sync_playwright() as p:
     check('rewards: Rs 150 off (2000 points) on Rs 648, GST on Rs 498 = Rs 24.90, total Rs 522.90', '150 off, 2000 points' in pg.text_content('#ck-sum') and pg.text_content('#ck-gst') == 'Rs 24.90')
     pg.click('[data-act=reward][data-id=drink500]'); pg.wait_for_function("document.querySelector('#ck-total').textContent === 'Rs 680.40'", timeout=8000)
     check('rewards: the free drink (500 points) is collected at pickup, no money off, one reward per order', 'Free at pickup' in pg.text_content('#ck-sum') and 'counter adds your drink' in pg.text_content('#s-offers') and pg.locator('.rwi.on').count() == 1)
+    ctx.close()
+    ctx, pg, errs = open_page(b, 390, 844, cart=json.dumps({'items': [{'id': 'r9', 'name': 'Masala Tea', 'qty': 1, 'p': 120}], 'outlet': ''})); pickup(pg); login(pg, phone='9999900002')
+    pg.wait_for_selector('.rwlist [data-act=reward]', timeout=8000)
+    rl = pg.text_content('.rwlist')
+    check('rewards: never a Rs 0 bill: on a Rs 120 order Rs 150 off is not offered ("Add Rs 31.00 more"); Rs 75 off still is', pg.locator('[data-act=reward][data-id=off2000]').count() == 0 and 'Add Rs 31.00 more' in rl and pg.locator('[data-act=reward][data-id=off1000]').count() == 1)
     check('card: no JS errors for a Gold member', not errs, errs[:2]); ctx.close()
 
     ctx = b.new_context(viewport={'width': 390, 'height': 844}); pg = ctx.new_page(); pg.goto(BASE + '/checkout/v2/')
