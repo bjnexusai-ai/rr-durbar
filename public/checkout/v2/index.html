@@ -203,7 +203,7 @@ function loadCart() { try { var c = JSON.parse(localStorage.getItem('rr_cart_v2'
 function saveCart() { try { localStorage.setItem('rr_cart_v2', JSON.stringify({ items: S.cart, outlet: S.outlet })); } catch (e) {} }
 
 /* ===== DEMO API (contract v1.1 shapes; never used when CFG.LIVE is true) ===== */
-var DEMO = { code: '123456', members: { '9999900001': 240, '9999900002': 2450 }, orders: {}, seq: 1000 };   // 2450 = Gold, shows the coin piles
+var DEMO = { code: '123456', members: { '9999900001': 240, '9999900002': 2450 }, codOpen: { '9999900003': 60000 }, orders: {}, seq: 1000 };   // 9999900003 already has Rs 600 of pay-at-pickup orders open   // 2450 = Gold, shows the coin piles
 var DEMO_OUTLETS = [
   { code: 'singhnagar', name: 'Singhnagar', open: true, codAllowed: true }, { code: 'moghalrajpuram', name: 'Moghalrajpuram', open: true, codAllowed: true },
   { code: 'bhavanipuram', name: 'Bhavanipuram', open: true, codAllowed: true }, { code: 'poranki', name: 'Poranki', open: true, codAllowed: true },
@@ -252,10 +252,13 @@ var demo = {
     return { coupons: DEMO_COUPONS.map(function (c) { var why = cpWhy(c, sub); return { code: c.code, title: c.title, desc: c.desc, eligible: !why, reason: why, youSavePaise: why ? 0 : cpSave(c, sub) }; }), rewards: RR_REWARDS, onePerOrder: true }; }); },
   otpSend: function (b) { return sleep(300).then(function () { if (Q.get('mock') === 'sms_down') throw dErr('provider_down', 'We could not send the code right now. Please try again in a minute.'); return { sent: true, resendAfterSeconds: 30 }; }); },
   otpVerify: function (b) { return sleep(400).then(function () { if (b.code !== DEMO.code) throw dErr('otp_wrong', 'That code is not right.'); return { token: 'demo.' + b.phone }; }); },
+  limits: function () { return sleep(120).then(function () { var open = DEMO.codOpen[S.phone] || 0; return { codMaxPaise: 100000, codOpenPaise: open, codRemainingPaise: Math.max(0, 100000 - open) }; }); },
   lookup: function () { return sleep(300).then(function () { if (Q.get('mock') === 'reelo_down') return { available: false }; var bal = DEMO.members[S.phone]; return bal ? { available: true, member: true, balance: bal } : { available: true, member: false, balance: 0 }; }); },
   start: function (b) { return sleep(400).then(function () {
     var total = S.quote.totalPaise;
     if (b.method === 'cod' && total > S.cfg.codMaxPaise) throw dErr('cod_not_allowed', 'Pay at pickup is only for orders up to Rs ' + (S.cfg.codMaxPaise / 100) + '. Please pay online.');
+    if (b.method === 'cod' && total > S.cfg.codMaxPaise - (DEMO.codOpen[S.phone] || 0)) throw dErr('cod_not_allowed', codLeftText(S.cfg.codMaxPaise - (DEMO.codOpen[S.phone] || 0)), 'method');
+    if (b.method === 'cod') DEMO.codOpen[S.phone] = (DEMO.codOpen[S.phone] || 0) + total;
     if (b.method === 'payu' && Q.get('mock') === 'payu_down') throw dErr('provider_down', 'Online payment is not responding right now. Nothing has been charged. Please try again in a few minutes.');
     var q = S.quote, id = 'RR-' + (++DEMO.seq); DEMO.orders[id] = { orderId: id, state: b.method === 'cod' ? 'CONFIRMED' : 'PAYMENT_PENDING', method: b.method, totalPaise: total, branchName: outName(), slotLabel: slotLabel(), earnPoints: S.loy && S.loy.member ? q.earnPoints : 0,
       tipPaise: q.tipPaise || 0, discountPaise: q.discountPaise || 0, discountLabel: q.discountLabel || '', freeItem: q.freeItem || '', pointsUsed: q.pointsUsed || 0, items: q.items.map(function (i) { return { name: i.displayName || i.name, qty: i.qty }; }) };
@@ -282,6 +285,7 @@ var live = {
   otpSend: function (b) { return call('/otp/send', { body: b }); },
   otpVerify: function (b) { return call('/otp/verify', { body: b }); },
   lookup: function (b) { return call('/loyalty/lookup', { body: b, auth: true }); },
+  limits: function () { return call('/checkout/limits', { auth: true }); },   // what pay at pickup still allows for this phone (owner, 27 Oct)
   start: function (b, idem) { return call('/checkout/start', { body: b, auth: true, idem: idem }); },
   status: function (id, t) { return call('/order/status', { query: { id: id, t: t || '' } }); },
   offers: function (b) { return call('/offers', { body: b, auth: true }); }      // contract v1.2 draft; used only when /config features.offers
@@ -300,7 +304,10 @@ function bandLabel(sl) { var t = Date.parse(sl && sl.id), e = Date.parse(sl && s
 function slotLabel() { var s = (S.slots || []).filter(function (x) { return x.id === S.slot; })[0]; return s ? bandLabel(s) : ''; }
 function verified() { return S.otp === 'open' && !!S.token; }
 function phoneOk() { return /^[6-9]\d{9}$/.test(S.phone); }
-function codOk() { var o = outletObj(); return !!(S.quote && o && o.codAllowed && S.cfg && S.quote.totalPaise <= S.cfg.codMaxPaise); }
+/* Pay at pickup (owner, 27 Oct): open pay-at-pickup orders + this order must stay at or under Rs 1000. Online has no limit.
+   S.codLeft comes from the API after the code (null = not known yet: the server still checks at placing). */
+function codOk() { var o = outletObj(); return !!(S.quote && o && o.codAllowed && S.cfg && S.quote.totalPaise <= S.cfg.codMaxPaise && (S.codLeft == null || S.quote.totalPaise <= S.codLeft)); }
+function codLeftText(left) { var max = S.cfg ? S.cfg.codMaxPaise / 100 : 1000; return left > 0 ? 'Pay at pickup is for up to Rs ' + max + ' in total across your open orders. You have ' + rs(left) + ' left, so please pay online for this order.' : 'You already have Rs ' + max + ' of pay-at-pickup orders open. Please pay online for this order.'; }
 function canPay() { return !S.busy && S.outlet && S.slot && verified() && S.quote && S.quote.items.length && !S.quoteErr && (S.method === 'payu' || (S.method === 'cod' && codOk())); }
 /* Tip and offers run in demo mode, and in live mode only when /config announces them (contract v1.2). Live v1.1 stays unchanged. */
 function feat(k) { if (MOCK) return true; var f = S.cfg && S.cfg.features; return !!(f && f[k]); }
@@ -499,7 +506,7 @@ function paintPay() {
   var limit = S.cfg ? (S.cfg.codMaxPaise / 100) : 1000;
   b.innerHTML = '<label class="opt"><input type="radio" name="ck-pm" value="payu"' + (S.method === 'payu' ? ' checked' : '') + '><span>Pay online<br><small>UPI, cards, net banking (PayU)</small></span></label>' +
     (cod ? '<label class="opt"><input type="radio" name="ck-pm" value="cod"' + (S.method === 'cod' ? ' checked' : '') + '><span>Pay at pickup<br><small>Pay at the counter when you collect</small></span></label>'
-         : '<p class="muted">Pay at pickup is for orders up to Rs ' + limit + (outletObj() && !outletObj().codAllowed ? ' at outlets that offer it' : '') + '.</p>');
+         : '<p class="muted" id="ck-codmsg">' + (S.codLeft != null && S.quote && S.quote.totalPaise <= S.cfg.codMaxPaise && S.quote.totalPaise > S.codLeft && outletObj() && outletObj().codAllowed ? codLeftText(S.codLeft) : 'Pay at pickup is for orders up to Rs ' + limit + (outletObj() && !outletObj().codAllowed ? ' at outlets that offer it' : '') + '.') + '</p>');
   var ok = canPay(), label = S.busy ? 'Placing…' : S.method === 'cod' ? 'Place order' : (S.quote ? 'Pay ' + rs(S.quote.totalPaise) : 'Pay');
   $$('[data-act=place],[data-act=barplace]').forEach(function (x) { x.disabled = !ok; x.textContent = label; });
   var bt = $('#ck-bartot'); if (bt) bt.textContent = S.quote ? rs(S.quote.totalPaise) : '–';
@@ -555,6 +562,7 @@ function verify() {
   API.otpVerify({ phone: S.phone, code: c }).then(function (r) {
     S.token = r.token; S.otp = 'open'; S.loy = null; S.method = S.method || ''; clearInterval(tick.t); S.resend = 0;
     paintAll(); unlockFx();
+    S.codLeft = null; API.limits().then(function (l) { S.codLeft = l && Number.isInteger(l.codRemainingPaise) ? l.codRemainingPaise : null; paintPay(); }, function () { S.codLeft = null; });
     API.lookup({ branch: S.outlet || (outlets()[0] && outlets()[0].code) || '' }).then(function (l) { S.loy = l || { available: false }; }, function () { S.loy = { available: false }; }).then(function () {
       paintCard(); paintOffers(); paintSummary(); if (S.loy.available) countUp(S.loy.balance || 0);
       if (feat('offers') && S.loy.available && S.loy.member) (MOCK ? demo.offers() : API.offers({ branch: S.outlet, items: quoteBody().items })).then(function (r) { S.offers = r; paintOffers(); }, function () {});
@@ -575,7 +583,7 @@ function webOtp() {
   } catch (e) {}
 }
 function tick() { clearInterval(tick.t); tick.t = setInterval(function () { if (S.resend > 0) { S.resend--; paintMobile(); } else clearInterval(tick.t); }, 1000); }
-function editPhone() { S.sent = false; S.otp = 'locked'; S.token = ''; S.loy = null; S.resend = 0; clearInterval(tick.t); if (webOtp.ac) webOtp.ac.abort(); paintAll(); var p = $('#ck-ph'); p.disabled = false; p.focus(); p.select(); }
+function editPhone() { S.sent = false; S.otp = 'locked'; S.token = ''; S.loy = null; S.codLeft = null; S.resend = 0; clearInterval(tick.t); if (webOtp.ac) webOtp.ac.abort(); paintAll(); var p = $('#ck-ph'); p.disabled = false; p.focus(); p.select(); }
 function place() {
   if (!canPay()) return; S.busy = true; S.err = ''; if (!S.idem) S.idem = uuid(); paintPay();
   var body = { branch: S.outlet, slotId: S.slot, method: S.method, items: S.quote.items.map(function (i) { return { id: i.id, qty: i.qty }; }),
@@ -592,6 +600,7 @@ function place() {
     if (e.code === 'quote_mismatch') { S.err = 'The price changed a moment ago. Please check the new total and try again.'; S.idem = ''; requote(); }
     else if (e.code === 'slot_invalid') { S.err = 'That pickup time is no longer available. Please choose another.'; S.slot = ''; S.pickupOpen = true; S.idem = ''; chooseOutlet(S.outlet); }
     else if (e.code === 'token_invalid') { S.err = 'Please verify your mobile again.'; S.idem = ''; editPhone(); }
+    else if (e.code === 'cod_not_allowed') { S.err = e.msg; S.method = ''; S.codLeft = 0; S.idem = ''; }
     else S.err = e.msg || 'Something went wrong. Nothing has been charged. Please try again.';
     paintPay();
   });
