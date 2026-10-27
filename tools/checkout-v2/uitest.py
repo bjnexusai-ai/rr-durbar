@@ -87,6 +87,8 @@ with sync_playwright() as p:
     sl = pg.eval_on_selector_all('#ck-slot option', 'os => os.map(o => [o.value, o.textContent])')
     ids = [v for v, _ in sl if v]; steps = {(int(__import__('datetime').datetime.fromisoformat(b.replace('Z', '+00:00')).timestamp()) - int(__import__('datetime').datetime.fromisoformat(a.replace('Z', '+00:00')).timestamp())) // 60 for a, b in zip(ids, ids[1:])}
     check('pickup time is ONE dropdown of half-hour windows (no time buttons)', pg.locator('.ck-chip[data-time]').count() == 0 and sl[0][1] == 'Choose a pickup time' and len(ids) >= 8 and steps == {30} and all(re.match(r'^\d{1,2}:(00|30)( am| pm)? \u2013 \d{1,2}:(00|30) (am|pm)$', t) for v, t in sl if v), sl[:3])
+    pg.click('[data-act=next]'); check('after choosing: "Ready for pickup: <window>" and the label reads "Pickup today"', 'Ready for pickup: ' in pg.text_content('#ck-pickbody'))
+    pg.click('[data-act=change]'); check('label reads "Pickup today"', pg.text_content('label[for=ck-slot]') == 'Pickup today')
     pg.fill('#ck-ph', '9999900001')
     check('no code before the terms tick, with a clear message', 'Tick the box above' in pg.text_content('#ck-formerr') and 'hidden' in pg.get_attribute('#ck-otpbox', 'class'))
     pg.check('#ck-terms'); pg.wait_for_selector('#ck-otpbox:not(.hidden)', timeout=8000)
@@ -174,7 +176,7 @@ with sync_playwright() as p:
         if path == '/config' and r.method == 'GET': return send({'orderingOpen': True, 'termsVersion': 'tv-9', 'codMaxPaise': 100000, 'branches': [{'code': 'moghalrajpuram', 'name': 'Moghalrajpuram', 'open': True, 'codAllowed': True}, {'code': 'singhnagar', 'name': 'Singhnagar', 'open': False, 'codAllowed': True}]})
         if path == '/slots':
             if r.method != 'GET' or 'branch=moghalrajpuram' not in u: violations.append('slots must be GET with ?branch=')
-            return send({'slots': [{'id': '2026-10-26T09:30:00.000Z', 'label': '3:00 pm'}, {'id': '2026-10-26T10:00:00.000Z', 'label': '3:30 pm'}]})
+            return send({'slots': [{'id': '2026-10-26T09:30:00.000Z', 'endsAt': '2026-10-26T09:45:00.000Z', 'label': '3:00 pm'}, {'id': '2026-10-26T10:00:00.000Z', 'endsAt': '2026-10-26T10:15:00.000Z', 'label': '3:30 pm'}]})
         if path == '/quote':
             if set(body.keys()) != {'branch', 'items'} or any(set(i.keys()) != {'id', 'qty'} for i in body['items']): violations.append('quote body must be only branch and {id,qty} items')
             return send({'items': [{'id': i['id'], 'name': 'Dish ' + i['id'], 'qty': i['qty'], 'unitPaise': 34900, 'linePaise': 34900 * i['qty']} for i in body['items']], 'subtotalPaise': 69800, 'taxPaise': 3490, 'totalPaise': 73290, 'earnPoints': 698})
@@ -211,7 +213,9 @@ with sync_playwright() as p:
 
     ctx, pg, errs, posted = live_ctx()
     check('live: outlet list comes from /config (closed outlet hidden)', pg.locator('#ck-outlet option').count() == 2)
-    pickup(pg); pg.check('#ck-terms'); pg.fill('#ck-ph', '9876543210'); pg.wait_for_selector('#ck-otpbox:not(.hidden)', timeout=8000)
+    pickup(pg)
+    check('live: window end comes from the API (endsAt), so a 15-minute setting shows "3:30 – 3:45 pm"', '3:30 – 3:45 pm' in pg.eval_on_selector_all('#ck-slot option', 'os => os.map(o => o.textContent)'))
+    pg.check('#ck-terms'); pg.fill('#ck-ph', '9876543210'); pg.wait_for_selector('#ck-otpbox:not(.hidden)', timeout=8000)
     for i, d in enumerate('654321'): pg.fill(f'#ck-o{i}', d)
     pg.wait_for_function("document.querySelector('.rw').dataset.state === 'open'", timeout=8000)
     pg.wait_for_function("/50 pts/.test(document.querySelector('#rw-n').textContent)", timeout=8000)

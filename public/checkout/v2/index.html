@@ -294,9 +294,10 @@ function outletObj() { return outlets().filter(function (o) { return o.code === 
 function outName() { var o = outletObj(); return o ? o.name : ''; }
 var SLOT_MIN = 30;   // owner, 27 Oct: half-hour pickup windows in ONE dropdown
 function hm12(d) { var h = d.getUTCHours(), m = d.getUTCMinutes(); return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + (h < 12 ? ' am' : ' pm'); }
-function bandLabel(id) { var t = Date.parse(id); if (isNaN(t)) return ''; var a = new Date(t + 330 * 60000), b = new Date(t + (330 + SLOT_MIN) * 60000);   // IST
+function bandLabel(sl) { var t = Date.parse(sl && sl.id), e = Date.parse(sl && sl.endsAt); if (isNaN(t)) return ''; if (isNaN(e)) e = t + SLOT_MIN * 60000;   // API endsAt when sent, else 30 min
+  var a = new Date(t + 330 * 60000), b = new Date(e + 330 * 60000);   // IST
   var A = hm12(a), B = hm12(b); return A.slice(-2) === B.slice(-2) ? A.slice(0, -3) + ' \u2013 ' + B : A + ' \u2013 ' + B; }
-function slotLabel() { var s = (S.slots || []).filter(function (x) { return x.id === S.slot; })[0]; return s ? bandLabel(s.id) : ''; }
+function slotLabel() { var s = (S.slots || []).filter(function (x) { return x.id === S.slot; })[0]; return s ? bandLabel(s) : ''; }
 function verified() { return S.otp === 'open' && !!S.token; }
 function phoneOk() { return /^[6-9]\d{9}$/.test(S.phone); }
 function codOk() { var o = outletObj(); return !!(S.quote && o && o.codAllowed && S.cfg && S.quote.totalPaise <= S.cfg.codMaxPaise); }
@@ -391,14 +392,14 @@ function paintTip() {
 function paintSteps() { var k = step(); $$('#ck-steps li').forEach(function (li, i) { li.className = i < k ? 'done' : i === k ? 'on' : ''; }); var n = $('#ck-outname'); if (n) n.textContent = outName() ? outName() + (slotLabel() ? ' · ' + slotLabel() : '') : ''; }
 function paintPickup() {
   var b = $('#ck-pickbody'); if (!b) return;
-  if (S.outlet && S.slot && !S.pickupOpen) { b.innerHTML = '<div class="when" id="ck-when"><span><b>' + esc(outName()) + '</b><br>Ready at ' + esc(slotLabel()) + ', today</span><button class="btn btn-sec" style="width:auto;margin:0" data-act="change" type="button">Change</button></div>'; return; }
+  if (S.outlet && S.slot && !S.pickupOpen) { b.innerHTML = '<div class="when" id="ck-when"><span><b>' + esc(outName()) + '</b><br>Ready for pickup: ' + esc(slotLabel()) + '</span><button class="btn btn-sec" style="width:auto;margin:0" data-act="change" type="button">Change</button></div>'; return; }
   var opts = outlets().map(function (o) { return '<option value="' + esc(o.code) + '"' + (o.code === S.outlet ? ' selected' : '') + '>' + esc(o.name) + '</option>'; }).join('');
   var slots = '';
   if (S.outlet) {
     if (!S.slots) slots = '<p class="muted">Loading pickup times&hellip;</p>';
     else if (!S.slots.length) slots = '<p class="err">No pickup times are left today at this outlet. Please choose another outlet or call us.</p>';
-    else slots = '<label class="fld" for="ck-slot">Pickup time (today)</label><select id="ck-slot"><option value="">Choose a pickup time</option>' +
-      S.slots.map(function (s) { return '<option value="' + esc(s.id) + '"' + (s.id === S.slot ? ' selected' : '') + '>' + esc(bandLabel(s.id)) + '</option>'; }).join('') + '</select>';
+    else slots = '<label class="fld" for="ck-slot">Pickup today</label><select id="ck-slot"><option value="">Choose a pickup time</option>' +
+      S.slots.map(function (s) { return '<option value="' + esc(s.id) + '"' + (s.id === S.slot ? ' selected' : '') + '>' + esc(bandLabel(s)) + '</option>'; }).join('') + '</select>';
   }
   b.innerHTML = '<label class="fld" for="ck-outlet">Outlet</label><select id="ck-outlet"><option value="">Choose an outlet</option>' + opts + '</select>' +
     '<p class="muted" style="margin:6px 0 0">Patamatalanka takes orders by phone: <a href="tel:' + CFG.CALL + '">call us</a>.</p>' + slots +
