@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#33050b">
 <title>Checkout | RR Durbar</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%236f0f1c%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2242%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-weight%3D%22700%22%20font-size%3D%2230%22%20fill%3D%22%23f2d99b%22%3ERR%3C/text%3E%3C/svg%3E">
-<!-- RR Durbar checkout v2 (plan task 6.10, section 17). Layout model: Swagramam v102, rebuilt for RR Durbar on API contract v1.1.
+<!-- RR Durbar checkout v2.2 (plan task 6.10, section 17; v2.1 tip and offers, v2.2 piggy-bank rewards card from the home Royal Club art). Layout model: Swagramam v102, rebuilt for RR Durbar on API contract v1.1.
      New file at a new path. noindex, not linked from the site. CFG.LIVE=false: everything runs on the built-in demo API. -->
 <style>
 @font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/cormorant-garamond-latin-600-normal.woff2) format('woff2')}
@@ -58,26 +58,45 @@ select,input[type=tel],input[type=text]{width:100%;padding:12px;border:1.5px sol
 .otp input{width:100%;max-width:52px;height:56px;text-align:center;font-size:24px;font-weight:700;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:0}
 .otp input:focus{border-color:var(--gold-dk)}
 .when{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--cream);border-radius:12px;padding:10px 12px;margin-top:8px}
-/* Rewards card: art is CSS only until the RR art set (6.15) exists. Live text sits over the art, never baked into images. */
-.rw{position:relative;overflow:hidden;border-radius:20px;color:#fff;padding:18px 18px 16px;min-height:200px;
-  background:radial-gradient(circle at 86% 30%,rgba(246,226,127,.45),transparent 38%),radial-gradient(circle at 78% 78%,rgba(213,178,108,.35),transparent 30%),linear-gradient(135deg,#4c0813,#75131e 55%,#33050b)}
-.rw::after{content:"";position:absolute;inset:auto 0 0 0;height:10px;background:repeating-linear-gradient(90deg,rgba(213,178,108,.5) 0 8px,transparent 8px 16px)}
-.rw-k{font:700 13px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--gold-hi)}
-.rw-n{font:700 44px/1.1 var(--serif);margin:8px 0 2px;min-height:48px;font-variant-numeric:tabular-nums}
-.rw-t{font-size:14px;max-width:62%;min-height:42px}
-.rw-pot{position:absolute;right:18px;top:24px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#d5b26c 45%,#8a5a20 80%);box-shadow:0 0 0 6px rgba(246,226,127,.18);transition:transform .5s}
-.rw-pot::after{content:"₹";position:absolute;inset:0;display:grid;place-items:center;font:700 40px/1 var(--serif);color:#5c3a10}
-.rw-trk{position:relative;margin-top:12px;height:56px;border-radius:99px;background:rgba(255,255,255,.14);border:1px solid rgba(246,226,127,.35)}
-.rw-lbl{position:absolute;inset:0;display:grid;place-items:center;font-weight:700;font-size:15px;padding:0 64px;text-align:center}
-.rw-knob{position:absolute;left:4px;top:4px;width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff7d6,#e7c46b 50%,#9b6a22);box-shadow:0 2px 6px rgba(0,0,0,.35);transition:left .7s cubic-bezier(.2,.8,.2,1);touch-action:none;cursor:grab}
-.rw[data-state=open] .rw-knob{left:calc(100% - 52px)}
-.rw[data-state=open] .rw-pot{transform:scale(1.08)}
-.rw[data-state=err]{animation:shake .4s}
-.rw[data-state=verifying] .rw-knob{animation:pulse 1s infinite}
+/* Rewards card v2.2: Swagramam model with the RR home-page piggy bank (same SVG art as the Royal Club section). Live text over the art. */
+.rw{position:relative;overflow:hidden;border-radius:20px;color:#fff4dc;isolation:isolate;box-shadow:0 10px 28px rgba(51,5,11,.3);
+  background:radial-gradient(circle at 12% 8%,rgba(255,226,154,.55),transparent 16%),radial-gradient(circle at 88% 4%,rgba(255,226,154,.5),transparent 18%),radial-gradient(circle at 60% 14%,rgba(255,170,60,.3),transparent 14%),linear-gradient(180deg,#2a0d10,#6b1a1d 62%,#9a4a1c)}
+.rw-lights{position:absolute;left:0;right:0;top:0;width:100%;height:40px;pointer-events:none}
+.rw-card{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:6px;padding:26px 8px 6px 16px;min-height:168px}
+.rw-txt{flex:1;min-width:0;align-self:center}
+.rw-k{font:700 11px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-hi)}
+.rw-n{font:700 42px/1.05 var(--serif);margin:6px 0 2px;min-height:44px;font-variant-numeric:tabular-nums;color:#e7b85c;
+  background:linear-gradient(100deg,#e7b85c 40%,#fff3c8 50%,#e7b85c 60%) 200% 0/250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.rw[data-state=open] .rw-n{animation:rwSheen 1.6s ease 1s 1 forwards}
+.rw-bar{height:6px;border-radius:9px;background:rgba(255,244,220,.2);margin:6px 0 6px;overflow:hidden;max-width:220px}.rw-bar i{display:block;height:100%;width:var(--p,0%);background:linear-gradient(90deg,#9d692b,#ffe9a8);border-radius:9px;transition:width 1.2s cubic-bezier(.3,.9,.3,1) .4s}
+.rw-t{font-size:13.5px;line-height:1.35;max-width:230px;min-height:36px;margin:0}
+.rw-pig{width:132px;height:auto;flex:none;transform-origin:50% 92%;transition:filter .7s,opacity .7s;overflow:visible}
+.rw:not([data-state=open]) .rw-pig{filter:grayscale(.7) brightness(.6);opacity:.9}
+.rw[data-state=open] .rw-pig{animation:rwBreathe 4s ease-in-out infinite}.rw.fresh .rw-pig{animation:rwSquash .8s ease 1.1s 1}
+.rw-pig .pile{opacity:0;transition:opacity .6s .8s}.rw[data-fill="1"] .pile.p1,.rw[data-fill="2"] .pile.p1,.rw[data-fill="2"] .pile.p2,.rw[data-fill="3"] .pile{opacity:1}
+.rw-trk{position:relative;margin:0 12px 14px;height:62px;border-radius:32px;overflow:hidden;background:rgba(255,244,220,.12);border:1px solid rgba(231,184,92,.6)}
+.rw-fill{position:absolute;inset:0;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#9d692b,#e7b85c);transition:transform .8s cubic-bezier(.3,.9,.3,1)}
+.rw[data-state=open] .rw-fill{transform:scaleX(1)}
+.rw-lbl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 12px 0 66px;text-align:center;font-weight:700;font-size:14.5px;line-height:1.25;color:#fff4dc}
+.rw[data-state=locked] .rw-lbl::after,.rw[data-state=otp] .rw-lbl::after{content:" \203A\203A\203A";letter-spacing:2px;color:#e7b85c;margin-left:4px}
+.rw[data-state=open] .rw-lbl{color:#33050b;padding:0 66px 0 12px}
+.rw-knob{position:absolute;left:3px;top:3px;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;border:3px solid #fff4dc;
+  background:radial-gradient(circle at 35% 30%,#fff7d6,#e7b85c 55%,#9d692b);box-shadow:0 0 0 3px rgba(231,184,92,.55),0 4px 14px rgba(0,0,0,.5);transition:left .8s cubic-bezier(.3,.9,.3,1);touch-action:none;cursor:grab}
+.rw-knob svg{width:34px;height:34px}
+.rw-knob::after{content:"\1F512";position:absolute;right:-6px;bottom:-6px;font-size:13px;line-height:1;background:#fff4dc;border-radius:50%;padding:2px}
+.rw[data-state=locked] .rw-knob,.rw[data-state=otp] .rw-knob{animation:rwHalo 1.8s ease-out infinite}
+.rw[data-state=verifying] .rw-knob svg{animation:rwSpin 1.2s linear infinite}
+.rw[data-state=open] .rw-knob{left:calc(100% - 59px)}.rw[data-state=open] .rw-knob::after{display:none}.rw.fresh .rw-knob svg{animation:rwSpin .8s ease-out 1}
+.rw.drag .rw-knob{transition:none;cursor:grabbing}
+.rw[data-state=err] .rw-trk{animation:shake .4s;border-color:#ff8a7a}.rw.nudge .rw-trk{animation:rwNudge .5s}
+.coin{position:absolute;width:20px;height:20px;top:-24px;left:var(--x,78%);pointer-events:none;opacity:0;animation:rwRain 1s ease-in var(--d,0s) 1 forwards}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(246,226,127,.25)}}
-.coin{position:absolute;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff7d6,#e7c46b 55%,#9b6a22);top:-20px;animation:drop 1.1s ease-in forwards}
-@keyframes drop{to{transform:translateY(150px);opacity:0}}
+@keyframes rwSheen{to{background-position:-100% 0}}@keyframes rwBreathe{50%{transform:scale(1.03)}}
+@keyframes rwSquash{0%{transform:scale(1)}30%{transform:scale(1.12,.88)}60%{transform:scale(.94,1.08)}100%{transform:scale(1)}}
+@keyframes rwSpin{to{transform:rotate(720deg)}}@keyframes rwNudge{30%{transform:translateX(8px)}60%{transform:translateX(-4px)}}
+@keyframes rwHalo{0%{box-shadow:0 0 0 3px rgba(231,184,92,.55),0 0 0 0 rgba(255,226,154,.6),0 4px 14px rgba(0,0,0,.5)}100%{box-shadow:0 0 0 3px rgba(231,184,92,.55),0 0 0 16px rgba(255,226,154,0),0 4px 14px rgba(0,0,0,.5)}}
+@keyframes rwRain{0%{opacity:0;transform:translateY(0) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translateY(120px) rotate(360deg) scale(.6)}}
+@media (max-width:360px){.rw-pig{width:108px}.rw-n{font-size:36px}}
 .line{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line)}
 .line .nm{font-weight:600}.line.bad .nm{color:var(--bad)}.line>b,.row>span:last-child{white-space:nowrap}
 #s-offers,.ck-sum,#s-pay{margin-top:22px}
@@ -115,6 +134,32 @@ select,input[type=tel],input[type=text]{width:100%;padding:12px;border:1.5px sol
   #ck.two .ck-left,#ck.two .ck-right{max-height:100%;overflow:auto;padding:2px 6px 10px 2px}
   #ck.two .ck-grid{height:100%}
 }
+/* Tip, coupons, points, richer confirmation (v2.1, Swagramam model) */
+.tipcard{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+.tipcard h3{font:700 18px/1.2 var(--serif);color:var(--wine);margin:0 0 4px}
+.ck-chip.tip{min-width:64px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.ck-chip.tip[aria-pressed=true]{background:var(--wine);border-color:var(--wine);color:#fff}
+.ck-chip.tip .x{font-size:18px;line-height:1}
+.tipother{display:flex;gap:8px;align-items:center;margin-top:8px}.tipother input{max-width:140px}
+.rwlist{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:10px 12px}.rwl-h{display:block;font:700 15px/1.3 var(--serif);color:var(--wine);margin-bottom:6px}
+.rwi{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}.rwi:first-of-type{border-top:0}.rwi.lock{opacity:.6}.rwi.on{background:rgba(160,120,40,.08);border-radius:10px;padding:8px}.rwi>span{flex:1 1 auto;min-width:0}.rwi .need{white-space:nowrap;color:var(--muted,#7a6a5a);flex:0 0 auto}.rwi .btn{flex:0 0 auto;width:auto;min-width:0;padding:8px 18px;font-size:14px}
+.offbtn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.offbtn .btn{width:auto;margin:0;min-height:40px;padding:8px 16px}
+.cptag{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#eef7f1;border:1.5px dashed var(--ok);border-radius:12px;padding:8px 12px;margin:8px 0;font-weight:700;color:var(--ok)}
+.cptag button{background:none;border:0;color:var(--bad);font-weight:700;cursor:pointer;min-height:40px}
+.cp{border:1.5px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.cp b.code{font-size:12px;border:1px dashed var(--gold-dk);border-radius:6px;padding:1px 6px;margin-left:6px;color:var(--gold-dk)}
+.cp .save{color:var(--ok);font-weight:700;font-size:14px}.cp .why{color:var(--bad);font-size:14px}
+.cp .btn{width:auto;margin:0;min-height:40px;padding:8px 16px}
+.cpin{display:flex;gap:8px;margin:6px 0 4px}.cpin input{flex:1}.cpin .btn{width:auto;margin:0}
+.ptsbox{margin:8px 0 4px;padding:10px 12px;border-radius:12px;background:var(--cream)}
+.ptsbox input[type=range]{width:100%;accent-color:var(--wine);height:32px}
+.row.disc span:last-child,.row.disc span:first-child{color:var(--ok);font-weight:700}
+.row.earn span{color:var(--ok)}
+.done-hd{text-align:center}.done-ok{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:34px;margin:0 auto 10px}
+.done-no{display:inline-block;border:2px dashed var(--gold-dk);border-radius:12px;padding:6px 16px;font:700 26px/1.2 var(--serif);color:var(--wine);letter-spacing:.04em;margin:6px 0 4px}
+.done-items{font-size:14px;color:var(--soft);margin:8px 0}
+.done-earn{background:var(--deep);color:#fff;border-radius:14px;padding:12px;text-align:center;margin:12px 0}.done-earn b{color:var(--gold-hi)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -135,7 +180,8 @@ var CFG = {
   API: 'https://rr-durbar-api.ramana-peravali.workers.dev/api', // own host until decision 0.10-6 (api.rrdurbar.com)
   TURNSTILE_SITEKEY: '',             // public site key from Cloudflare Turnstile (6.6); empty = no widget
   OTP_LEN: 6,
-  CALL: '+917702077999'
+  CALL: '+917702077999',
+  TIP_CHOICES: [5, 10, 15]            // percent of item total; NOTHING preselected: the customer chooses (CCPA: no charge may be added by default)
 };
 var MOCK = !CFG.LIVE;
 var Q = new URLSearchParams(location.search);
@@ -150,27 +196,60 @@ var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)'
 /* ===== STATE ===== */
 var S = { view: 'order', cfg: null, outlet: '', slots: null, slot: '', pickupOpen: true, cart: [], quote: null, quoteErr: '',
   phone: '', name: '', terms: false, sent: false, pendingSend: false, otp: 'locked', tries: 5, token: '', loy: null, method: '',
-  idem: '', order: null, resend: 0, busy: false, err: '', tsToken: '' };
+  idem: '', order: null, resend: 0, busy: false, err: '', tsToken: '',
+  tip: null, tipOther: false, offer: null, offers: null, offerMsg: '' };
 
 function loadCart() { try { var c = JSON.parse(localStorage.getItem('rr_cart_v2') || 'null'); if (c && Array.isArray(c.items)) { S.cart = c.items.filter(function (i) { return i && i.id && i.qty > 0; }).map(function (i) { return { id: String(i.id), name: String(i.name || i.id), qty: Math.min(20, i.qty | 0), p: i.p }; }); if (c.outlet) S.outlet = String(c.outlet); } } catch (e) {} }
 function saveCart() { try { localStorage.setItem('rr_cart_v2', JSON.stringify({ items: S.cart, outlet: S.outlet })); } catch (e) {} }
 
 /* ===== DEMO API (contract v1.1 shapes; never used when CFG.LIVE is true) ===== */
-var DEMO = { code: '123456', members: { '9999900001': 240 }, orders: {}, seq: 1000 };
+var DEMO = { code: '123456', members: { '9999900001': 240, '9999900002': 2450 }, orders: {}, seq: 1000 };   // 2450 = Gold, shows the coin piles
 var DEMO_OUTLETS = [
   { code: 'singhnagar', name: 'Singhnagar', open: true, codAllowed: true }, { code: 'moghalrajpuram', name: 'Moghalrajpuram', open: true, codAllowed: true },
   { code: 'bhavanipuram', name: 'Bhavanipuram', open: true, codAllowed: true }, { code: 'poranki', name: 'Poranki', open: true, codAllowed: true },
   { code: 'autonagar', name: 'Autonagar', open: true, codAllowed: false }];
 var SAMPLE = [{ id: 'r1', name: 'Chicken Dum Biryani (Regular)', qty: 1, p: 349 }, { id: 'r2', name: 'Chicken Lollipops', qty: 1, p: 299 }];
+/* Demo offers. PLACEHOLDERS until Reelo rules are confirmed (Reelo spec R1 to R5). Shape = contract v1.2 draft /offers. */
+var DEMO_COUPONS = [
+  { code: 'RR10', title: '10% off', desc: '10% off, up to Rs 100, on orders of Rs 300 or more.', type: 'pct', val: 10, capPaise: 10000, minPaise: 30000 },
+  { code: 'FLAT75', title: 'Rs 75 off', desc: 'Rs 75 off on orders of Rs 600 or more.', type: 'flat', val: 7500, minPaise: 60000 },
+  { code: 'FEAST20', title: '20% off family feasts', desc: '20% off, up to Rs 200, on orders of Rs 1,200 or more.', type: 'pct', val: 20, capPaise: 20000, minPaise: 120000 },
+  { code: 'DIWALI25', title: 'Diwali 25% off', desc: '25% off, up to Rs 150.', type: 'pct', val: 25, capPaise: 15000, minPaise: 0, expired: true }];
+/* RR Durbar Royal Club rewards, exactly as on the home page (Rs 1 spent = 1 point). One reward OR one coupon per order.
+   'off' = money off the entire purchase; 'item' = a free item the counter adds at pickup (no money changes on the website). */
+var RR_REWARDS = [
+  { id: 'drink500', pts: 500, kind: 'item', title: '1 FREE drink', note: 'The counter adds your drink at pickup.' },
+  { id: 'off1000', pts: 1000, kind: 'off', paise: 7500, title: '\u20B975 off entire purchase' },
+  { id: 'off2000', pts: 2000, kind: 'off', paise: 15000, title: '\u20B9150 off entire purchase' },
+  { id: 'treat3000', pts: 3000, kind: 'item', title: '1 FREE starter or dessert', note: 'Choose it at the counter when you collect.' },
+  { id: 'off5000', pts: 5000, kind: 'off', paise: 50000, title: '\u20B9500 off entire purchase' }];
+function rewardById(id) { return RR_REWARDS.filter(function (r) { return r.id === id; })[0] || null; }
+function cpSave(c, sub) { return c.type === 'pct' ? Math.min(c.capPaise || Infinity, Math.round(sub * c.val / 100)) : c.val; }
+function cpWhy(c, sub) { if (c.expired) return 'This offer has expired.'; if (sub < c.minPaise) return 'Add ' + rs(c.minPaise - sub) + ' more to use this.'; return ''; }
 function dErr(code, msg, field) { return { code: code, msg: msg, field: field }; }
 var demo = {
   config: function () { return sleep(150).then(function () { return { orderingOpen: true, termsVersion: '2026-10-22-v1', codMaxPaise: 100000, branches: DEMO_OUTLETS }; }); },
-  slots: function (b) { return sleep(200).then(function () { if (Q.get('mock') === 'noslots') return { slots: [] }; var out = [], d = new Date(Date.now() + 30 * 60000); d.setMinutes(Math.ceil(d.getMinutes() / 15) * 15, 0, 0); for (var i = 0; i < 8; i++) { out.push({ id: d.toISOString(), label: d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) }); d = new Date(d.getTime() + 15 * 60000); } return { slots: out }; }); },
+  slots: function (b) { return sleep(200).then(function () { if (Q.get('mock') === 'noslots') return { slots: [] }; var out = [], d = new Date(Date.now() + 30 * 60000); d.setMinutes(Math.ceil(d.getMinutes() / 30) * 30, 0, 0); for (var i = 0; i < 16; i++) { out.push({ id: d.toISOString(), label: d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) }); d = new Date(d.getTime() + 30 * 60000); } return { slots: out }; }); },
   quote: function (body) { return sleep(250).then(function () {
     if (Q.get('mock') === 'rista_down') throw dErr('provider_down', 'Our kitchen system is not responding right now. Nothing has been charged. Please try again in a few minutes.');
     var items = body.items.map(function (i) { var c = S.cart.filter(function (x) { return x.id === i.id; })[0] || {}; var unit = Math.round((c.p || 200) * 100); return { id: i.id, name: c.name || i.id, qty: i.qty, unitPaise: unit, linePaise: unit * i.qty }; });
-    var sub = items.reduce(function (a, l) { return a + l.linePaise; }, 0), tax = Math.round(sub * 5 / 100);
-    return { items: items, subtotalPaise: sub, taxPaise: tax, totalPaise: sub + tax, earnPoints: Math.floor(sub / 100) }; }); },
+    var sub = items.reduce(function (a, l) { return a + l.linePaise; }, 0);
+    /* Money order (one path, same as Swagramam): discount -> GST on (items - discount) -> tip, not taxed -> total. */
+    var disc = 0, label = '', offErr = '', o = body.offer;
+    if (o && o.kind === 'coupon') { var c = DEMO_COUPONS.filter(function (x) { return x.code === String(o.code || '').toUpperCase(); })[0];
+      if (!c) offErr = 'That code is not valid.'; else if (cpWhy(c, sub)) offErr = cpWhy(c, sub); else { disc = cpSave(c, sub); label = 'Coupon ' + c.code; } }
+    var free = '', used = 0;
+    if (o && o.kind === 'reward') { var rw = rewardById(o.rewardId), bal = DEMO.members[S.phone] || 0;
+      if (!rw) offErr = 'That reward is not available.'; else if (bal < rw.pts) offErr = 'You need ' + (rw.pts - bal) + ' more points for this reward.';
+      else if (rw.kind === 'off' && sub <= rw.paise) offErr = 'Add ' + rs(rw.paise - sub + 100) + ' more to the order to use ' + rw.title.replace(' entire purchase', '') + '.';
+      else { used = rw.pts; if (rw.kind === 'off') { disc = rw.paise; label = rw.title.replace(' entire purchase', '') + ', ' + rw.pts + ' points'; } else free = rw.title + ': ' + rw.note; } }
+    disc = Math.max(0, Math.min(disc, sub));
+    var taxable = sub - disc, tax = Math.round(taxable * 5 / 100), tip = 0, tp = body.tip;
+    if (tp && tp.pct) tip = Math.round(sub * Math.min(30, Math.max(0, tp.pct)) / 100);
+    if (tp && tp.paise) tip = Math.min(tp.paise | 0, 50000, Math.round(sub * 30 / 100));
+    return { items: items, subtotalPaise: sub, discountPaise: disc, discountLabel: label, offerError: offErr, taxPaise: tax, tipPaise: tip, totalPaise: taxable + tax + tip, earnPoints: Math.floor(taxable / 100), pointsUsed: used, freeItem: free }; }); },
+  offers: function () { return sleep(250).then(function () { var sub = S.quote ? S.quote.subtotalPaise : 0;
+    return { coupons: DEMO_COUPONS.map(function (c) { var why = cpWhy(c, sub); return { code: c.code, title: c.title, desc: c.desc, eligible: !why, reason: why, youSavePaise: why ? 0 : cpSave(c, sub) }; }), rewards: RR_REWARDS, onePerOrder: true }; }); },
   otpSend: function (b) { return sleep(300).then(function () { if (Q.get('mock') === 'sms_down') throw dErr('provider_down', 'We could not send the code right now. Please try again in a minute.'); return { sent: true, resendAfterSeconds: 30 }; }); },
   otpVerify: function (b) { return sleep(400).then(function () { if (b.code !== DEMO.code) throw dErr('otp_wrong', 'That code is not right.'); return { token: 'demo.' + b.phone }; }); },
   lookup: function () { return sleep(300).then(function () { if (Q.get('mock') === 'reelo_down') return { available: false }; var bal = DEMO.members[S.phone]; return bal ? { available: true, member: true, balance: bal } : { available: true, member: false, balance: 0 }; }); },
@@ -178,7 +257,8 @@ var demo = {
     var total = S.quote.totalPaise;
     if (b.method === 'cod' && total > S.cfg.codMaxPaise) throw dErr('cod_not_allowed', 'Pay at pickup is only for orders up to Rs ' + (S.cfg.codMaxPaise / 100) + '. Please pay online.');
     if (b.method === 'payu' && Q.get('mock') === 'payu_down') throw dErr('provider_down', 'Online payment is not responding right now. Nothing has been charged. Please try again in a few minutes.');
-    var id = 'RR-' + (++DEMO.seq); DEMO.orders[id] = { orderId: id, state: b.method === 'cod' ? 'CONFIRMED' : 'PAYMENT_PENDING', method: b.method, totalPaise: total, branchName: outName(), slotLabel: slotLabel(), earnPoints: S.loy && S.loy.member ? S.quote.earnPoints : 0 };
+    var q = S.quote, id = 'RR-' + (++DEMO.seq); DEMO.orders[id] = { orderId: id, state: b.method === 'cod' ? 'CONFIRMED' : 'PAYMENT_PENDING', method: b.method, totalPaise: total, branchName: outName(), slotLabel: slotLabel(), earnPoints: S.loy && S.loy.member ? q.earnPoints : 0,
+      tipPaise: q.tipPaise || 0, discountPaise: q.discountPaise || 0, discountLabel: q.discountLabel || '', freeItem: q.freeItem || '', pointsUsed: q.pointsUsed || 0, items: q.items.map(function (i) { return { name: i.displayName || i.name, qty: i.qty }; }) };
     return { orderId: id, statusToken: 'demo-t', state: DEMO.orders[id].state, totalPaise: total, payment: b.method === 'payu' ? { type: 'payu', demo: true } : null }; }); },
   status: function (id) { return sleep(400).then(function () { var o = DEMO.orders[id]; if (!o) throw dErr('not_found', 'Order not found.'); return o; }); },
   pay: function (id, ok) { DEMO.orders[id].state = ok ? 'CONFIRMED' : 'PAYMENT_FAILED'; return sleep(250); }
@@ -203,7 +283,8 @@ var live = {
   otpVerify: function (b) { return call('/otp/verify', { body: b }); },
   lookup: function (b) { return call('/loyalty/lookup', { body: b, auth: true }); },
   start: function (b, idem) { return call('/checkout/start', { body: b, auth: true, idem: idem }); },
-  status: function (id, t) { return call('/order/status', { query: { id: id, t: t || '' } }); }
+  status: function (id, t) { return call('/order/status', { query: { id: id, t: t || '' } }); },
+  offers: function (b) { return call('/offers', { body: b, auth: true }); }      // contract v1.2 draft; used only when /config features.offers
 };
 var API = MOCK ? demo : live;
 
@@ -211,11 +292,23 @@ var API = MOCK ? demo : live;
 function outlets() { return (S.cfg && S.cfg.branches || []).filter(function (b) { return b.open; }); }
 function outletObj() { return outlets().filter(function (o) { return o.code === S.outlet; })[0] || null; }
 function outName() { var o = outletObj(); return o ? o.name : ''; }
-function slotLabel() { var s = (S.slots || []).filter(function (x) { return x.id === S.slot; })[0]; return s ? s.label : ''; }
+var SLOT_MIN = 30;   // owner, 27 Oct: half-hour pickup windows in ONE dropdown
+function hm12(d) { var h = d.getUTCHours(), m = d.getUTCMinutes(); return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + (h < 12 ? ' am' : ' pm'); }
+function bandLabel(id) { var t = Date.parse(id); if (isNaN(t)) return ''; var a = new Date(t + 330 * 60000), b = new Date(t + (330 + SLOT_MIN) * 60000);   // IST
+  var A = hm12(a), B = hm12(b); return A.slice(-2) === B.slice(-2) ? A.slice(0, -3) + ' \u2013 ' + B : A + ' \u2013 ' + B; }
+function slotLabel() { var s = (S.slots || []).filter(function (x) { return x.id === S.slot; })[0]; return s ? bandLabel(s.id) : ''; }
 function verified() { return S.otp === 'open' && !!S.token; }
 function phoneOk() { return /^[6-9]\d{9}$/.test(S.phone); }
 function codOk() { var o = outletObj(); return !!(S.quote && o && o.codAllowed && S.cfg && S.quote.totalPaise <= S.cfg.codMaxPaise); }
 function canPay() { return !S.busy && S.outlet && S.slot && verified() && S.quote && S.quote.items.length && !S.quoteErr && (S.method === 'payu' || (S.method === 'cod' && codOk())); }
+/* Tip and offers run in demo mode, and in live mode only when /config announces them (contract v1.2). Live v1.1 stays unchanged. */
+function feat(k) { if (MOCK) return true; var f = S.cfg && S.cfg.features; return !!(f && f[k]); }
+function quoteBody() {
+  var b = { branch: S.outlet, items: S.cart.map(function (i) { return { id: i.id, qty: i.qty }; }) };
+  if (feat('tip') && S.tip) b.tip = S.tip.pct ? { pct: S.tip.pct } : { paise: S.tip.paise };
+  if (feat('offers') && S.offer && verified()) b.offer = S.offer.kind === 'coupon' ? { kind: 'coupon', code: S.offer.code } : { kind: 'reward', rewardId: S.offer.rewardId };
+  return b;
+}
 function step() { if (!S.outlet || !S.slot) return 0; if (!verified()) return 1; if (!S.method) return 2; return 3; }
 
 /* ===== RENDER: order page (built once, then updated in parts so typing never loses focus) ===== */
@@ -237,12 +330,11 @@ function renderOrder() {
         '<button class="btn btn-dark" data-act="verify" type="button">Verify code</button>' +
         '<div style="display:flex;justify-content:space-between;flex-wrap:wrap"><button class="btn btn-lnk" id="ck-rs" data-act="resend" type="button" disabled>Resend</button><button class="btn btn-lnk" data-act="editphone" type="button">Edit number</button></div></div>' +
     '</div>' +
-    '<div class="rw" data-state="locked" aria-live="polite"><div class="rw-k">RR Durbar Rewards</div><div class="rw-n" id="rw-n"></div><div class="rw-t" id="rw-t"></div><div class="rw-pot" aria-hidden="true"></div>' +
-      '<div class="rw-trk"><div class="rw-lbl" id="rw-lbl">Enter your mobile to see your points</div><div class="rw-knob" aria-hidden="true"></div></div></div>' +
+    rwMarkup() +
   '</section>' +
   '<div class="ck-gap" aria-hidden="true"><span>&rsaquo;</span></div>' +
   '<section class="ck-right" aria-label="Order and payment"><div class="ck-card ck-main">' +
-    '<div class="ck-top"><div id="s-order"><h2>3 &middot; Your order</h2><div id="ck-lines"></div><a href="/?page=pickup-menu" class="muted">+ Add more dishes</a></div>' +
+    '<div class="ck-top"><div id="s-order"><h2>3 &middot; Your order</h2><div id="ck-lines"></div><a href="/?page=pickup-menu" class="muted">+ Add more dishes</a><div id="ck-tip"></div></div>' +
       '<div id="s-offers" inert><h2>Rewards on this order</h2><div id="ck-offbody"></div></div></div>' +
     '<div class="ck-bot"><div class="ck-sum" id="ck-sum"></div><div id="s-pay"><h2>4 &middot; Payment</h2><div id="ck-pm"></div><p class="err" id="ck-payerr" role="alert"></p>' +
       '<button class="btn btn-pri" data-act="place" type="button" disabled>Pay</button><p class="muted" style="margin:8px 0 0">Prices and taxes are confirmed by our system. Online payments go through PayU.</p></div></div>' +
@@ -251,8 +343,51 @@ function renderOrder() {
   $('#ck-terms').checked = S.terms; $('#ck-ph').value = S.phone; $('#ck-nm').value = S.name;
   paintAll();
 }
+/* ===== REWARDS CARD (piggy bank from the RR home Royal Club section) ===== */
+var RW_TIERS = [{ n: 'Silver', at: 500 }, { n: 'Gold', at: 2000 }, { n: 'Royal Durbar', at: 5000 }];   // same as the site's Royal Club tiers
+function rwTier(p) { var next = null, prev = 0, cur = '', fill = 0; RW_TIERS.forEach(function (x, i) { if (p >= x.at) { prev = x.at; cur = x.n; fill = i + 1; } else if (!next) next = x; });
+  return { next: next, cur: cur, fill: fill, pct: next ? Math.max(4, Math.round((p - prev) / (next.at - prev) * 100)) : 100 }; }
+var COIN = '<svg viewBox="-18 -18 36 36" aria-hidden="true"><circle r="17" fill="url(#rw-gd)" stroke="#8a5a1c" stroke-width="1.5"/><circle r="12" fill="none" stroke="#8a5a1c" stroke-opacity=".6" stroke-width="1.2"/><text y="6" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="16" fill="#6b3f12">&#8377;</text></svg>';
+var PIG = '<svg class="rw-pig" viewBox="52 108 330 300" aria-hidden="true"><defs>' +
+  '<radialGradient id="rw-pg" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#C13A4B"/><stop offset=".5" stop-color="#8E1B2C"/><stop offset="1" stop-color="#4A0810"/></radialGradient>' +
+  '<linearGradient id="rw-gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE9A8"/><stop offset=".5" stop-color="#E7B85C"/><stop offset="1" stop-color="#9D692B"/></linearGradient>' +
+  '<radialGradient id="rw-sn" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#D9566A"/><stop offset="1" stop-color="#8E1B2C"/></radialGradient></defs>' +
+  '<ellipse cx="205" cy="392" rx="150" ry="14" fill="#1a0306" opacity=".5"/>' +
+  '<g class="pile p1"><ellipse cx="96" cy="388" rx="22" ry="6" fill="url(#rw-gd)"/><ellipse cx="96" cy="381" rx="22" ry="6" fill="#C9922F"/><ellipse cx="96" cy="374" rx="22" ry="6" fill="url(#rw-gd)"/></g>' +
+  '<g class="pile p2"><ellipse cx="330" cy="390" rx="22" ry="6" fill="url(#rw-gd)"/><ellipse cx="330" cy="383" rx="22" ry="6" fill="#C9922F"/><ellipse cx="330" cy="376" rx="22" ry="6" fill="url(#rw-gd)"/><ellipse cx="330" cy="369" rx="22" ry="6" fill="#C9922F"/><ellipse cx="330" cy="362" rx="22" ry="6" fill="url(#rw-gd)"/></g>' +
+  '<path d="M84 238c-30-4-34-34-14-42 10-4 18 4 12 12-4 6-12 4-12 0" fill="none" stroke="#8E1B2C" stroke-width="7" stroke-linecap="round"/>' +
+  '<rect x="118" y="320" width="40" height="64" rx="16" fill="#6b0f1c"/><rect x="238" y="320" width="40" height="64" rx="16" fill="#6b0f1c"/>' +
+  '<rect x="150" y="326" width="40" height="64" rx="16" fill="url(#rw-pg)"/><rect x="262" y="326" width="40" height="64" rx="16" fill="url(#rw-pg)"/>' +
+  '<path d="M150 380h40M262 380h40" stroke="#E7B85C" stroke-width="4" stroke-linecap="round"/>' +
+  '<ellipse cx="200" cy="255" rx="136" ry="102" fill="url(#rw-pg)"/><path d="M92 215c26-44 80-62 130-56" stroke="#fff" stroke-opacity=".28" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+  '<path d="M82 262c34 30 96 40 150 32s84-30 100-58" stroke="url(#rw-gd)" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+  '<g fill="url(#rw-gd)"><circle cx="112" cy="232" r="4"/><circle cx="130" cy="218" r="3.5"/><circle cx="252" cy="196" r="4"/><circle cx="270" cy="206" r="3.5"/><circle cx="138" cy="296" r="3.5"/><circle cx="224" cy="302" r="4"/></g>' +
+  '<circle cx="190" cy="248" r="34" fill="#4A0810" stroke="url(#rw-gd)" stroke-width="4"/><circle cx="190" cy="248" r="27" fill="none" stroke="#E7B85C" stroke-opacity=".7" stroke-dasharray="2 3"/>' +
+  '<text x="190" y="257" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-weight="700" font-size="26" fill="url(#rw-gd)">RR</text>' +
+  '<path d="M246 170Q256 118 294 126Q302 152 284 178z" fill="#8E1B2C"/><path d="M258 166Q264 138 288 140Q290 156 280 170z" fill="#D9566A"/>' +
+  '<ellipse cx="338" cy="262" rx="36" ry="40" fill="url(#rw-sn)"/><ellipse cx="338" cy="262" rx="36" ry="40" fill="none" stroke="#E7B85C" stroke-width="3"/>' +
+  '<ellipse cx="328" cy="262" rx="5" ry="9" fill="#33050B"/><ellipse cx="350" cy="262" rx="5" ry="9" fill="#33050B"/>' +
+  '<circle cx="296" cy="222" r="9" fill="#fff"/><circle cx="298" cy="223" r="5.5" fill="#1a0306"/><circle cx="300" cy="220" r="2" fill="#fff"/>' +
+  '<path d="M302 296c14 8 30 6 40-4" fill="none" stroke="#33050B" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="288" cy="262" rx="14" ry="9" fill="#FF8aa0" opacity=".45"/>' +
+  '<rect x="166" y="152" width="68" height="11" rx="5.5" fill="#1a0306" stroke="#E7B85C" stroke-width="2"/></svg>';
+var LIGHTS = '<svg class="rw-lights" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6Q200 46 400 4" fill="none" stroke="#E7B85C" stroke-opacity=".6" stroke-width="1.5"/><g fill="#FFE29A"><circle cx="50" cy="13" r="3.5"/><circle cx="125" cy="21" r="3.5"/><circle cx="200" cy="25" r="3.5"/><circle cx="275" cy="21" r="3.5"/><circle cx="350" cy="12" r="3.5"/></g></svg>';
+function rwMarkup() {
+  return '<div class="rw" data-state="locked" data-fill="0">' + LIGHTS + '<div class="rw-card"><div class="rw-txt"><div class="rw-k">RR Durbar Royal Club</div><div class="rw-n" id="rw-n" aria-live="polite"></div>' +
+    '<div class="rw-bar"><i id="rw-bar"></i></div><p class="rw-t" id="rw-t"></p></div>' + PIG + '</div>' +
+    '<div class="rw-trk" role="status"><i class="rw-fill"></i><div class="rw-lbl" id="rw-lbl">Enter your mobile to see your points</div><div class="rw-knob" aria-hidden="true">' + COIN + '</div></div></div>';
+}
 function otpBoxes() { var h = ''; for (var i = 0; i < CFG.OTP_LEN; i++) h += '<input id="ck-o' + i + '" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Digit ' + (i + 1) + '"' + (i === 0 ? ' autocomplete="one-time-code"' : ' autocomplete="off"') + '>'; return h; }
-function paintAll() { paintSteps(); paintPickup(); paintMobile(); paintCard(); paintOrder(); paintOffers(); paintSummary(); paintPay(); }
+function paintAll() { paintSteps(); paintPickup(); paintMobile(); paintCard(); paintOrder(); paintTip(); paintOffers(); paintSummary(); paintPay(); }
+function paintTip() {
+  var b = $('#ck-tip'); if (!b) return;
+  if (!feat('tip') || !S.quote || S.quoteErr) { b.innerHTML = ''; return; }
+  var pct = S.tip && S.tip.pct, other = S.tipOther || (S.tip && S.tip.paise);
+  b.innerHTML = '<div class="tipcard"><h3>Tip the team</h3><p class="muted" style="margin:0 0 6px">100% of it goes to the kitchen and counter staff. Not taxed.</p><div class="ck-chip-row" role="group" aria-label="Tip">' +
+    CFG.TIP_CHOICES.map(function (p) { var on = pct === p; return '<button type="button" class="ck-chip tip" data-tip="' + p + '" aria-pressed="' + on + '"' + (on ? ' aria-label="' + p + '% tip, tap to remove"' : '') + '>' + p + '%' + (on ? '<span class="x" aria-hidden="true">&times;</span>' : '') + '</button>'; }).join('') +
+    '<button type="button" class="ck-chip tip" data-tip="other" aria-pressed="' + !!other + '">Other</button></div>' +
+    (other ? '<div class="tipother"><span>Rs</span><input type="text" id="ck-tipamt" inputmode="numeric" maxlength="3" value="' + (S.tip && S.tip.paise ? S.tip.paise / 100 : '') + '" aria-label="Tip amount in rupees"><small>up to Rs 500</small></div>' : '') +
+    '<p class="muted" style="margin:6px 0 0" id="ck-tiptxt">' + (S.quote.tipPaise ? 'Your tip: <b>' + rs(S.quote.tipPaise) + '</b>' + (pct ? ' (' + pct + '% of the item total)' : '') : 'No tip added.') + '</p></div>';
+}
 function paintSteps() { var k = step(); $$('#ck-steps li').forEach(function (li, i) { li.className = i < k ? 'done' : i === k ? 'on' : ''; }); var n = $('#ck-outname'); if (n) n.textContent = outName() ? outName() + (slotLabel() ? ' · ' + slotLabel() : '') : ''; }
 function paintPickup() {
   var b = $('#ck-pickbody'); if (!b) return;
@@ -262,7 +397,8 @@ function paintPickup() {
   if (S.outlet) {
     if (!S.slots) slots = '<p class="muted">Loading pickup times&hellip;</p>';
     else if (!S.slots.length) slots = '<p class="err">No pickup times are left today at this outlet. Please choose another outlet or call us.</p>';
-    else slots = '<p class="fld">Ready at</p><div class="ck-chip-row">' + S.slots.map(function (s) { return '<button type="button" class="ck-chip" data-time="' + esc(s.id) + '" aria-pressed="' + (s.id === S.slot) + '">' + esc(s.label) + '</button>'; }).join('') + '</div>';
+    else slots = '<label class="fld" for="ck-slot">Pickup time (today)</label><select id="ck-slot"><option value="">Choose a pickup time</option>' +
+      S.slots.map(function (s) { return '<option value="' + esc(s.id) + '"' + (s.id === S.slot ? ' selected' : '') + '>' + esc(bandLabel(s.id)) + '</option>'; }).join('') + '</select>';
   }
   b.innerHTML = '<label class="fld" for="ck-outlet">Outlet</label><select id="ck-outlet"><option value="">Choose an outlet</option>' + opts + '</select>' +
     '<p class="muted" style="margin:6px 0 0">Patamatalanka takes orders by phone: <a href="tel:' + CFG.CALL + '">call us</a>.</p>' + slots +
@@ -278,20 +414,23 @@ function paintMobile() {
 }
 function paintCard() {
   var rw = $('.rw'); if (!rw) return; rw.setAttribute('data-state', S.otp);
-  var lbl = { locked: S.sent ? 'Type the code. It unlocks by itself.' : 'Enter your mobile to see your points', otp: 'Type the ' + CFG.OTP_LEN + '-digit code. It unlocks by itself.', verifying: 'Checking your code…', err: 'That code is not right', open: 'Unlocked' }[S.otp];
+  var lbl = { locked: S.sent ? 'Enter the code to unlock' : 'Swipe to unlock rewards', otp: 'Enter the code to unlock', verifying: 'Checking your code…', err: 'That code is not right', open: 'Rewards unlocked' }[S.otp];
   $('#rw-lbl').textContent = lbl;
-  if (!verified()) { $('#rw-n').textContent = ''; $('#rw-t').textContent = 'Points are shown only after your mobile is verified.'; return; }
+  if (!verified()) { $('#rw-n').textContent = ''; rw.setAttribute('data-fill', '0'); var b0 = $('#rw-bar'); if (b0) b0.style.setProperty('--p', '0%'); $('#rw-t').textContent = S.otp === 'otp' || S.otp === 'err' ? 'Type the code. Your points appear here.' : 'Points are shown only after your mobile is verified.'; return; }
   var l = S.loy;
   if (!l) { $('#rw-t').textContent = 'Checking your rewards…'; return; }
   if (!l.available) { $('#rw-n').textContent = ''; $('#rw-t').textContent = 'Rewards are unavailable right now. You can still order.'; return; }
-  $('#rw-t').textContent = l.member ? 'Welcome back' + (S.name ? ', ' + S.name : '') + '. Your points balance.' : 'You are in. Points from this order are added after it is paid or settled at pickup.';
+  var tr = rwTier(l.balance || 0), bar = $('#rw-bar'); rw.setAttribute('data-fill', String(tr.fill)); if (bar) bar.style.setProperty('--p', tr.pct + '%');
+  $('#rw-t').textContent = !l.member ? 'You are in. Points from this order are added after it is paid or settled at pickup.' :
+    (tr.next ? 'Welcome back' + (S.name ? ', ' + S.name : '') + '. ' + (tr.next.at - (l.balance || 0)) + ' more points to reach ' + tr.next.n + '.' : (tr.cur || 'Royal Durbar') + ' member. Thank you' + (S.name ? ', ' + S.name : '') + '!');
 }
 function countUp(n) {
   var el = $('#rw-n'); if (!el) return;
   if (REDUCED || n <= 0) { el.textContent = n + ' pts'; return; }
   var t0 = performance.now(), d = 900;
   (function f(t) { var k = Math.min(1, (t - t0) / d); el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))) + ' pts'; if (k < 1) requestAnimationFrame(f); })(t0);
-  var rw = $('.rw'); for (var i = 0; i < 6; i++) { var c = document.createElement('span'); c.className = 'coin'; c.style.right = (24 + Math.random() * 80) + 'px'; c.style.animationDelay = (i * 0.12) + 's'; rw.appendChild(c); setTimeout(function (x) { x.remove(); }, 1600, c); }
+  var rw = $('.rw'); rw.classList.add('fresh'); setTimeout(function () { rw.classList.remove('fresh'); }, 2600);
+  for (var i = 0; i < 12; i++) { var c = document.createElement('span'); c.className = 'coin'; c.innerHTML = COIN; c.style.setProperty('--x', (66 + Math.random() * 22).toFixed(0) + '%'); c.style.setProperty('--d', (i * 70) + 'ms'); rw.appendChild(c); setTimeout(function (x) { x.remove(); }, 2200, c); }
 }
 function paintOrder() {
   var b = $('#ck-lines'); if (!b) return;
@@ -305,17 +444,53 @@ function paintOffers() {
   if (!verified()) { off.setAttribute('inert', ''); b.innerHTML = '<div class="lock">&#128274; Verify your mobile to unlock your rewards.</div>'; return; }
   off.removeAttribute('inert');
   var l = S.loy || {}, earn = S.quote ? S.quote.earnPoints || 0 : 0;
+  if (feat('offers')) return paintOffersOn(b, l, earn);
   b.innerHTML = (l.available ? '<div class="row"><span>Your points</span><b>' + (l.balance || 0) + '</b></div>' : '<p class="muted">Rewards are unavailable right now.</p>') +
-    '<label class="chk"><input type="checkbox" id="ck-usepts" disabled><span>Use my points on this order <span class="pill">Coming soon</span></span></label>' +
+    '<label class="chk"><input type="checkbox" id="ck-usepts" disabled><span>Use a Royal Club reward on this order <span class="pill">Coming soon</span></span></label>' +
     '<p id="ck-pts" class="okmsg">' + (earn ? 'You will earn ' + earn + ' points with this order.' : '') + '</p>' +
     '<p class="muted">Coupons and points redemption will appear here once the rewards club is switched on.</p>';
 }
+function paintOffersOn(b, l, earn) {
+  var o = S.offer, sub = S.quote ? S.quote.subtotalPaise : 0;
+    var h = (l.available ? '<div class="row"><span>Your points</span><b>' + (l.balance || 0) + '</b></div>' : '<p class="muted">Rewards are unavailable right now. You can still order.</p>');
+  h += '<div class="offbtn"><span><b>Apply coupon</b><br><small>Offers for your number</small></span><button class="btn btn-sec" type="button" data-act="coupons">' + (o && o.kind === 'coupon' ? 'Change' : 'Apply') + '</button></div>';
+  if (o && o.kind === 'coupon') h += '<div class="cptag"><span>' + esc(o.code) + ' applied' + (S.quote && S.quote.discountPaise ? ' &middot; you save ' + rs(S.quote.discountPaise) : '') + '</span><button type="button" data-act="rmoffer">Remove</button></div>';
+  var rws = (S.offers && S.offers.rewards) || [];
+  if (l.available && l.member && rws.length) {
+    h += '<div class="rwlist" role="group" aria-label="Royal Club rewards"><b class="rwl-h">Royal Club rewards</b>' + rws.map(function (r) {
+      var on = o && o.kind === 'reward' && o.rewardId === r.id, short = r.pts - (l.balance || 0), addMore = r.kind === 'off' && sub <= r.paise ? r.paise - sub + 100 : 0;   // money off only when the order is bigger than the reward (never a Rs 0 bill)
+      return '<div class="rwi' + (on ? ' on' : '') + (short > 0 ? ' lock' : '') + '"><span><b>' + esc(r.title) + '</b><br><small>' + r.pts + ' points' + (r.kind === 'item' ? ' &middot; at pickup' : '') + '</small></span>' +
+        (on ? '<button type="button" class="btn btn-sec" data-act="rmoffer">Remove</button>' : short > 0 ? '<small class="need">' + short + ' more points</small>' : addMore ? '<small class="need">Add ' + rs(addMore) + ' more</small>' : '<button type="button" class="btn btn-pri" data-act="reward" data-id="' + r.id + '">Use</button>') + '</div>'; }).join('') + '</div>';
+    if (o && o.kind === 'reward' && S.quote && S.quote.freeItem) h += '<p class="okmsg">' + esc(S.quote.freeItem) + '</p>';
+  } else if (l.available && !l.member) h += '<p class="muted">You are new: points from this order are added after it is paid or settled at pickup. Rewards start at 500 points.</p>';
+  if (S.quote && S.quote.offerError) h += '<p class="err">' + esc(S.quote.offerError) + '</p>';
+  h += '<p id="ck-pts" class="okmsg">' + (earn ? 'You will earn ' + earn + ' points with this order.' : '') + '</p><p class="muted" style="margin:0">One offer per order: a coupon or a Royal Club reward. You earn 1 point for every \u20B91.</p>';
+  b.innerHTML = h;
+}
+function openCoupons() {
+  var d = $('#ck-dlg'); if (!d) return;
+  d.innerHTML = '<h2 id="ck-dlg-t">Apply coupon</h2><p class="muted">Loading offers&hellip;</p>'; if (d.showModal && !d.open) d.showModal(); else d.setAttribute('open', '');
+  (MOCK ? demo.offers() : API.offers({ branch: S.outlet, items: quoteBody().items })).then(function (r) { S.offers = r; paintCoupons(); }, function () { d.innerHTML = '<h2 id="ck-dlg-t">Apply coupon</h2><p class="err">Offers are unavailable right now. You can still order.</p><button class="btn btn-dark" type="button" data-act="closedlg">Close</button>'; });
+}
+function paintCoupons() {
+  var d = $('#ck-dlg'), r = S.offers || { coupons: [] };
+  d.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center"><h2 id="ck-dlg-t" style="margin:0">Apply coupon</h2><button class="btn btn-lnk" type="button" data-act="closedlg" aria-label="Close">&times;</button></div>' +
+    '<label class="fld" for="ck-cpin">Have a code?</label><div class="cpin"><input type="text" id="ck-cpin" autocapitalize="characters" maxlength="20" placeholder="Enter code"><button class="btn btn-pri" type="button" data-act="cpcode">Apply</button></div><p class="err" id="ck-cperr" role="alert">' + esc(S.offerMsg || '') + '</p>' +
+    r.coupons.map(function (c) { return '<div class="cp"><div><b>' + esc(c.title) + '</b><b class="code">' + esc(c.code) + '</b><br><small>' + esc(c.desc) + '</small><br>' + (c.eligible ? '<span class="save">You save ' + rs(c.youSavePaise) + '</span>' : '<span class="why">' + esc(c.reason) + '</span>') + '</div>' +
+      (c.eligible ? '<button class="btn btn-pri" type="button" data-act="cpapply" data-code="' + esc(c.code) + '">Apply</button>' : '') + '</div>'; }).join('');
+}
+function setOffer(o) { S.offer = o; S.offerMsg = ''; S.idem = ''; requote(true); }
 function paintSummary() {
   var b = $('#ck-sum'); if (!b) return; var q = S.quote;
   if (!q || S.quoteErr) { b.innerHTML = '<h2>Summary</h2><p class="muted">Your total appears here.</p>'; return; }
-  b.innerHTML = '<h2>Summary</h2><div class="row"><span>Item total</span><span>' + rs(q.subtotalPaise) + '</span></div><div class="row"><span>GST</span><span>' + rs(q.taxPaise) + '</span></div>' +
+  b.innerHTML = '<h2>Summary</h2><div class="row"><span>Item total</span><span>' + rs(q.subtotalPaise) + '</span></div>' +
+    (q.discountPaise ? '<div class="row disc"><span>Discount (' + esc(q.discountLabel || 'offer') + ')</span><span>&minus; ' + rs(q.discountPaise) + '</span></div>' : '') +
+    (q.freeItem ? '<div class="row disc"><span>' + esc(q.freeItem.split(':')[0]) + ' (' + q.pointsUsed + ' points)</span><span>Free at pickup</span></div>' : '') +
+    '<div class="row"><span>GST' + (q.discountPaise ? ' (after discount)' : '') + '</span><span id="ck-gst">' + rs(q.taxPaise) + '</span></div>' +
     (q.chargesPaise ? '<div class="row"><span>Charges</span><span>' + rs(q.chargesPaise) + '</span></div>' : '') +
-    '<div class="row t"><span>Total</span><span id="ck-total">' + rs(q.totalPaise) + '</span></div>';
+    (q.tipPaise ? '<div class="row"><span>Tip' + (S.tip && S.tip.pct ? ' (' + S.tip.pct + '%)' : '') + '</span><span id="ck-tipsum">' + rs(q.tipPaise) + '</span></div>' : '') +
+    (verified() && q.earnPoints ? '<div class="row earn"><span>Points earning</span><span>+ ' + q.earnPoints + ' points</span></div>' : '') +
+    '<div class="row t"><span>Total' + (q.tipPaise || q.discountPaise ? ' including all taxes' : '') + '</span><span id="ck-total">' + rs(q.totalPaise) + '</span></div>';
 }
 function paintPay() {
   var b = $('#ck-pm'); if (!b) return;
@@ -339,10 +514,12 @@ function chooseOutlet(code) {
   requote();
 }
 var qSeq = 0;
-function requote() {
-  if (!S.outlet || !S.cart.length) return; var my = ++qSeq; S.quote = null; S.quoteErr = ''; paintOrder(); paintSummary(); paintPay();
-  API.quote({ branch: S.outlet, items: S.cart.map(function (i) { return { id: i.id, qty: i.qty }; }) }).then(function (q) {
-    if (my !== qSeq) return; S.quote = q; paintOrder(); paintOffers(); paintSummary(); paintPay();
+function requote(soft) {
+  if (!S.outlet || !S.cart.length) return; var my = ++qSeq; if (!soft) { S.quote = null; S.quoteErr = ''; paintOrder(); paintTip(); paintSummary(); } paintPay();
+  API.quote(quoteBody()).then(function (q) {
+    if (my !== qSeq) return; S.quote = q; S.quoteErr = '';
+    if (q.offerError && S.offer) { S.offerMsg = q.offerError; if (S.offer.kind === 'coupon') S.offer = null; }
+    paintOrder(); paintTip(); paintOffers(); paintSummary(); paintPay();
   }, function (e) {
     if (my !== qSeq) return;
     if (e.code === 'item_unavailable' && e.field) { var c = S.cart.filter(function (x) { return x.id === e.field; })[0]; S.quoteErr = (c ? c.name : 'A dish') + ' is not available right now. It has been removed from your order.'; S.cart = S.cart.filter(function (x) { return x.id !== e.field; }); saveCart(); paintOrder(); if (S.cart.length) setTimeout(requote, 1200); return; }
@@ -378,7 +555,8 @@ function verify() {
     S.token = r.token; S.otp = 'open'; S.loy = null; S.method = S.method || ''; clearInterval(tick.t); S.resend = 0;
     paintAll(); unlockFx();
     API.lookup({ branch: S.outlet || (outlets()[0] && outlets()[0].code) || '' }).then(function (l) { S.loy = l || { available: false }; }, function () { S.loy = { available: false }; }).then(function () {
-      paintCard(); paintOffers(); if (S.loy.available) countUp(S.loy.balance || 0);
+      paintCard(); paintOffers(); paintSummary(); if (S.loy.available) countUp(S.loy.balance || 0);
+      if (feat('offers') && S.loy.available && S.loy.member) (MOCK ? demo.offers() : API.offers({ branch: S.outlet, items: quoteBody().items })).then(function (r) { S.offers = r; paintOffers(); }, function () {});
       if (window.innerWidth < 1024) { var o = $('#s-offers'); if (o && o.scrollIntoView) o.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' }); }
     });
   }, function (e) {
@@ -401,8 +579,10 @@ function place() {
   if (!canPay()) return; S.busy = true; S.err = ''; if (!S.idem) S.idem = uuid(); paintPay();
   var body = { branch: S.outlet, slotId: S.slot, method: S.method, items: S.quote.items.map(function (i) { return { id: i.id, qty: i.qty }; }),
     customer: { name: S.name, email: '' }, consent: { terms: true, marketing: false, version: (S.cfg && S.cfg.termsVersion) || '' }, expectedTotalPaise: S.quote.totalPaise };
+  var qb = quoteBody(); if (qb.tip) body.tip = qb.tip; if (qb.offer) body.offer = qb.offer;   // contract v1.2 fields, only when announced
   API.start(body, S.idem).then(function (r) {
-    S.order = { orderId: r.orderId, statusToken: r.statusToken, method: S.method };
+    S.order = { orderId: r.orderId, statusToken: r.statusToken, method: S.method, tipPaise: S.quote.tipPaise || 0, discountPaise: S.quote.discountPaise || 0, discountLabel: S.quote.discountLabel || '',
+      items: S.quote.items.map(function (i) { return { name: i.displayName || i.name, qty: i.qty }; }) };
     if (r.payment && r.payment.demo) { S.busy = false; return view('paydemo'); }
     if (r.payment) return submitPayu(r.payment);
     poll(r.orderId);
@@ -424,7 +604,7 @@ function submitPayu(p) {
 function poll(id, n) {
   n = n || 0; view('wait');
   return API.status(id, S.order && S.order.statusToken).then(function (o) {
-    if (o.state === 'CONFIRMED') { S.order = Object.assign({}, S.order, o); try { localStorage.removeItem('rr_cart_v2'); } catch (e) {} return view('done'); }
+    if (o.state === 'CONFIRMED') { S.order = Object.assign({}, S.order, o, { items: o.items || S.order.items, tipPaise: o.tipPaise != null ? o.tipPaise : S.order.tipPaise, discountPaise: o.discountPaise != null ? o.discountPaise : S.order.discountPaise }); try { localStorage.removeItem('rr_cart_v2'); } catch (e) {} return view('done'); }
     if (o.state === 'PAYMENT_FAILED' || o.state === 'EXPIRED') return view('failed');
     if (n >= 40) { S.err = 'We could not confirm your order yet. If money was taken, it will be refunded or the order confirmed shortly. Please call the outlet.'; return view('failed'); }
     return sleep(1500).then(function () { return poll(id, n + 1); });
@@ -439,10 +619,19 @@ function view(v) {
   if (v === 'closed') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big">Online ordering is not open yet</h1><p>Please call us to order for pickup, or order on WhatsApp.</p><a class="btn btn-pri" href="tel:' + CFG.CALL + '">Call to order</a><a class="btn btn-sec" href="https://wa.me/917702077999">WhatsApp</a></div>';
   if (v === 'paydemo') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><p><span class="pill">Demo</span> This is a pretend payment page. No money moves.</p><div class="row t"><span>Order ' + esc(S.order.orderId) + '</span><span>' + rs(S.quote.totalPaise) + '</span></div><button class="btn btn-pri" data-act="mp" data-ok="1" type="button">Pretend the payment worked</button><button class="btn btn-sec" data-act="mp" data-ok="0" type="button">Pretend the payment failed</button></div>';
   if (v === 'wait') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big">Confirming your order&hellip;</h1><p>Please wait and do not close this page.</p></div>';
-  if (v === 'done') { var o = S.order; ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big" id="h-id">' + esc(o.orderId) + '</h1><p class="okmsg">' + (o.method === 'cod' ? 'Order placed. Pay at the counter when you collect.' : 'Paid and confirmed.') + (MOCK ? ' <span class="pill">Demo</span>' : '') + '</p>' +
-    '<div class="row"><span>Outlet</span><b>' + esc(o.branchName || outName()) + '</b></div><div class="row"><span>Ready at</span><b>' + esc(o.slotLabel || slotLabel()) + '</b></div><div class="row"><span>Total</span><b>' + rs(o.totalPaise || (S.quote && S.quote.totalPaise) || 0) + '</b></div>' +
-    (o.earnPoints ? '<div class="row"><span>Points</span><b class="okmsg">+' + o.earnPoints + (o.method === 'cod' ? ' after you pay at the counter' : '') + '</b></div>' : '') +
-    '<p class="muted">Keep this page or note your order number. For help call <a href="tel:' + CFG.CALL + '">+91 77020 77999</a>.</p><a class="btn btn-sec" href="/">Back to home</a></div>'; }
+  if (v === 'done') { var o = S.order, cod = o.method === 'cod';
+    ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><div class="done-hd"><div class="done-ok" aria-hidden="true">&#10003;</div>' +
+    '<h1 class="big">' + (cod ? 'Order placed' : 'Order confirmed') + (MOCK ? ' <span class="pill">Demo</span>' : '') + '</h1>' +
+    '<p class="okmsg" style="margin:4px 0">' + (cod ? 'Pay at the counter when you collect.' : 'Payment received. The kitchen has your order.') + '</p>' +
+    '<div class="done-no" id="h-id">' + esc(o.orderId) + '</div><p class="muted" style="margin:0 0 10px">Show this number at the counter.</p></div>' +
+    '<div class="row"><span>Outlet</span><b>' + esc(o.branchName || outName()) + '</b></div><div class="row"><span>Ready at</span><b>' + esc(o.slotLabel || slotLabel()) + '</b></div>' +
+    (o.discountPaise ? '<div class="row disc"><span>Discount' + (o.discountLabel ? ' (' + esc(o.discountLabel) + ')' : '') + '</span><span>&minus; ' + rs(o.discountPaise) + '</span></div>' : '') +
+    (o.freeItem ? '<div class="row disc"><span>' + esc(o.freeItem.split(':')[0]) + '</span><span>Collect at the counter</span></div>' : '') +
+    (o.tipPaise ? '<div class="row"><span>Tip</span><b>' + rs(o.tipPaise) + '</b></div>' : '') +
+    '<div class="row t"><span>' + (cod ? 'To pay at pickup' : 'Total paid') + '</span><span>' + rs(o.totalPaise || (S.quote && S.quote.totalPaise) || 0) + '</span></div>' +
+    (o.items && o.items.length ? '<p class="done-items">' + o.items.map(function (i) { return i.qty + ' x ' + esc(i.name); }).join(', ') + '</p>' : '') +
+    (o.earnPoints ? '<div class="done-earn">You will earn <b>' + o.earnPoints + '</b> RR Durbar points ' + (cod ? 'after you pay at the counter.' : 'on this order.') + '</div>' : '') +
+    '<p class="muted">Keep this page or note your order number. For help call <a href="tel:' + CFG.CALL + '">+91 77020 77999</a>.</p><a class="btn btn-pri" href="/?page=pickup-menu">Order more</a><a class="btn btn-sec" href="/">Back to home</a></div>'; }
   if (v === 'failed') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big">Payment not completed</h1><p>' + esc(S.err || 'Your payment did not go through and your order has not been placed. You have not been charged.') + '</p><button class="btn btn-pri" data-act="retry" type="button">Try again</button><a class="btn btn-sec" href="tel:' + CFG.CALL + '">Call the outlet</a></div>';
 }
 
@@ -463,9 +652,9 @@ function resetTurnstile() { S.tsToken = ''; try { if (window.turnstile) window.t
 
 /* ===== EVENTS (one delegated set) ===== */
 document.addEventListener('click', function (ev) {
-  var t = ev.target.closest('[data-act],[data-time],[data-dlg]'); if (!t) return;
+  var t = ev.target.closest('[data-act],[data-dlg]'); if (!t) return;
   if (t.hasAttribute('data-dlg')) { ev.preventDefault(); return openDlg(t.getAttribute('data-dlg')); }
-  if (t.hasAttribute('data-time')) { S.slot = t.getAttribute('data-time'); $$('.ck-chip').forEach(function (c) { c.setAttribute('aria-pressed', String(c === t)); }); var pb = $('#ck-pickbody'); if (pb && !$('[data-act=next]', pb)) paintPickup(); paintSteps(); paintPay(); return; }
+  // (time buttons replaced by the #ck-slot dropdown, 27 Oct)
   var a = t.getAttribute('data-act');
   if (a === 'next') { S.pickupOpen = false; paintPickup(); var p = $('#ck-ph'); if (p && !S.sent) p.focus(); else if (S.sent) $('#ck-o0').focus(); return; }
   if (a === 'change') { S.pickupOpen = true; paintPickup(); var sel = $('#ck-outlet'); if (sel) sel.focus(); return; }
@@ -479,10 +668,24 @@ document.addEventListener('click', function (ev) {
   if (a === 'mp') { var ok = t.getAttribute('data-ok') === '1'; view('wait'); return demo.pay(S.order.orderId, ok).then(function () { return poll(S.order.orderId); }); }
   if (a === 'retry') { S.err = ''; S.idem = ''; S.busy = false; view('order'); return requote(); }
   if (a === 'closedlg') { var d = $('#ck-dlg'); if (d.close) d.close(); else d.removeAttribute('open'); }
+  if (a === 'coupons') return openCoupons();
+  if (a === 'cpapply' || a === 'cpcode') { var cc = a === 'cpapply' ? t.getAttribute('data-code') : ($('#ck-cpin').value || '').trim().toUpperCase(); if (!cc) { $('#ck-cperr').textContent = 'Enter a code.'; return; }
+    var hit = a === 'cpcode' && S.offers && S.offers.coupons.filter(function (x) { return x.code === cc; })[0];
+    if (a === 'cpcode' && hit && !hit.eligible) { $('#ck-cperr').textContent = hit.reason; return; }
+    var dd = $('#ck-dlg'); if (dd.close) dd.close(); else dd.removeAttribute('open'); return setOffer({ kind: 'coupon', code: cc }); }
+  if (a === 'rmoffer') return setOffer(null);
+  if (a === 'reward') return setOffer({ kind: 'reward', rewardId: t.getAttribute('data-id') });
+});
+document.addEventListener('click', function (ev) {
+  var t = ev.target.closest('[data-tip]'); if (!t) return;
+  var v = t.getAttribute('data-tip');
+  if (v === 'other') { var was = S.tipOther || !!(S.tip && S.tip.paise); S.tipOther = !was; S.tip = null; S.idem = ''; paintTip(); var ti = $('#ck-tipamt'); if (ti) ti.focus(); return requote(true); }
+  var p = +v; S.tipOther = false; S.tip = S.tip && S.tip.pct === p ? null : { pct: p }; S.idem = ''; paintTip(); requote(true);
 });
 document.addEventListener('change', function (ev) {
   var t = ev.target;
   if (t.id === 'ck-outlet') return chooseOutlet(t.value);
+  if (t.id === 'ck-slot') { S.slot = t.value; var pb = $('#ck-pickbody'); if (pb && !!S.slot !== !!$('[data-act=next]', pb)) paintPickup(); paintSteps(); paintPay(); return; }
   if (t.id === 'ck-terms') { S.terms = t.checked; if (t.checked) { $('#ck-formerr').textContent = ''; if (S.pendingSend || (phoneOk() && !S.sent)) maybeSend(); } return; }
   if (t.name === 'ck-pm') { S.method = t.value; S.err = ''; S.idem = ''; return paintPay(); }
 });
@@ -490,6 +693,7 @@ document.addEventListener('input', function (ev) {
   var t = ev.target;
   if (t.id === 'ck-ph') { t.value = t.value.replace(/\D/g, '').slice(0, 10); S.phone = t.value; $('#ck-formerr').textContent = ''; if (S.phone.length === 10 && !S.sent) maybeSend(); return; }
   if (t.id === 'ck-nm') { S.name = t.value.trim().slice(0, 60); return; }
+  if (t.id === 'ck-tipamt') { t.value = t.value.replace(/\D/g, '').slice(0, 3); var rup = +t.value || 0; S.tip = rup > 0 ? { paise: Math.min(rup, 500) * 100 } : null; S.idem = ''; clearTimeout(requote.t); requote.t = setTimeout(function () { requote(true); }, 400); return; }
   if (/^ck-o\d$/.test(t.id)) {
     var v = t.value.replace(/\D/g, '');
     if (v.length > 1) return fill(v);
@@ -509,8 +713,18 @@ document.addEventListener('paste', function (ev) {
   if (!/^ck-o\d$/.test((ev.target && ev.target.id) || '')) return;
   var txt = (ev.clipboardData || window.clipboardData).getData('text'); if (!/\d/.test(txt)) return; ev.preventDefault(); fill(txt);
 });
-/* The knob never unlocks by dragging; a tap only moves the user to the next field. */
-document.addEventListener('pointerdown', function (ev) { if (!ev.target.closest('.rw-knob')) return; if (verified()) return; var f = !phoneOk() ? $('#ck-ph') : !S.terms ? $('#ck-terms') : $('#ck-o0'); if (f && !f.disabled) f.focus(); });
+/* The coin never unlocks by itself: only the right code does. Dragging it most of the way (or tapping the track) takes you to the next field. */
+function rwNext() { var rw = $('.rw'); if (!rw || verified()) return; rw.classList.add('nudge'); setTimeout(function () { rw.classList.remove('nudge'); }, 600);
+  var f = !phoneOk() ? $('#ck-ph') : !S.terms ? $('#ck-terms') : $('#ck-o0'); if (f && !f.disabled) { f.focus(); if (f.scrollIntoView) f.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' }); } }
+(function () {
+  var d = null, swAt = 0;
+  document.addEventListener('pointerdown', function (ev) { var k = ev.target.closest && ev.target.closest('.rw-knob'), rw = k && k.closest('.rw'); if (!rw || verified() || S.otp === 'verifying') return;
+    d = { k: k, rw: rw, x0: ev.clientX, dx: 0, max: Math.max(1, rw.querySelector('.rw-trk').clientWidth - k.offsetWidth - 6) }; rw.classList.add('drag'); try { k.setPointerCapture(ev.pointerId); } catch (e) {} });
+  document.addEventListener('pointermove', function (ev) { if (!d) return; d.dx = Math.max(0, Math.min(d.max, ev.clientX - d.x0)); d.k.style.transform = 'translateX(' + d.dx + 'px)'; });
+  function end() { if (!d) return; var x = d; d = null; x.rw.classList.remove('drag'); x.k.style.transform = ''; if (x.dx > 6) swAt = Date.now(); if (x.dx > x.max * 0.6 || x.dx <= 6) rwNext(); }
+  document.addEventListener('pointerup', end); document.addEventListener('pointercancel', end);
+  document.addEventListener('click', function (ev) { if (Date.now() - swAt < 400) return; var tr = ev.target.closest && ev.target.closest('.rw-trk'); if (tr && !ev.target.closest('.rw-knob')) rwNext(); });
+})();
 
 /* ===== START ===== */
 (function start() {
