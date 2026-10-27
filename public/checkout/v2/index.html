@@ -229,7 +229,7 @@ function cpWhy(c, sub) { if (c.expired) return 'This offer has expired.'; if (su
 function dErr(code, msg, field) { return { code: code, msg: msg, field: field }; }
 var demo = {
   config: function () { return sleep(150).then(function () { return { orderingOpen: true, termsVersion: '2026-10-22-v1', codMaxPaise: 100000, branches: DEMO_OUTLETS }; }); },
-  slots: function (b) { return sleep(200).then(function () { if (Q.get('mock') === 'noslots') return { slots: [] }; var out = [], d = new Date(Date.now() + 30 * 60000); d.setMinutes(Math.ceil(d.getMinutes() / 15) * 15, 0, 0); for (var i = 0; i < 8; i++) { out.push({ id: d.toISOString(), label: d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) }); d = new Date(d.getTime() + 15 * 60000); } return { slots: out }; }); },
+  slots: function (b) { return sleep(200).then(function () { if (Q.get('mock') === 'noslots') return { slots: [] }; var out = [], d = new Date(Date.now() + 30 * 60000); d.setMinutes(Math.ceil(d.getMinutes() / 30) * 30, 0, 0); for (var i = 0; i < 16; i++) { out.push({ id: d.toISOString(), label: d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) }); d = new Date(d.getTime() + 30 * 60000); } return { slots: out }; }); },
   quote: function (body) { return sleep(250).then(function () {
     if (Q.get('mock') === 'rista_down') throw dErr('provider_down', 'Our kitchen system is not responding right now. Nothing has been charged. Please try again in a few minutes.');
     var items = body.items.map(function (i) { var c = S.cart.filter(function (x) { return x.id === i.id; })[0] || {}; var unit = Math.round((c.p || 200) * 100); return { id: i.id, name: c.name || i.id, qty: i.qty, unitPaise: unit, linePaise: unit * i.qty }; });
@@ -292,7 +292,11 @@ var API = MOCK ? demo : live;
 function outlets() { return (S.cfg && S.cfg.branches || []).filter(function (b) { return b.open; }); }
 function outletObj() { return outlets().filter(function (o) { return o.code === S.outlet; })[0] || null; }
 function outName() { var o = outletObj(); return o ? o.name : ''; }
-function slotLabel() { var s = (S.slots || []).filter(function (x) { return x.id === S.slot; })[0]; return s ? s.label : ''; }
+var SLOT_MIN = 30;   // owner, 27 Oct: half-hour pickup windows in ONE dropdown
+function hm12(d) { var h = d.getUTCHours(), m = d.getUTCMinutes(); return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + (h < 12 ? ' am' : ' pm'); }
+function bandLabel(id) { var t = Date.parse(id); if (isNaN(t)) return ''; var a = new Date(t + 330 * 60000), b = new Date(t + (330 + SLOT_MIN) * 60000);   // IST
+  var A = hm12(a), B = hm12(b); return A.slice(-2) === B.slice(-2) ? A.slice(0, -3) + ' \u2013 ' + B : A + ' \u2013 ' + B; }
+function slotLabel() { var s = (S.slots || []).filter(function (x) { return x.id === S.slot; })[0]; return s ? bandLabel(s.id) : ''; }
 function verified() { return S.otp === 'open' && !!S.token; }
 function phoneOk() { return /^[6-9]\d{9}$/.test(S.phone); }
 function codOk() { var o = outletObj(); return !!(S.quote && o && o.codAllowed && S.cfg && S.quote.totalPaise <= S.cfg.codMaxPaise); }
@@ -393,7 +397,8 @@ function paintPickup() {
   if (S.outlet) {
     if (!S.slots) slots = '<p class="muted">Loading pickup times&hellip;</p>';
     else if (!S.slots.length) slots = '<p class="err">No pickup times are left today at this outlet. Please choose another outlet or call us.</p>';
-    else slots = '<p class="fld">Ready at</p><div class="ck-chip-row">' + S.slots.map(function (s) { return '<button type="button" class="ck-chip" data-time="' + esc(s.id) + '" aria-pressed="' + (s.id === S.slot) + '">' + esc(s.label) + '</button>'; }).join('') + '</div>';
+    else slots = '<label class="fld" for="ck-slot">Pickup time (today)</label><select id="ck-slot"><option value="">Choose a pickup time</option>' +
+      S.slots.map(function (s) { return '<option value="' + esc(s.id) + '"' + (s.id === S.slot ? ' selected' : '') + '>' + esc(bandLabel(s.id)) + '</option>'; }).join('') + '</select>';
   }
   b.innerHTML = '<label class="fld" for="ck-outlet">Outlet</label><select id="ck-outlet"><option value="">Choose an outlet</option>' + opts + '</select>' +
     '<p class="muted" style="margin:6px 0 0">Patamatalanka takes orders by phone: <a href="tel:' + CFG.CALL + '">call us</a>.</p>' + slots +
@@ -647,9 +652,9 @@ function resetTurnstile() { S.tsToken = ''; try { if (window.turnstile) window.t
 
 /* ===== EVENTS (one delegated set) ===== */
 document.addEventListener('click', function (ev) {
-  var t = ev.target.closest('[data-act],[data-time],[data-dlg]'); if (!t) return;
+  var t = ev.target.closest('[data-act],[data-dlg]'); if (!t) return;
   if (t.hasAttribute('data-dlg')) { ev.preventDefault(); return openDlg(t.getAttribute('data-dlg')); }
-  if (t.hasAttribute('data-time')) { S.slot = t.getAttribute('data-time'); $$('.ck-chip[data-time]').forEach(function (c) { c.setAttribute('aria-pressed', String(c === t)); }); var pb = $('#ck-pickbody'); if (pb && !$('[data-act=next]', pb)) paintPickup(); paintSteps(); paintPay(); return; }
+  // (time buttons replaced by the #ck-slot dropdown, 27 Oct)
   var a = t.getAttribute('data-act');
   if (a === 'next') { S.pickupOpen = false; paintPickup(); var p = $('#ck-ph'); if (p && !S.sent) p.focus(); else if (S.sent) $('#ck-o0').focus(); return; }
   if (a === 'change') { S.pickupOpen = true; paintPickup(); var sel = $('#ck-outlet'); if (sel) sel.focus(); return; }
@@ -680,6 +685,7 @@ document.addEventListener('click', function (ev) {
 document.addEventListener('change', function (ev) {
   var t = ev.target;
   if (t.id === 'ck-outlet') return chooseOutlet(t.value);
+  if (t.id === 'ck-slot') { S.slot = t.value; var pb = $('#ck-pickbody'); if (pb && !!S.slot !== !!$('[data-act=next]', pb)) paintPickup(); paintSteps(); paintPay(); return; }
   if (t.id === 'ck-terms') { S.terms = t.checked; if (t.checked) { $('#ck-formerr').textContent = ''; if (S.pendingSend || (phoneOk() && !S.sent)) maybeSend(); } return; }
   if (t.name === 'ck-pm') { S.method = t.value; S.err = ''; S.idem = ''; return paintPay(); }
 });

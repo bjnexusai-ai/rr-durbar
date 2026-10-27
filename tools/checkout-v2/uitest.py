@@ -48,8 +48,8 @@ def open_page(b, w, h, cart=SAMPLE, url='/checkout/v2/'):
     return ctx, pg, errs
 
 def pickup(pg):
-    pg.select_option('#ck-outlet', 'moghalrajpuram'); pg.wait_for_selector('.ck-chip[data-time]', timeout=8000)
-    pg.click('.ck-chip[data-time] >> nth=1'); pg.wait_for_selector('#ck-total', timeout=8000)
+    pg.select_option('#ck-outlet', 'moghalrajpuram'); pg.wait_for_selector('#ck-slot', timeout=8000)
+    pg.select_option('#ck-slot', index=2); pg.wait_for_selector('#ck-total', timeout=8000)
 
 def login(pg, phone='9999900001', code='123456'):
     pg.check('#ck-terms'); pg.fill('#ck-ph', phone); pg.wait_for_selector('#ck-otpbox:not(.hidden)', timeout=8000)
@@ -84,6 +84,9 @@ with sync_playwright() as p:
     pg.mouse.move(kb['x'] + 28, kb['y'] + 28); pg.mouse.down(); pg.mouse.move(tb['x'] + tb['width'] - 20, kb['y'] + 28, steps=8); pg.mouse.up()
     check('card: dragging the coin does not unlock, it takes you to the mobile field', pg.get_attribute('.rw', 'data-state') == 'locked' and pg.evaluate("document.activeElement && document.activeElement.id") == 'ck-ph')
     pickup(pg)
+    sl = pg.eval_on_selector_all('#ck-slot option', 'os => os.map(o => [o.value, o.textContent])')
+    ids = [v for v, _ in sl if v]; steps = {(int(__import__('datetime').datetime.fromisoformat(b.replace('Z', '+00:00')).timestamp()) - int(__import__('datetime').datetime.fromisoformat(a.replace('Z', '+00:00')).timestamp())) // 60 for a, b in zip(ids, ids[1:])}
+    check('pickup time is ONE dropdown of half-hour windows (no time buttons)', pg.locator('.ck-chip[data-time]').count() == 0 and sl[0][1] == 'Choose a pickup time' and len(ids) >= 8 and steps == {30} and all(re.match(r'^\d{1,2}:(00|30)( am| pm)? \u2013 \d{1,2}:(00|30) (am|pm)$', t) for v, t in sl if v), sl[:3])
     pg.fill('#ck-ph', '9999900001')
     check('no code before the terms tick, with a clear message', 'Tick the box above' in pg.text_content('#ck-formerr') and 'hidden' in pg.get_attribute('#ck-otpbox', 'class'))
     pg.check('#ck-terms'); pg.wait_for_selector('#ck-otpbox:not(.hidden)', timeout=8000)
@@ -171,7 +174,7 @@ with sync_playwright() as p:
         if path == '/config' and r.method == 'GET': return send({'orderingOpen': True, 'termsVersion': 'tv-9', 'codMaxPaise': 100000, 'branches': [{'code': 'moghalrajpuram', 'name': 'Moghalrajpuram', 'open': True, 'codAllowed': True}, {'code': 'singhnagar', 'name': 'Singhnagar', 'open': False, 'codAllowed': True}]})
         if path == '/slots':
             if r.method != 'GET' or 'branch=moghalrajpuram' not in u: violations.append('slots must be GET with ?branch=')
-            return send({'slots': [{'id': '2026-10-26T09:30:00.000Z', 'label': '3:00 pm'}, {'id': '2026-10-26T09:45:00.000Z', 'label': '3:15 pm'}]})
+            return send({'slots': [{'id': '2026-10-26T09:30:00.000Z', 'label': '3:00 pm'}, {'id': '2026-10-26T10:00:00.000Z', 'label': '3:30 pm'}]})
         if path == '/quote':
             if set(body.keys()) != {'branch', 'items'} or any(set(i.keys()) != {'id', 'qty'} for i in body['items']): violations.append('quote body must be only branch and {id,qty} items')
             return send({'items': [{'id': i['id'], 'name': 'Dish ' + i['id'], 'qty': i['qty'], 'unitPaise': 34900, 'linePaise': 34900 * i['qty']} for i in body['items']], 'subtotalPaise': 69800, 'taxPaise': 3490, 'totalPaise': 73290, 'earnPoints': 698})
@@ -188,12 +191,12 @@ with sync_playwright() as p:
             if not re.match(r'^[0-9a-f-]{36}$', h.get('idempotency-key', '')): violations.append('start needs a UUID Idempotency-Key')
             if 'phone' in json.dumps(body) or 'token' in body: violations.append('no phone or token in the start body')
             if body.get('consent', {}).get('version') != 'tv-9' or body['consent'].get('terms') is not True: violations.append('consent must carry terms and the server terms version')
-            if body.get('expectedTotalPaise') != 73290 or body.get('slotId') != '2026-10-26T09:45:00.000Z': violations.append('start must send slotId and expectedTotalPaise')
+            if body.get('expectedTotalPaise') != 73290 or body.get('slotId') != '2026-10-26T10:00:00.000Z': violations.append('start must send slotId and expectedTotalPaise')
             act = 'https://evil.example/_payment' if 'hostile' in log[0][2] or os.environ.get('HOSTILE') else 'https://test.payu.in/_payment'
             return send({'orderId': 'RR-100234', 'statusToken': 'st-1', 'state': 'PAYMENT_PENDING', 'totalPaise': 73290, 'payment': {'type': 'payu', 'action': act, 'method': 'POST', 'fields': {'key': 'k', 'txnid': 'RR-100234', 'amount': '732.90', 'hash': 'h'}}})
         if path == '/order/status':
             if 'id=RR-100234' not in u or 't=st-1' not in u: violations.append('status needs id and t')
-            return send({'orderId': 'RR-100234', 'state': 'CONFIRMED', 'method': 'payu', 'totalPaise': 73290, 'branchName': 'Moghalrajpuram', 'slotLabel': '3:15 pm', 'earnPoints': 698})
+            return send({'orderId': 'RR-100234', 'state': 'CONFIRMED', 'method': 'payu', 'totalPaise': 73290, 'branchName': 'Moghalrajpuram', 'slotLabel': '3:30 pm', 'earnPoints': 698})
         violations.append('unexpected call ' + r.method + ' ' + path); return send({'error': {'code': 'not_found'}}, 404)
 
     def live_ctx():
