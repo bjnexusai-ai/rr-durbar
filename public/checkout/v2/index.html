@@ -179,7 +179,7 @@ var CFG = {
   TURNSTILE_SITEKEY: '',             // public site key from Cloudflare Turnstile (6.6); empty = no widget
   OTP_LEN: 6,
   CALL: '+917702077999',
-  TIP_CHOICES: [5, 10, 15]            // percent of item total; 5% is preselected and removable
+  TIP_CHOICES: [5, 10, 15]            // percent of item total; NOTHING preselected: the customer chooses (CCPA: no charge may be added by default)
 };
 var MOCK = !CFG.LIVE;
 var Q = new URLSearchParams(location.search);
@@ -195,7 +195,7 @@ var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)'
 var S = { view: 'order', cfg: null, outlet: '', slots: null, slot: '', pickupOpen: true, cart: [], quote: null, quoteErr: '',
   phone: '', name: '', terms: false, sent: false, pendingSend: false, otp: 'locked', tries: 5, token: '', loy: null, method: '',
   idem: '', order: null, resend: 0, busy: false, err: '', tsToken: '',
-  tip: { pct: 5 }, tipOther: false, offer: null, offers: null, offerMsg: '' };
+  tip: null, tipOther: false, offer: null, offers: null, offerMsg: '' };
 
 function loadCart() { try { var c = JSON.parse(localStorage.getItem('rr_cart_v2') || 'null'); if (c && Array.isArray(c.items)) { S.cart = c.items.filter(function (i) { return i && i.id && i.qty > 0; }).map(function (i) { return { id: String(i.id), name: String(i.name || i.id), qty: Math.min(20, i.qty | 0), p: i.p }; }); if (c.outlet) S.outlet = String(c.outlet); } } catch (e) {} }
 function saveCart() { try { localStorage.setItem('rr_cart_v2', JSON.stringify({ items: S.cart, outlet: S.outlet })); } catch (e) {} }
