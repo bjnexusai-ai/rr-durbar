@@ -7,3 +7,4 @@ node_modules/
 cms-out/
 __pycache__/
 tools/sitegate/menu-snapshot.json
+*.bak

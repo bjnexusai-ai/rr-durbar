@@ -1,3 +1,6 @@
 # Loyalty page: the client wants both addresses (26 Oct). /loyalty/ is the main one; /rewards/ forwards to it.
 /rewards /loyalty/ 301
 /rewards/ /loyalty/ 301
+# Our Story merged into About Us (28 Oct, decision w2).
+/our-story /about-us/ 301
+/our-story/ /about-us/ 301
