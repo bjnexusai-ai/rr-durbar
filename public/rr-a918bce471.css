@@ -10,7 +10,7 @@ html body #home .music-box{padding:4px 10px 4px 4px!important}
 html body #home .music-button{width:34px!important;height:34px!important;font-size:16px!important}
 html body #home .music-info strong,html body #home .music-info small{font-size:12px!important}
 html body #home .hero-first{display:block;margin-top:6px}
-html body #home .rr-hero-order{display:flex!important;flex-wrap:nowrap!important;gap:8px!important;margin:0 68px 12px 14px!important}
+html body #home .rr-hero-order{display:flex!important;flex-wrap:nowrap!important;gap:8px!important;width:auto!important;margin:0 68px 12px 14px!important}
 html body #home .rr-hero-order>*{flex:1 1 0!important;min-width:0!important;padding:12px 8px!important;font-size:13px!important;letter-spacing:.04em!important;white-space:nowrap!important;text-align:center;justify-content:center}
 html body #rr-tabbar{overflow:hidden}
 html body #rr-tabbar a{flex:1 1 0!important;min-width:0!important;font-size:11px!important;padding:0 2px}
