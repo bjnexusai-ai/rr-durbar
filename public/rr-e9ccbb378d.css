@@ -79,7 +79,7 @@ body .rr-ctaband p{margin:0!important;flex:1 1 240px;font:600 clamp(21px,2.4vw,2
 .rr-ctaband .cb-pk{border:1px solid #e7b85c;color:#f6e3b4}
 .rr-hero-order{display:flex;gap:10px;width:min(1320px,calc(100% - 54px));margin:0 auto 14px}
 .rr-hero-order a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 24px;border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
-.rr-hero-order .cb-go{background:linear-gradient(135deg,#ffd16a,#f68b1d);color:#341008;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.rr-hero-order .cb-go{background:linear-gradient(135deg,#ffd16a,#f68b1d);color:#341008;border:2px solid #fff3cf;box-shadow:0 6px 18px rgba(0,0,0,.55),0 0 0 1px rgba(90,15,24,.6)}
 .rr-hero-order .cb-pk{border:1px solid rgba(240,200,110,.9);color:#f6e3b4;background:rgba(40,6,10,.45)}
 @media(max-width:700px){.rr-ctaband a{white-space:nowrap;padding:0 14px}.rr-hero-order{width:calc(100% - 28px)}.rr-ctaband{padding:18px 18px}.rr-ctaband .cb-act{width:100%}.rr-ctaband .cb-act a{flex:1}}
 /* Order Now: Pickup is the most preferred option */

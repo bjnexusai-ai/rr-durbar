@@ -2446,6 +2446,7 @@ body #stats .rr-stat:hover strong{transform:scale(1.1)}
 body #stats .rr-stat span{color:#7E2324!important;font-weight:700;letter-spacing:.14em}
 @media (max-width:760px){body #stats .rr-stat{border-right:0!important;border-bottom:1px solid rgba(197,138,42,.4)!important}body #awards .rrA-marquee::before,body #awards .rrA-marquee::after{width:50px}body #about .rra-hero::after{width:76px;height:76px;font-size:16.5px;bottom:-30px}}
 @media (prefers-reduced-motion:reduce){body #about .rra-text em,body #story .rr-timeline article::before{animation:none}}
+}
 </style>
 <style id="rr-branches-v10">
 #br-locator{
@@ -3936,7 +3937,7 @@ body .rr-ctaband p{margin:0!important;flex:1 1 240px;font:600 clamp(21px,2.4vw,2
 .rr-ctaband .cb-pk{border:1px solid #e7b85c;color:#f6e3b4}
 .rr-hero-order{display:flex;gap:10px;width:min(1320px,calc(100% - 54px));margin:0 auto 14px}
 .rr-hero-order a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 24px;border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
-.rr-hero-order .cb-go{background:linear-gradient(135deg,#ffd16a,#f68b1d);color:#341008;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.rr-hero-order .cb-go{background:linear-gradient(135deg,#ffd16a,#f68b1d);color:#341008;border:2px solid #fff3cf;box-shadow:0 6px 18px rgba(0,0,0,.55),0 0 0 1px rgba(90,15,24,.6)}
 .rr-hero-order .cb-pk{border:1px solid rgba(240,200,110,.9);color:#f6e3b4;background:rgba(40,6,10,.45)}
 @media(max-width:700px){.rr-ctaband a{white-space:nowrap;padding:0 14px}.rr-hero-order{width:calc(100% - 28px)}.rr-ctaband{padding:18px 18px}.rr-ctaband .cb-act{width:100%}.rr-ctaband .cb-act a{flex:1}}
 /* Order Now: Pickup is the most preferred option */
@@ -4661,7 +4662,7 @@ html body #home.hero .slide:after{background:linear-gradient(90deg,rgba(17,7,8,.
 @media(max-width:899px){
 html body #home.hero .slide .hero-eyebrow{font-size:12px!important}
 html body #home.hero .slide .hero-desc{font-size:15px!important;line-height:1.5!important;max-width:30ch!important}
-html body #home.hero .slide:after{background:linear-gradient(0deg,rgba(12,5,6,.78) 0%,rgba(12,5,6,.5) 30%,rgba(12,5,6,.1) 55%,transparent 70%),linear-gradient(180deg,rgba(12,5,6,.45) 0%,transparent 22%)!important}
+html body #home.hero .slide:after{background:linear-gradient(0deg,rgba(12,5,6,.5) 0%,rgba(12,5,6,.28) 30%,rgba(12,5,6,.05) 55%,transparent 70%),linear-gradient(180deg,rgba(12,5,6,.3) 0%,transparent 22%)!important}
 }
 </style><style id="rr-v67-hero-once">.hero-title .rr-w>i{animation:none!important;opacity:1!important;transform:none!important}</style><style id="rr-v68-nav-icons">
 /* v68: one final size for the nav icons (desktop 56/31, tablet+phone 46/27) */
@@ -4849,7 +4850,7 @@ html.rr-tabs #rrw{bottom:calc(84px + 62px + env(safe-area-inset-bottom))!importa
 html.rr-tabs .mobile-menu{display:none!important}
 }
 @media(max-width:700px){
-#home .hero-bottom:before{content:"";position:absolute;left:0;right:0;top:-120px;bottom:-80px;z-index:-1;pointer-events:none;background:linear-gradient(to top,rgba(14,3,6,.94) 0,rgba(14,3,6,.82) 48%,rgba(14,3,6,0) 100%)}
+#home .hero-bottom:before{content:"";position:absolute;left:0;right:0;top:-120px;bottom:-80px;z-index:-1;pointer-events:none;background:linear-gradient(to top,rgba(14,3,6,.7) 0,rgba(14,3,6,.46) 48%,rgba(14,3,6,0) 100%)}
 #home .hero-first{color:#ffe3a3!important;text-shadow:0 1px 8px rgba(0,0,0,.9)}
 #home .music-box{background:rgba(24,5,9,.82)!important;border-radius:999px}
 #home .rr-hero-order .cb-pk{background:rgba(24,5,9,.88)!important;color:#ffe9b0!important;border-color:#e9c27a!important}
@@ -10674,7 +10675,7 @@ html body #home .music-box{padding:4px 10px 4px 4px!important}
 html body #home .music-button{width:34px!important;height:34px!important;font-size:16px!important}
 html body #home .music-info strong,html body #home .music-info small{font-size:12px!important}
 html body #home .hero-first{display:block;margin-top:6px}
-html body #home .rr-hero-order{display:flex!important;flex-wrap:nowrap!important;gap:8px!important;margin:0 68px 12px 14px!important}
+html body #home .rr-hero-order{display:flex!important;flex-wrap:nowrap!important;gap:8px!important;width:auto!important;margin:0 68px 12px 14px!important}
 html body #home .rr-hero-order>*{flex:1 1 0!important;min-width:0!important;padding:12px 8px!important;font-size:13px!important;letter-spacing:.04em!important;white-space:nowrap!important;text-align:center;justify-content:center}
 html body #rr-tabbar{overflow:hidden}
 html body #rr-tabbar a{flex:1 1 0!important;min-width:0!important;font-size:11px!important;padding:0 2px}
