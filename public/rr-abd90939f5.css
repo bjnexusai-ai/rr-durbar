@@ -371,6 +371,11 @@ html body:not(.rr-scrolled):has(#home.hero:not(.rr-page-hidden)) nav.top-nav .ou
 }
 
 
+html body #bestsellers .rr-food-card.rr-signature-card .rr-media::before{content:none!important}
+html body #bestsellers .rr-sig-foot .rr-qadd{width:44px;height:44px;min-width:44px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+html body #bestsellers .rr-sig-foot .rr-qadd:focus-visible{outline:3px solid #f0c86e;outline-offset:3px}
+html body #bestsellers .rr-sig-foot .rr-qadd:active{transform:scale(.97)}
+
 /* ===== v65 Home > Signature dishes: editorial bento mosaic (replaces the scrolling card row) ===== */
 html body #bestsellers .rr-grid.sig-bento{display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;grid-auto-rows:clamp(54px,6.6vw,86px);gap:12px!important;overflow:visible!important;padding:0!important;margin:30px 0 0!important;scroll-snap-type:none!important;counter-reset:sig}
 html body #bestsellers .rr-food-card.rr-signature-card{position:relative;display:block!important;flex:none!important;width:auto!important;min-width:0;height:auto!important;margin:0!important;border:0!important;border-radius:20px!important;overflow:hidden!important;isolation:isolate;background:#2a0a0e!important;color:#fff;cursor:pointer;transform:none!important;scale:none!important;counter-increment:sig;box-shadow:0 10px 28px rgba(60,12,16,.22)!important;transition:box-shadow .4s ease}

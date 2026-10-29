@@ -699,7 +699,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       clearTimeout(btn._t);btn._t=setTimeout(function(){btn.classList.remove('rr-done');btn.innerHTML=PLUS+' Add'},1300);
     }
   }
-  function qaddBtn(d,label){var b=el('button','rr-qadd');b.type='button';b.innerHTML=PLUS+' Add';b.setAttribute('aria-label','Add '+d.name+' to your order');b.dataset.id=d.id;return b}
+  function qaddBtn(d,label){var b=el('button','rr-qadd');b.type='button';b.innerHTML=PLUS+(label==='plus'?'':' Add');b.setAttribute('aria-label','Add '+d.name+' to your order');b.dataset.id=d.id;return b}
 
   /* ---------- pairings (static rules) ---------- */
   function pairings(d){
@@ -963,7 +963,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       var media=card.querySelector('.rr-media'),hasImg=media&&media.querySelector('img');
       if(hasImg){media.appendChild(el('span','rr-sig-badge','Signature'));media.appendChild(heartBtn(d))}
       var copy=card.querySelector('.rr-food-copy');
-      if(copy){var f=el('div','rr-sig-foot');f.appendChild(SHOW_PRICES?el('span','rr-row-price',money(d.price)):el('span'));f.appendChild(qaddBtn(d));copy.appendChild(f)}
+      if(copy){var f=el('div','rr-sig-foot');f.appendChild(SHOW_PRICES?el('span','rr-row-price',money(d.price)):el('span'));f.appendChild(qaddBtn(d,'plus'));copy.appendChild(f)}
       card.setAttribute('aria-label',d.name+' \u2014 view details');card.setAttribute('role','button');card.removeAttribute('data-rrc');
     });
     return true;
