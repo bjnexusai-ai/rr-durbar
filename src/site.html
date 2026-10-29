@@ -9544,7 +9544,7 @@ function render(){
  var n=D.filter(ok).length;
  $("m52-sub").textContent=D.length+" dishes · "+D.filter(function(x){return x.p}).length+" with photos · pickup from your nearest outlet";
  var ph=D.filter(function(x){return x.p&&ok(x)});
- $("m52-pics").innerHTML=(!q&&ph.length)?'<div class="sh"><h2>The Durbar in pictures</h2><p>Tap any dish for details.</p></div><div class="mz">'+ph.map(function(x,k){var z=SZ(ph.length)[k];return'<button class="m52-t m52-'+z+'" data-i="'+x.i+'"><img src="'+x.p+'" srcset="'+x.p.replace("images/menu/","images/menu/m/")+' 560w, '+x.p+' 900w" sizes="'+((z==="L"||z==="W")?"(max-width:700px) 100vw, 700px":"(max-width:700px) 50vw, 360px")+'" '+(k>=0?'loading="lazy" ':'')+'alt="'+esc(RRDN(x.name,"menu"))+'" decoding="async"><span class="m52-dot '+x.k+'"></span><span class="nm">'+esc(RRDN(x.name,"menu"))+(z==="L"&&x.d?"<small>"+esc(x.d)+"</small>":"")+"</span></button>"}).join("")+"</div>":"";
+ $("m52-pics").innerHTML=(!q&&ph.length)?'<div class="sh"><h2>The Durbar in pictures</h2><p>Tap any dish for details.</p></div><div class="mz">'+ph.map(function(x,k){var z=SZ(ph.length)[k];return'<button class="m52-t m52-'+z+'" data-i="'+x.i+'"><img src="'+x.p+'" srcset="'+x.p.replace("images/menu/","images/menu/m/")+' 560w, '+x.p+' 900w" sizes="'+((z==="L"||z==="W")?"(max-width:700px) 100vw, 700px":"(max-width:700px) 50vw, 360px")+'" '+(k>=0?'loading="lazy" ':'')+'alt="'+esc(RRDN(x.name,"menu"))+'" decoding="async"><span class="m52-dot '+x.k+'"></span><span class="m52-plus" aria-hidden="true">+</span><span class="nm">'+esc(RRDN(x.name,"menu"))+(z==="L"&&x.d?"<small>"+esc(x.d)+"</small>":"")+"</span></button>"}).join("")+"</div>":"";
  var out=G.map(function(g,gi){
   var cs=g.c.map(function(c){var it=D.filter(function(x){return x.category===c&&ok(x)});return it.length?{c:c,it:it}:null}).filter(Boolean);
   if(!cs.length)return"";
@@ -10121,6 +10121,7 @@ main #why-us .rr-heading,main #stats .rr-heading{color:#580810!important;-webkit
 #m52 .m52-t,#m52 .dish,.cx-th,.cx-card,#catering-gallery .rr-card{transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s ease,border-color .35s ease,background-color .35s ease}
 #m52 .m52-t{position:relative;overflow:hidden}
 #m52 .m52-t::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 0 rgba(255,201,107,0);transition:box-shadow .4s ease}
+#m52 .m52-t .m52-plus{position:absolute;right:10px;top:10px;z-index:3;width:36px;height:36px;border-radius:50%;background:#fff;color:#5a0f18;display:grid;place-items:center;font:700 24px/1 Manrope,Arial,sans-serif;box-shadow:0 4px 12px rgba(20,4,6,.35);pointer-events:none}
 #m52 .m52-t:hover::after,#m52 .m52-t:focus-visible::after{box-shadow:inset 0 0 0 2px rgba(255,201,107,.95),inset 0 -90px 70px -50px rgba(40,4,8,.55)}
 #m52 .m52-t img{transition:transform .9s cubic-bezier(.2,.7,.2,1),filter .5s ease}
 #m52 .m52-t:hover img{filter:saturate(1.12) contrast(1.04)}
