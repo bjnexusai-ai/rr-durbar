@@ -1,0 +1,55 @@
+
+/* v75: headings on light cream sections were forced to cream (invisible) */
+main #why-us .rr-heading,main #stats .rr-heading{color:#580810!important;-webkit-text-fill-color:#580810!important;opacity:1!important;transform:none!important}
+/* v75: Terms/Policies mobile sideways scroll */
+@media(max-width:700px){.pol-toc,.pol-body{max-width:100%;min-width:0;box-sizing:border-box;overflow-wrap:anywhere}.pol-wrap{min-width:0;max-width:100%}}
+
+
+/* v76-A: logo plate overran the nav links on 1101-1920px screens (Home touched the logo, Contact touched the divider) */
+@media(min-width:1101px){
+ html body .top-nav .nav-brand{flex:0 1 clamp(360px,30vw,500px)!important;max-width:none!important;margin-right:clamp(24px,2.6vw,56px)!important}
+ html body .top-nav .nav-brand .nav-logo{width:100%!important;max-width:100%!important;height:auto!important;object-fit:contain!important}
+ html body .top-nav .nav-links{flex:none!important}
+}
+/* v76-B: catering card - cream text was set on a cream card (contrast 1.1:1) */
+.cx-card .cx-intro .cx-eyebrow,.cx-card .cx-eyebrow-sm{color:#8a5a14!important;-webkit-text-fill-color:#8a5a14!important;opacity:1!important}
+.cx-card .cx-copy,.cx-card .cx-why p,.cx-card .pol-consent,.cx-card .cx-why li p{color:#5b3a2e!important;-webkit-text-fill-color:#5b3a2e!important;opacity:1!important}
+.cx-card .cx-script{color:#a8741a!important;-webkit-text-fill-color:#a8741a!important;opacity:1!important}
+.cx-card .pol-consent a{color:#7a1d28!important;font-weight:700}
+.cx-card .cx-f label{color:#7a4f10!important}
+.cx-card .cx-h2 em,.cx-card .cx-h3 em{color:#9a6212!important}
+/* v76-C: hero badge slid half under the fixed header; text over the photo was hard to read */
+.cx-badge{transition:opacity .25s ease}
+.cx-trust,.cx-trust *{text-shadow:0 1px 10px rgba(20,2,6,.9),0 0 2px rgba(20,2,6,.8)}
+@media(max-width:700px){
+ .cx-badge{position:relative!important;right:auto!important;left:0!important;margin:-48px 0 0 16px!important;align-self:flex-start!important;width:104px!important;height:104px!important}
+ .cx-badge b{font-size:15.5px!important}
+ .cx-badge small{font-size:11.5px!important;letter-spacing:.05em!important;line-height:1.15!important}
+}
+/* v76-D: motion layer (menu dishes, catering, cards). Strong hover, scroll reveal, shine. */
+#m52 .m52-t,#m52 .dish,.cx-th,.cx-card,#catering-gallery .rr-card{transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s ease,border-color .35s ease,background-color .35s ease}
+#m52 .m52-t{position:relative;overflow:hidden}
+#m52 .m52-t::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 0 rgba(255,201,107,0);transition:box-shadow .4s ease}
+#m52 .m52-t:hover::after,#m52 .m52-t:focus-visible::after{box-shadow:inset 0 0 0 2px rgba(255,201,107,.95),inset 0 -90px 70px -50px rgba(40,4,8,.55)}
+#m52 .m52-t img{transition:transform .9s cubic-bezier(.2,.7,.2,1),filter .5s ease}
+#m52 .m52-t:hover img{filter:saturate(1.12) contrast(1.04)}
+#m52 .dish:hover{background-color:rgba(197,138,42,.09);border-color:rgba(197,138,42,.55)}
+#m52 .dish img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+#m52 .dish:hover img{transform:scale(1.12) rotate(-1.5deg)}
+#catering-gallery .rr-card:hover,.cx-th:hover{box-shadow:0 22px 44px rgba(40,4,8,.38),0 0 0 2px rgba(231,184,92,.7)}
+#catering-gallery .rr-media{overflow:hidden;display:block}
+#catering-gallery .rr-media img{transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+#catering-gallery .rr-card:hover .rr-media img{transform:scale(1.08)}
+@media(prefers-reduced-motion:no-preference){
+ #m52 .m52-t:hover{transform:translateY(-8px) scale(1.025)!important;box-shadow:0 30px 56px rgba(74,15,18,.45)!important;z-index:3}
+ #m52 .m52-t:hover img{transform:scale(1.1)!important}
+ #m52 .dish:hover{transform:translateX(6px)}
+ #catering-gallery .rr-card:hover,.cx-th:hover{transform:translateY(-6px)}
+ .cx-btn-primary,.rr-gold-button{position:relative;overflow:hidden}
+ .cx-btn-primary::after,.rr-gold-button::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);transition:left .7s ease;pointer-events:none}
+ .cx-btn-primary:hover::after,.rr-gold-button:hover::after{left:130%}
+}
+@media(prefers-reduced-motion:reduce){
+ #m52 .m52-t:hover{box-shadow:0 18px 40px rgba(74,15,18,.4)}
+}
+@media(hover:none){#m52 .m52-t:hover,#m52 .dish:hover,#catering-gallery .rr-card:hover,.cx-th:hover{transform:none!important}}

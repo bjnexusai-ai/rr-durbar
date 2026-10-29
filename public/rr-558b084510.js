@@ -1,0 +1,2 @@
+(function(){var d=document.documentElement;if(!document.fonts||!document.fonts.load)return;d.classList.add('rr-fw');var f=function(){d.classList.remove('rr-fw')},t=setTimeout(f,1200);
+Promise.all(['600 16px "Cormorant Garamond"','700 16px "Cormorant Garamond"','500 16px Manrope','600 16px Manrope','700 16px Manrope'].map(function(x){return document.fonts.load(x)})).then(function(){clearTimeout(t);f()},function(){clearTimeout(t);f()})})();
