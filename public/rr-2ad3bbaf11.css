@@ -1,0 +1,2 @@
+/* phones: show the first hero photo as the page background while the rest of the page is still downloading (no more empty dark red screen). Removed once the page has loaded. */
+@media(max-width:700px){html:not(.rr-ready) body{background-image:url(/assets/hero-m-0.webp)!important;background-repeat:no-repeat!important;background-position:50% 0!important;background-size:100% auto!important}}

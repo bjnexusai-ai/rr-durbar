@@ -1,0 +1,116 @@
+
+button.rr-skip{border:0;cursor:pointer;margin:0;-webkit-appearance:none;appearance:none}
+#main-content:focus{outline:none}
+/* ===== Phase 3 accessibility overrides (header + logo untouched) ===== */
+/* Contrast: darker text on light backgrounds */
+body #trust .tn-l2{color:#6b574c!important}
+#rr-instagram-feed .ig-note{color:#5f5040}
+#rr-instagram-feed .ig-head em{color:#7a5518}
+#outlets .ot-hrs,#pickup .pk-st,.pol-hc small,.pol-hc small{color:#8a5a1c}
+.rr-eyebrow,#reels .rr-eyebrow{color:#8a5a1c!important}
+.rr-dark .rr-eyebrow{color:#efc879!important}
+#awards .rg-hint,.rg-eye,.rg-eye span{color:#8a5a1c}
+.lc-note a{color:#7a4f14!important}
+#pickup .pk-no{color:#a8761f}
+#outlets .ot-no{color:#f6dc9a;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+#reviews .rv-st{color:#9a5f00}
+#reviews .rv-st i{color:rgba(154,95,0,.45)}
+.rv-by span:not(.rv-av){color:#6b4310}
+#story #fnd .fnd-snd{background:rgba(255,250,240,.96);color:#6b4310}
+.rr-reel-cap{background:linear-gradient(transparent,rgba(20,3,6,.9))!important;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+body #catering .cx-btn-primary{background:linear-gradient(180deg,#A66A14,#7A4A0C)}
+.cx-f label b{color:#8f5a10}
+.wh-pl-in em.zo{color:#b81d2c}
+/* Tap targets: bigger hit area, identical layout (padding offset by negative margin) */
+.rrf-branches a{display:inline-block;padding-block:5px;margin-block:-5px}
+.rrf-item a,.rrf-bottom nav a{padding-block:5px;margin-block:-5px}
+.rrf-more{padding-block:8px 8px!important;margin-block:-5px}
+.sig-more{padding-block:10px;margin-block:-10px}
+.hero-arrow{flex:none;min-width:44px;min-height:44px}
+#reviews .rv-dot{min-width:28px;min-height:44px}
+.pol-crumb a{display:inline-block;padding-block:8px;margin-block:-8px}
+/* Forced-colors friendliness */
+@media (forced-colors:active){:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid Highlight}}
+
+
+/* catering hero photo: one clean mask (soft left fade + soft top/bottom fade) so there is no hard seam under the header or against the card */
+@media(min-width:761px){
+html body #catering .cx-hero-photo{-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.06) 7%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.55) 25%,rgba(0,0,0,.84) 36%,#000 46%),linear-gradient(180deg,transparent 0,rgba(0,0,0,.45) 6%,#000 17%,#000 80%,rgba(0,0,0,.5) 91%,transparent 100%)!important;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.06) 7%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.55) 25%,rgba(0,0,0,.84) 36%,#000 46%),linear-gradient(180deg,transparent 0,rgba(0,0,0,.45) 6%,#000 17%,#000 80%,rgba(0,0,0,.5) 91%,transparent 100%)!important;-webkit-mask-composite:source-in!important;mask-composite:intersect!important}
+html body #catering .cx-hero-photo::after{background:linear-gradient(90deg,rgba(38,5,12,.88) 0,rgba(38,5,12,.55) 38%,transparent 78%)!important}}
+@media(min-width:761px) and (max-width:1180px){html body #catering .cx-hero-photo::after{background:linear-gradient(90deg,rgba(38,5,12,.95) 0,rgba(38,5,12,.7) 50%,rgba(38,5,12,.15) 100%)!important}}
+@media(max-width:760px){
+html body #catering .cx-hero-photo{-webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.5) 9%,#000 24%,#000 76%,rgba(0,0,0,.5) 91%,transparent 100%)!important;mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.5) 9%,#000 24%,#000 76%,rgba(0,0,0,.5) 91%,transparent 100%)!important}
+html body #catering .cx-hero-photo::after{background:none!important}}
+
+
+/* v76: live Rista menu + cart in Order Now step 3 (Moghalrajpuram only). Scoped to #rrP3.lv */
+#rrP3.lv .lv-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 12px}
+#rrP3.lv .lv-search{flex:1 1 220px;height:44px;padding:0 16px;border:1px solid rgba(197,138,42,.6);border-radius:999px;background:#fff;color:#2b1718;font:600 15px Arial,sans-serif}
+#rrP3.lv .lv-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 0 6px;scrollbar-width:thin}
+#rrP3.lv .lv-chip{flex:0 0 auto;height:40px;padding:0 16px;border:1px solid rgba(197,138,42,.6);border-radius:999px;background:#fff;color:#4a0810;font:800 13px Arial,sans-serif;cursor:pointer;white-space:nowrap}
+#rrP3.lv .lv-chip[aria-pressed="true"]{background:#7E2324;color:#f6e27f;border-color:#7E2324}
+#rrP3.lv .lv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+#rrP3.lv .lv-d{display:flex;gap:12px;padding:10px;border:1px solid #e9dcd1;border-radius:14px;background:#fff}
+#rrP3.lv .lv-ph{flex:0 0 84px;width:84px;height:84px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#f3e4c6,#e8cf9c)}
+#rrP3.lv .lv-ph img{display:block;width:100%;height:100%;object-fit:cover}
+#rrP3.lv .lv-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+#rrP3.lv .lv-n{display:flex;align-items:center;gap:8px;margin:0;font:600 18px/1.2 'Cormorant Garamond',Georgia,serif;color:#2b1718}
+#rrP3.lv .lv-veg{flex:0 0 12px;width:12px;height:12px;border-radius:3px;border:2px solid #2f8a4d;background:#2f8a4d;box-shadow:inset 0 0 0 2px #fff}
+#rrP3.lv .lv-veg.nv{border-color:#a8321f;background:#a8321f}
+#rrP3.lv .lv-ds{margin:0;font:400 13px/1.4 Arial,sans-serif;color:#6b4a3f;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#rrP3.lv .lv-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+#rrP3.lv .lv-add{min-height:40px;padding:0 14px;border:1px solid rgba(240,200,110,.85);border-radius:999px;background:linear-gradient(135deg,#ffd16a,#f68b1d);color:#341008;font:800 13px Arial,sans-serif;cursor:pointer}
+#rrP3.lv .lv-add:disabled{background:#eee3d6;border-color:#d9c9b4;color:#8a7466;cursor:not-allowed}
+#rrP3.lv .lv-off{font:800 12px Arial,sans-serif;letter-spacing:.04em;color:#8a7466}#rrP3.lv .lv-so{opacity:.55}#rrP3.lv .lv-so .lv-ph img{filter:grayscale(1)}
+#rrP3.lv .lv-msg{margin:10px 0;padding:12px 14px;border-radius:12px;background:#fbf1df;color:#4a0810;font:600 14px/1.5 Arial,sans-serif}
+#rrP3.lv .lv-msg.err{background:#fde8e4;color:#7a1f10}
+#rrP3.lv .lv-msg button,#rrP3.lv .lv-msg a{margin-left:8px;color:#7E2324;font-weight:800}
+#rrP3.lv .lv-rm{border:0;background:none;color:#7E2324;font:800 12px Arial,sans-serif;text-decoration:underline;cursor:pointer}
+#rrP3.lv .p3-line.bad span:first-child{color:#a8321f}
+#rrP3.lv .p3-go:disabled{opacity:.55;cursor:not-allowed}
+#rrP3.lv .lv-small{font:400 12.5px/1.4 Arial,sans-serif;color:#806e68}
+@media(max-width:560px){#rrP3.lv .lv-list{grid-template-columns:1fr}#rrP3.lv .lv-ph{flex-basis:72px;width:72px;height:72px}}
+
+#odPickupCard .od-selw{display:block}
+.lv-cod{margin-top:18px;padding:14px;border:1px dashed rgba(184,134,11,.7);border-radius:14px}
+.lv-cod h4{margin:0 0 6px}
+.lv-f{display:block;margin:8px 0}.lv-f span{display:block;font-size:13px;margin-bottom:4px}
+.lv-f input{width:100%;box-sizing:border-box;min-height:44px;padding:8px 12px;border:1px solid rgba(0,0,0,.25);border-radius:10px;font:inherit}
+.lv-change{font-size:14px;text-decoration:underline}
+
+/* v87: same styles on the new Pickup Menu page */
+/* v76: live Rista menu + cart in Order Now step 3 (Moghalrajpuram only). Scoped to #lvPage.lv */
+#lvPage.lv .lv-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 12px}
+#lvPage.lv .lv-search{flex:1 1 220px;height:44px;padding:0 16px;border:1px solid rgba(197,138,42,.6);border-radius:999px;background:#fff;color:#2b1718;font:600 15px Arial,sans-serif}
+#lvPage.lv .lv-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 0 6px;scrollbar-width:thin}
+#lvPage.lv .lv-chip{flex:0 0 auto;height:40px;padding:0 16px;border:1px solid rgba(197,138,42,.6);border-radius:999px;background:#fff;color:#4a0810;font:800 13px Arial,sans-serif;cursor:pointer;white-space:nowrap}
+#lvPage.lv .lv-chip[aria-pressed="true"]{background:#7E2324;color:#f6e27f;border-color:#7E2324}
+#lvPage.lv .lv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+#lvPage.lv .lv-d{display:flex;gap:12px;padding:10px;border:1px solid #e9dcd1;border-radius:14px;background:#fff}
+#lvPage.lv .lv-ph{flex:0 0 84px;width:84px;height:84px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#f3e4c6,#e8cf9c)}
+#lvPage.lv .lv-ph img{display:block;width:100%;height:100%;object-fit:cover}
+#lvPage.lv .lv-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+#lvPage.lv .lv-n{display:flex;align-items:center;gap:8px;margin:0;font:600 18px/1.2 'Cormorant Garamond',Georgia,serif;color:#2b1718}
+#lvPage.lv .lv-veg{flex:0 0 12px;width:12px;height:12px;border-radius:3px;border:2px solid #2f8a4d;background:#2f8a4d;box-shadow:inset 0 0 0 2px #fff}
+#lvPage.lv .lv-veg.nv{border-color:#a8321f;background:#a8321f}
+#lvPage.lv .lv-ds{margin:0;font:400 13px/1.4 Arial,sans-serif;color:#6b4a3f;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#lvPage.lv .lv-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+#lvPage.lv .lv-add{min-height:40px;padding:0 14px;border:1px solid rgba(240,200,110,.85);border-radius:999px;background:linear-gradient(135deg,#ffd16a,#f68b1d);color:#341008;font:800 13px Arial,sans-serif;cursor:pointer}
+#lvPage.lv .lv-add:disabled{background:#eee3d6;border-color:#d9c9b4;color:#8a7466;cursor:not-allowed}
+#lvPage.lv .lv-off{font:800 12px Arial,sans-serif;letter-spacing:.04em;color:#8a7466}#lvPage.lv .lv-so{opacity:.55}#lvPage.lv .lv-so .lv-ph img{filter:grayscale(1)}
+#lvPage.lv .lv-msg{margin:10px 0;padding:12px 14px;border-radius:12px;background:#fbf1df;color:#4a0810;font:600 14px/1.5 Arial,sans-serif}
+#lvPage.lv .lv-msg.err{background:#fde8e4;color:#7a1f10}
+#lvPage.lv .lv-msg button,#lvPage.lv .lv-msg a{margin-left:8px;color:#7E2324;font-weight:800}
+#lvPage.lv .lv-rm{border:0;background:none;color:#7E2324;font:800 12px Arial,sans-serif;text-decoration:underline;cursor:pointer}
+#lvPage.lv .p3-line.bad span:first-child{color:#a8321f}
+#lvPage.lv .p3-go:disabled{opacity:.55;cursor:not-allowed}
+#lvPage.lv .lv-small{font:400 12.5px/1.4 Arial,sans-serif;color:#806e68}
+@media(max-width:560px){#lvPage.lv .lv-list{grid-template-columns:1fr}#lvPage.lv .lv-ph{flex-basis:72px;width:72px;height:72px}}
+
+#odPickupCard .od-selw{display:block}
+.lv-cod{margin-top:18px;padding:14px;border:1px dashed rgba(184,134,11,.7);border-radius:14px}
+.lv-cod h4{margin:0 0 6px}
+.lv-f{display:block;margin:8px 0}.lv-f span{display:block;font-size:13px;margin-bottom:4px}
+.lv-f input{width:100%;box-sizing:border-box;min-height:44px;padding:8px 12px;border:1px solid rgba(0,0,0,.25);border-radius:10px;font:inherit}
+.lv-change{font-size:14px;text-decoration:underline}
+#pickup-menu{padding-top:110px;min-height:70vh}#lvPage .lv-name{margin:14px 0 4px}#lvPage .lv-name span{display:block;font-size:13px;margin-bottom:4px}#lvPage .lv-name input{width:100%;max-width:360px;box-sizing:border-box;min-height:44px;padding:8px 12px;border:1px solid rgba(0,0,0,.25);border-radius:10px;font:inherit}

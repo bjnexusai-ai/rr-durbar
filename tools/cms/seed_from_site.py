@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """RR Durbar: build the first CMS content (cms/seed/seed.ndjson) FROM THE LIVE SITE, so nothing is typed in by hand or invented.
-Run from the website repo root:  python3 tools/cms/seed_from_site.py [public/index.html] > cms/seed/seed.ndjson
+Run from the website repo root:  python3 tools/cms/seed_from_site.py [src/site.html] > cms/seed/seed.ndjson
 Reads: the Google data (business details and the 6 outlets), the page titles and descriptions (pageSeo), every page's sections
 (small label, heading, intro), the display-name layer (task 1.3) and the dish photo maps, and the three policy pages.
 Everything imported is marked "imported" so the owner reviews it in the Studio before it replaces anything.
@@ -8,7 +8,7 @@ GPS: taken from the master plan section 3 and marked NOT verified (C32): it neve
 import html, json, re, sys
 from pathlib import Path
 
-src = Path(sys.argv[1] if len(sys.argv) > 1 else 'public/index.html').read_text(encoding='utf-8')
+src = Path(sys.argv[1] if len(sys.argv) > 1 else 'src/site.html').read_text(encoding='utf-8')
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'cms'))
 txt = lambda x: re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', x or ''))).strip()
 out = []

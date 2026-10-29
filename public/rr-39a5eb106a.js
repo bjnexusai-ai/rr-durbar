@@ -1,0 +1,4 @@
+/* v78 phase1: clean URLs (/about-us/ etc.) open the matching ?page= route; canonicals and sitemap use the clean URLs */(function(){try{if(window.RR_PAGE)return;var m=location.pathname.replace(/^\/+|\/+$/g,"");var ok=["about-us","menu","order-now","branches","catering","contact","track-order","pickup","policies","privacy-policy","terms-of-service","refund-cancellation"];if(ok.indexOf(m)>-1&&!/[?&]page=/.test(location.search)){history.replaceState(null,"","/?page="+m+location.hash)}}catch(e){}})();
+;
+/* Client decision: no prices on the site for now. Set to true to bring every price back (cards, menu rows, dish popup, cart). */
+window.RR_SHOW_PRICES=false;if(window.RR_SHOW_PRICES===false)document.documentElement.classList.add('rr-no-prices');

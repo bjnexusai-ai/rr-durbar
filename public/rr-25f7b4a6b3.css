@@ -1,0 +1,28 @@
+/* cart drawer money (not covered by the JS flag) */
+html.rr-no-prices .rr-ci-price,html.rr-no-prices aside#drawer .drawer-foot .total,html.rr-no-prices body #drawer .drawer-foot .total{display:none!important}
+
+/* Logo v80: ONE image, CSS lives in <head> so it exists before the nav is painted (fixes the oversized-logo flash). */
+.nav-brand .rr-lg{display:block;position:relative;width:100%;max-width:636px;min-width:0;aspect-ratio:1600/313}
+.nav-brand .rr-logo{filter:drop-shadow(0 4px 10px rgba(20,0,0,.45));display:block;width:100%;height:auto;aspect-ratio:1600/313;opacity:0;transform:scale(.97);transform-origin:left center;animation:rrLogoIn .55s cubic-bezier(.2,.7,.2,1) .05s forwards}
+@keyframes rrLogoIn{to{opacity:1;transform:none}}
+/* gold shine: masked to the logo's own shape, plays once after load, again on hover */
+.rr-lg-shine{position:absolute;inset:0;z-index:3;pointer-events:none;-webkit-mask-image:url("assets/logo/rr-logo-480.webp");mask-image:url("assets/logo/rr-logo-480.webp");-webkit-mask-size:100% 100%;mask-size:100% 100%;
+ background:linear-gradient(105deg,transparent 36%,rgba(255,196,80,0) 42%,rgba(255,196,80,.65) 50%,rgba(255,196,80,0) 58%,transparent 64%);background-size:260% 100%;background-position:130% 0}
+.rr-lg-shine{animation:rrFoil 1.6s ease-in-out 1.1s 1 both}
+.nav-brand:hover .rr-lg-shine{animation:rrFoil 1.2s ease-in-out 0s 1 both}
+@keyframes rrFoil{0%{background-position:130% 0}100%{background-position:-30% 0}}
+.nav-brand{transition:transform .35s cubic-bezier(.2,.7,.2,1)}.nav-brand:hover{transform:scale(1.015)}
+/* Logo size v80 (authoritative; beats the older !important patch layers by specificity).
+   Desktop: width follows viewport, leaving >=20px before the nav links. Phones: fits beside the 3 buttons. */
+html body nav.top-nav .nav-brand{flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:none!important}
+html body nav.top-nav .nav-brand .rr-lg{max-width:none;min-width:0}
+html body nav.top-nav .nav-brand .nav-logo{width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important}
+@media(min-width:980px){html body nav.top-nav .nav-brand .rr-lg{width:30.2vw}}
+@media(min-width:1280px){html body nav.top-nav .nav-brand .rr-lg{width:min(32vw,525px)}}
+@media(min-width:701px) and (max-width:979px){html body nav.top-nav .nav-brand .rr-lg{width:44vw;max-width:340px}}
+@media(max-width:700px){html body nav.top-nav .nav-brand{flex:0 1 auto!important}html body nav.top-nav .nav-brand .rr-lg{width:min(230px,calc(100vw - 146px))}}
+/* 980-1099px: menu text 14px so the last link no longer touches the search button (was overlapping by up to 48px) */
+@media(min-width:980px) and (max-width:1019px){html body nav.top-nav .nav-brand .rr-lg{width:28vw}}
+@media(min-width:980px) and (max-width:1099px){html body nav.top-nav .nav-links a{font-size:14px!important}html body nav.top-nav .nav-links{gap:6px!important}}
+@media(min-width:980px){body.rr-nav-hide nav.top-nav{translate:0 -170%!important}body nav.top-nav{transition:translate .4s cubic-bezier(.2,.7,.2,1),scale .45s cubic-bezier(.2,.7,.2,1),filter .45s}}
+@media(prefers-reduced-motion:reduce){.nav-brand .rr-logo{opacity:1;transform:none;animation:none}.rr-lg-shine{animation:none;opacity:0}.nav-brand,.nav-brand:hover{transform:none;transition:none}body.rr-nav-hide nav.top-nav{translate:none!important}}

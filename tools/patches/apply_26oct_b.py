@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""RR Durbar: patch set 26 Oct (b) for public/index.html. Exact old/new string patches, nothing else is touched.
+"""RR Durbar: patch set 26 Oct (b) for src/site.html. Exact old/new string patches, nothing else is touched.
 Run from the website repo root:  python3 tools/patches/apply_26oct_b.py            (writes the file)
                                  python3 tools/patches/apply_26oct_b.py --check    (changes nothing, only says if it would apply)
-Safety: refuses to run unless public/index.html is EXACTLY the live version b1d4b89eae0468a6 (so it can never clash with the
+Safety: refuses to run unless src/site.html is EXACTLY the live version b1d4b89eae0468a6 (so it can never clash with the
 owner's page-split work or another patch). Every old string must be found the expected number of times, or nothing is written.
 
   A  (task 6.7)  Menu cart -> checkout v2 button. HIDDEN unless window.RR_CHECKOUT_V2 === true, so with this patch alone
@@ -13,7 +13,7 @@ owner's page-split work or another patch). Every old string must be found the ex
 import hashlib, sys
 from pathlib import Path
 
-F = Path('public/index.html')
+F = Path('src/site.html')
 EXPECT = 'b1d4b89eae0468a6'
 CHECK = '--check' in sys.argv
 
@@ -34,7 +34,7 @@ def sha(b): return hashlib.sha256(b).hexdigest()[:16]
 raw = F.read_bytes()
 h = sha(raw)
 if h != EXPECT:
-    print(f'STOP: public/index.html is {h}, expected {EXPECT}. Nothing written. Paste this line to the builder.'); sys.exit(1)
+    print(f'STOP: src/site.html is {h}, expected {EXPECT}. Nothing written. Paste this line to the builder.'); sys.exit(1)
 s = raw.decode('utf-8')
 for name, n, old, new in PATCHES:
     c = s.count(old)
@@ -46,4 +46,4 @@ out = s.encode('utf-8')
 if CHECK:
     print(f'CHECK ONLY: would change {h} -> {sha(out)} (+{len(out) - len(raw)} bytes). Nothing written.'); sys.exit(0)
 F.write_bytes(out)
-print(f'WRITTEN: public/index.html {h} -> {sha(out)} (+{len(out) - len(raw)} bytes). Preview first, then commit by explicit path.')
+print(f'WRITTEN: src/site.html {h} -> {sha(out)} (+{len(out) - len(raw)} bytes). Preview first, then commit by explicit path.')
