@@ -182,7 +182,7 @@ function render(){
       var q=S.quote&&S.quoteFor===sig()?S.quote:null;if(!q||!q.allOk){toast('Please wait for the prices',true);return}
       if(!(S.name||'').trim()){ni.focus();toast('Add your name first',true);return}
       var tx="Hi RR Durbar, I'd like to place a pickup order.\nOutlet: "+NAMES[slug]+"\nName: "+S.name.trim()+"\nOrder: "+S.order.map(function(id){return S.lines[id].qty+' x '+lineName(id)}).join(', ')+"\nTotal: "+money(q.total)+' (incl. GST)';
-      window.open('https://wa.me/917702077999?text='+encodeURIComponent(tx),'_blank','noopener')});
+      window.open('https://wa.me/919849982052?text='+encodeURIComponent(tx),'_blank','noopener')});
     p3.appendChild(goBtn);
     p3.appendChild(el('p','p3-note','Online payment is not live yet. The outlet confirms your order on WhatsApp or by phone. Prices come from the outlet\u2019s system.'));
     if(TEST&&COD.indexOf(code)>-1)p3.appendChild(codBox(code));
