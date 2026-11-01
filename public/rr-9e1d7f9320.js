@@ -4,7 +4,7 @@ var B=[115/1314,754/1197,1059/1314,87/1197];
 function pc(v){if(!v)return .5;if(v.indexOf('%')>0)return parseFloat(v)/100;return v==='left'||v==='top'?0:v==='right'||v==='bottom'?1:.5}
 function place(){var r=fr.getBoundingClientRect(),ir=img.getBoundingClientRect();if(!ir.width||!ir.height)return;var nw=img.naturalWidth||1314,nh=img.naturalHeight||1197,s=Math.max(ir.width/nw,ir.height/nh),w=nw*s,h=nh*s,op=getComputedStyle(img).objectPosition.split(' '),ox=ir.left-r.left+(ir.width-w)*pc(op[0]),oy=ir.top-r.top+(ir.height-h)*pc(op[1]);
  sw.style.setProperty('--bx',(ox+B[0]*w).toFixed(1)+'px');sw.style.setProperty('--by',(oy+B[1]*h).toFixed(1)+'px');sw.style.setProperty('--bw',(B[2]*w).toFixed(1)+'px');sw.style.setProperty('--bh',(B[3]*h).toFixed(1)+'px')}
-place();img.addEventListener('load',place);addEventListener('resize',place);if(window.ResizeObserver)new ResizeObserver(place).observe(fr);
+f.classList.add('ext-armed');place();img.addEventListener('load',place);addEventListener('resize',place);if(window.ResizeObserver)new ResizeObserver(place).observe(fr);
 function go(){place();f.classList.add('ext-in');setTimeout(place,1000)}
 if(!('IntersectionObserver' in window)){go();return}
 var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){io.disconnect();(img.decode?img.decode():Promise.resolve()).then(go,go)}},{threshold:.3});io.observe(f);
