@@ -14,9 +14,9 @@ with sync_playwright() as p:
     for n in range(8):
         d = pg.evaluate(JS, n); pg.wait_for_timeout(900); d = pg.evaluate(JS, n)
         ib = d["idx"][1] + d["idx"][3]; mt = d["music"][1] if d["music"] else 9999
-        ok = d["panel"][0] == 0 and d["panel"][2] == 360 and d["eyec"] == "rgb(136, 25, 41)" and d["descc"] == "rgb(58, 20, 8)" and ib <= mt - 4
+        ok = d["panel"][0] == 0 and d["panel"][2] == 360 and d["eyec"] == "rgb(136, 25, 41)" and d["descc"] == "rgb(58, 20, 8)" and (ib <= mt - 4 or (d["music"] and d["music"][1] + d["music"][3] <= d["panel"][1]))  # v5: music chip may sit on the photo, above the panel
         bad += (not ok)
-        print(f"slide {n+1}: panel x{d['panel'][0]} w{d['panel'][2]} | photo h{d['photo'][3]} | eyebrow h{d['eye'][3]} {d['eyec']} | desc h{d['desc'][3]} {d['descc']} | counter bottom {ib} vs music top {mt} | {'OK' if ok else 'PROBLEM'}")
+        print(f"slide {n+1}: panel x{d['panel'][0]} w{d['panel'][2]} | photo h{d['photo'][3]} | eyebrow h{d['eye'][3]} {d['eyec']} | desc h{d['desc'][3]} {d['descc']} | counter bottom {ib} vs music top {mt} (or chip above panel) | {'OK' if ok else 'PROBLEM'}")
         f = f"tmp-shots/m360-{n+1}.png"; pg.screenshot(path=f); shots.append(f)
     for name, grp in (("A", shots[:4]), ("B", shots[4:])):
         im = [Image.open(f) for f in grp]; sheet = Image.new("RGB", (sum(i.width for i in im), im[0].height)); x = 0

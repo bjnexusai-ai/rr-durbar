@@ -1,0 +1,19 @@
+/* rr-mobile-v5 START (phone fixes 31 Oct). Delete this block + the script below to revert the CSS/JS part */
+@media(max-width:700px){
+/* 2 music chip on the photo */
+html body #home>#musicBox.rr-mb-chip{position:absolute!important;left:12px!important;right:auto!important;bottom:auto!important;top:calc(var(--rr-photo-h,42svh) - 70px)!important;z-index:7!important;margin:0!important;min-width:0!important;width:auto!important;max-width:none!important;padding:5px 10px 5px 5px!important;gap:8px!important;transform:none!important}
+html body #home>#musicBox.rr-mb-chip .music-info{display:none!important}
+html body #home .slide.active .slide-index{color:#3a1408!important}
+/* 5 branches map: no cut-off, no leaf decoration */
+html body #br-locator{height:auto!important;min-height:0!important;max-height:none!important}
+html body #br-locator .leaves{display:none!important}
+/* 3 signature dishes: text under the photo */
+html body #bestsellers .sig-bento.sig-bento.sig-bento{grid-auto-rows:auto!important;grid-template-rows:none!important;align-items:stretch!important}
+html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card.rr-signature-card:nth-child(n){height:auto!important;min-height:0!important;aspect-ratio:auto!important;display:flex!important;flex-direction:column!important}
+html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card::before{display:none!important}
+html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card .rr-media{position:relative!important;inset:auto!important;width:100%!important;height:132px!important;flex:none!important;border-bottom-left-radius:0!important;border-bottom-right-radius:0!important}
+html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card:nth-child(1) .rr-media{height:190px!important}
+html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card .rr-media img{height:100%!important}
+html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card .rr-food-copy{position:relative!important;inset:auto!important;flex:1 1 auto!important;padding:10px 12px 12px!important;background:#2a0a0e!important}
+}
+/* rr-mobile-v5 END */

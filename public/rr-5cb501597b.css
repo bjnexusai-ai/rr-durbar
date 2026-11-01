@@ -34,7 +34,7 @@ html body #bestsellers p:not(.rr-food-card *){font-size:16px!important;line-heig
 #m61-toast{bottom:calc(var(--rr-tabbar-h) + 82px)!important}
 #ordering .od-mbar{bottom:calc(var(--rr-tabbar-h) + 10px)!important}}
 @media(max-width:700px){
-:root{--rr-cream:#f8f0e5;--rr-crim:#881929;--rr-ink:#3a1408;--rr-gold:#a8761c;--rr-photo-h:42svh}
+:root{--rr-cream:#f8f0e5;--rr-crim:#881929;--rr-ink:#3a1408;--rr-gold:#8a5a12;--rr-photo-h:42svh}
 html body #home.hero{background:var(--rr-cream)!important}
 html body #home.hero::after,html body #home.hero .slide::before,html body #home.hero .slide::after,html body #home .slide .hero-copy::before,html body #home .slide .hero-copy::after{display:none!important}
 html body #home .slide .slide-photo{position:absolute!important;left:0!important;right:0!important;top:0!important;bottom:auto!important;width:100%!important;height:var(--rr-photo-h)!important;overflow:hidden!important;transform:none!important;filter:none!important;-webkit-mask-image:none!important;mask-image:none!important}
