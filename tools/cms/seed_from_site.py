@@ -7,12 +7,16 @@ Everything imported is marked "imported" so the owner reviews it in the Studio b
 GPS: taken from the master plan section 3 and marked NOT verified (C32): it never reaches Google until the owner ticks it."""
 import html, json, re, sys
 from pathlib import Path
+import collections
 
 src = Path(sys.argv[1] if len(sys.argv) > 1 else 'src/site.html').read_text(encoding='utf-8')
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'cms'))
 txt = lambda x: re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', x or ''))).strip()
 out = []
-def doc(d): out.append(d)
+def doc(d):
+    # two spellings of one Rista name give the same id: keep ONE card (the later one, as Sanity does on import)
+    out[:] = [x for x in out if x.get('_id') != d['_id']]
+    out.append(d)
 
 # ---- routes and sections (same list as cms/routes.js) ----
 m = re.search(r"\{\s*home:\s*\[.*?'refund-cancellation':\s*\[[^\]]*\],?\s*\}", src, re.S)
@@ -34,9 +38,11 @@ for k in ('swiggy', 'zomato'):
     lm = re.search(r"RR_LISTINGS\|\|\{[^}]*?" + k + r":'(https://[^']+)'", src)
     if lm: listings[k] = lm.group(1)
 insta = next((u for u in org.get('sameAs', []) if 'instagram.com' in u), '')
+_wa = collections.Counter(re.findall(r'wa\.me/(91[6-9]\d{9})\b', src))
+WA = _wa.most_common(1)[0][0] if _wa else ''   # the WhatsApp number the site actually uses
 doc({'_id': 'siteSettings', '_type': 'siteSettings', 'brandName': org.get('name', 'RR Durbar'),
      'legalName': 'RR Fresh Foods (RR Durbar)' if legal else '', 'gstin': org.get('taxID', ''), 'phone': org.get('telephone', ''),
-     'whatsapp': '917702077999' if 'wa.me/917702077999' in src else '', 'email': org.get('email', ''),
+     'whatsapp': WA, 'email': org.get('email', ''),
      'instagram': insta.rstrip('/').split('/')[-1] if insta else '', 'swiggyUrl': listings.get('swiggy', ''), 'zomatoUrl': listings.get('zomato', ''),
      'registeredAddress': 'D.No 40-7-3, Near Jammichettu Centre, Moghalrajpuram, Vijayawada, AP 520010',
      'hoursText': html.unescape(hours.group(0)).replace('–', 'to') if hours else '11:00 AM to 11:30 PM, all days',
@@ -58,6 +64,17 @@ for i, r in enumerate(rest):
          'callForHours': not oh, 'lat': lat, 'lng': lng, 'gpsVerified': False,
          'mapsUrl': 'https://www.google.com/maps/search/?api=1&query=' + re.sub(r'\s+', '+', f'RR Durbar {name}, {a.get("streetAddress", "")}'),
          'fssai': fssai, 'sort': i + 1})
+
+# outlets the site no longer shows (e.g. Patamatalanka, removed 31 Oct) stay in the CMS HIDDEN, never deleted:
+# orders, the Rista code and Google history use them. Their last known details come from the id lock.
+_done = {d['code'] for d in out if d.get('_type') == 'outlet'}
+_lock = json.loads((Path(__file__).resolve().parent / 'cms-ids.lock.json').read_text(encoding='utf-8')).get('outlets', {})
+for code, L in _lock.items():
+    if code in _done: continue
+    doc({'_id': f'outlet-{code}', '_type': 'outlet', 'name': code.capitalize(), 'code': code, 'ristaCode': L['ristaCode'], 'active': False,
+         'onlineOrdering': False, 'callOnly': True, 'street': L.get('street', ''), 'locality': 'Vijayawada', 'pincode': L.get('pincode', ''),
+         'phone': org.get('telephone', ''), 'opens': '11:00', 'closes': '23:30', 'callForHours': False,
+         'lat': L.get('lat'), 'lng': L.get('lng'), 'gpsVerified': False, 'mapsUrl': '', 'fssai': '', 'sort': 99})
 
 # ---- page titles and descriptions (pageSeo) ----
 seo = {}
