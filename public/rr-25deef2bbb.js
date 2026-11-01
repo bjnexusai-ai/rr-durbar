@@ -1,3 +1,14 @@
+/* about-us exterior reveal: places the gold light on the signboard (board = 115..1174 x 754..841 in the 1314x1197 photo), opens once in view */
+(function(){var f=document.getElementById('rraExt');if(!f)return;var img=f.querySelector('img'),sw=f.querySelector('.ext-sweep'),fr=f.querySelector('.rra-frame');if(!img||!sw||!fr)return;
+var B=[115/1314,754/1197,1059/1314,87/1197];
+function pc(v){if(!v)return .5;if(v.indexOf('%')>0)return parseFloat(v)/100;return v==='left'||v==='top'?0:v==='right'||v==='bottom'?1:.5}
+function place(){var r=fr.getBoundingClientRect(),ir=img.getBoundingClientRect();if(!ir.width||!ir.height)return;var nw=img.naturalWidth||1314,nh=img.naturalHeight||1197,s=Math.max(ir.width/nw,ir.height/nh),w=nw*s,h=nh*s,op=getComputedStyle(img).objectPosition.split(' '),ox=ir.left-r.left+(ir.width-w)*pc(op[0]),oy=ir.top-r.top+(ir.height-h)*pc(op[1]);
+ sw.style.setProperty('--bx',(ox+B[0]*w).toFixed(1)+'px');sw.style.setProperty('--by',(oy+B[1]*h).toFixed(1)+'px');sw.style.setProperty('--bw',(B[2]*w).toFixed(1)+'px');sw.style.setProperty('--bh',(B[3]*h).toFixed(1)+'px')}
+place();img.addEventListener('load',place);addEventListener('resize',place);if(window.ResizeObserver)new ResizeObserver(place).observe(fr);
+function go(){place();f.classList.add('ext-in');setTimeout(place,1000)}
+if(!('IntersectionObserver' in window)){go();return}
+var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){io.disconnect();(img.decode?img.decode():Promise.resolve()).then(go,go)}},{threshold:.3});io.observe(f);
+})();
 /* rr-branches-b: warm string lights along the bridge cables in the skyline photo (coordinates are in the photo's own pixels) */
 (function(){var sky=document.getElementById('skyline'),img=sky&&sky.querySelector('img');if(!img)return;
 var NS='http://www.w3.org/2000/svg',W=1600,H=533;

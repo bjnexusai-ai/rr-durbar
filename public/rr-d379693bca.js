@@ -1,0 +1,1 @@
+document.documentElement.classList.add("rr-js");window.RR_BRAND={"singhnagar": "RR's Joints Veg and Non-Veg Restaurant", "moghalrajpuram": "RR Durbar", "bhavanipuram": "RR Durbar", "poranki": "RR Durbar, Poranki", "autonagar": "RR's Joints (Take Away)"};addEventListener("load",function(){setTimeout(function(){document.documentElement.classList.add("rr-ready")},400)});

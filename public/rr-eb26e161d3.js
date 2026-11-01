@@ -1,1 +1,0 @@
-addEventListener("load",function(){setTimeout(function(){document.documentElement.classList.add("rr-ready")},400)});

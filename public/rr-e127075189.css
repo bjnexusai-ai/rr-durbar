@@ -13,7 +13,7 @@ html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature
 html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card::before{display:none!important}
 html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card .rr-media{position:relative!important;inset:auto!important;width:100%!important;height:132px!important;flex:none!important;border-bottom-left-radius:0!important;border-bottom-right-radius:0!important}
 html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card:nth-child(1) .rr-media{height:190px!important}
-html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card .rr-media img{height:100%!important}
+html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card .rr-media img{height:100%!important;border-radius:0!important}
 html body #bestsellers .sig-bento.sig-bento.sig-bento>.rr-food-card.rr-signature-card .rr-food-copy{position:relative!important;inset:auto!important;flex:1 1 auto!important;padding:10px 12px 12px!important;background:#2a0a0e!important}
 }
 /* rr-mobile-v5 END */

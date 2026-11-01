@@ -2,7 +2,8 @@
 /* v74 typography: bolder Cormorant display + Manrope text, clearer hierarchy. Burgundy / gold / cream unchanged. */
 :root{--t-burg:#580810;--t-gold:#8A5A20;--t-ink:#3a2a24;--t-ink-soft:#5b463d;--t-cream:#FFF7F0}
 html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-body{font-family:'Manrope',Arial,sans-serif;color:var(--t-ink);font-feature-settings:"kern","liga"}
+body{font-family:'Manrope',Arial,sans-serif;color:var(--t-ink);font-feature-settings:"kern","liga","lnum"}
+*,*::before,*::after{font-feature-settings:"kern","liga","lnum"!important}
 /* Display headings */
 .rr-heading,h1,h2{font-family:'Cormorant Garamond',Georgia,serif!important;font-weight:700!important;letter-spacing:-.015em!important;line-height:1.04!important;text-wrap:balance;font-variant-numeric:lining-nums}
 .rr-heading{font-size:clamp(38px,4.6vw,64px)!important;color:var(--t-burg)}
