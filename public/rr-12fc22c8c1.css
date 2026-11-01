@@ -244,7 +244,7 @@ html{scroll-behavior:smooth}
 /* Hero: natural start, slow food-film push, independent 12s timing */
 .slide.active .hero-image{animation-duration:12s!important;animation-fill-mode:both!important;animation-timing-function:cubic-bezier(.18,.68,.16,1)!important;}
 /* Never let the old reveal rules create a window/frame */
-.slide.active .slide-photo{animation:none!important;clip-path:inset(0)!important;transform:none!important}
+.slide.active .slide-photo{animation:none!important;transform:none!important}
 /* Food-commercial glow and highlight sweep */
 .slide.active .slide-photo:before{animation:rrFoodGlow 12s ease-out both!important}
 .slide.active .slide-photo:after{animation:rrFoodSweep 12s ease-out both!important}

@@ -1,0 +1,130 @@
+/* rr-branches-b: cream page, map on a dark plate, night skyline band with the lit bridge */
+html body #br-locator{background:#f8f0e5!important}
+html body #br-locator::before,html body #br-locator::after{display:none!important}
+html body #br-locator .deco,html body #br-locator .leaves,html body #br-locator .candle,html body #br-locator .bowl{display:none!important}
+html body #br-locator h1{color:#580c18!important}
+html body #br-locator .brh-kicker{color:#8a5a12!important}
+html body #br-locator .lede{color:#3a1408!important}
+html body #br-locator .olist,html body #br-locator .olist button{color:#3a1408!important}
+html body #br-locator .btn-ghost{color:#881929!important;border-color:rgba(136,25,41,.55)!important}
+html body #br-locator .stage{background:radial-gradient(80% 70% at 50% 50%,#2a0a10 0%,#0e0306 100%);border-radius:26px;padding:12px;box-shadow:0 24px 50px rgba(58,20,8,.32),inset 0 0 0 1px rgba(209,171,86,.25)}
+html body #br-locator .mapimg{filter:drop-shadow(0 0 18px rgba(240,190,90,.30))!important}
+/* the night band: skyline sits on its own dark strip that fades up into the cream */
+html body #br-locator .skyline{background:#0b0002!important;border-top:1px solid rgba(209,171,86,.55)!important;-webkit-mask-image:none!important;mask-image:none!important}
+html body #br-locator .skyline::before,html body #br-locator .skyline::after{display:none!important}
+html body #br-locator .skyline img{-webkit-mask-image:none!important;mask-image:none!important;margin-top:-9%!important}
+html body #br-locator .map{width:92%!important;margin:0 auto!important}
+html body #br-locator .map::before{display:none!important}
+html body #br-locator .sign{color:#f6d78e!important;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+@media(min-width:701px){
+ html body section#br-locator#br-locator{padding-bottom:calc(33.33vw - 110px)!important;min-height:0!important;max-height:none!important;height:auto!important}
+ html body #br-locator .sign{display:none!important}
+ html body #br-locator .skyline{height:auto!important;min-height:0!important;transform:none!important}
+ html body #br-locator .skyline img{width:100%!important;margin-left:0!important;transform:none!important}
+}
+@media(max-width:700px){
+ html body #br-locator .hero-grid{display:flex!important;flex-direction:column!important}
+ html body #br-locator .intro{display:contents!important}
+ html body #br-locator .brh-kicker{order:1}html body #br-locator h1{order:2}html body #br-locator .lede{order:3}
+ html body #br-locator .stage{order:4;margin:8px 0 6px!important;width:100%!important;max-width:none!important}
+ html body #br-locator .hub span{display:none!important}
+ html body #br-locator .olist{order:5}html body #br-locator .btn-ghost{order:6}
+ html body #br-locator .hero-grid>*:not(.intro):not(.stage){order:7}
+ html body section#br-locator#br-locator{padding-bottom:49vw!important}
+ html body #br-locator .sign{color:#580c18!important;text-shadow:none!important}
+ html body #br-locator .skyline{height:auto!important;min-height:0!important;transform:none!important}
+ html body #br-locator .skyline img{width:240%!important;margin-left:-122%!important;margin-top:-31%!important;transform:none!important}
+}
+/* bridge string lights */
+html body #br-locator .rr-bulbs{position:absolute;pointer-events:none;z-index:2;overflow:visible}
+html body #br-locator .rr-bulbs .b{opacity:.15}
+html body #br-locator .rr-bulbs .h{opacity:0}
+@media(prefers-reduced-motion:no-preference){
+ html body #br-locator .rr-bulbs.on .b{animation:rrBulbOn .5s cubic-bezier(.16,1,.3,1) forwards var(--d),rrBulbTw 3.4s ease-in-out infinite calc(var(--d) + .7s)}
+ html body #br-locator .rr-bulbs.on .h{animation:rrHaloOn .9s ease-out forwards var(--d),rrBulbTw 3.4s ease-in-out infinite calc(var(--d) + .9s)}
+}
+@media(prefers-reduced-motion:reduce){html body #br-locator .rr-bulbs .b{opacity:1}html body #br-locator .rr-bulbs .h{opacity:.8}}
+@keyframes rrBulbOn{to{opacity:1}}
+@keyframes rrHaloOn{to{opacity:.85}}
+@keyframes rrBulbTw{0%,100%{opacity:1}50%{opacity:.5}}
+#rraExt .ext-dusk,#rraExt .ext-sweep{position:absolute;pointer-events:none;z-index:1}
+#rraExt .ext-dusk{inset:0;background:linear-gradient(180deg,rgba(16,3,12,.74),rgba(38,6,14,.58));opacity:0}
+#rraExt .ext-sweep{left:var(--bx,9%);top:var(--by,63%);width:var(--bw,80%);height:var(--bh,7%);overflow:hidden;mix-blend-mode:screen}
+#rraExt .ext-sweep::before{content:"";position:absolute;top:0;bottom:0;left:0;width:38%;background:linear-gradient(100deg,transparent,rgba(255,222,150,.8) 50%,transparent);transform:translateX(-110%)}
+#rraExt .ext-sweep::after{content:"";position:absolute;inset:-35% -2%;background:radial-gradient(55% 85% at 74% 50%,rgba(255,196,100,.3),transparent 70%);opacity:0}
+@media(prefers-reduced-motion:no-preference){
+ html.rr-js #rraExt.ext-armed:not(.ext-in) .rra-frame{clip-path:inset(100% -15% -15% -15%);transform:scale(1.07)}
+ html.rr-js #rraExt.ext-armed:not(.ext-in) .rra-frame,html.rr-js #rraExt.ext-armed:not(.ext-in) .ext-dusk{animation:none}
+ html.rr-js #rraExt.ext-armed:not(.ext-in) .ext-dusk{opacity:1}
+ #rraExt.ext-in .rra-frame{clip-path:inset(-15% -15% -15% -15%);transform:none;transition:clip-path 1.7s cubic-bezier(.65,.05,.25,1),transform 2.4s cubic-bezier(.16,1,.3,1)}
+ #rraExt .ext-lift{position:absolute;inset:0;z-index:2;pointer-events:none;transform:translateY(100%);opacity:0}
+ #rraExt .ext-lift b{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,#e7b85c 18%,#fff1c8 50%,#e7b85c 82%,transparent);box-shadow:0 0 14px 3px rgba(255,196,96,.55),0 0 46px 10px rgba(255,170,60,.22)}
+ #rraExt.ext-in .ext-lift{animation:rrExtLift 1.7s cubic-bezier(.65,.05,.25,1) forwards}
+ #rraExt.ext-in .ext-dusk{opacity:0;transition:opacity 1.9s cubic-bezier(.16,1,.3,1) .2s}
+ #rraExt.ext-in .ext-sweep::before{animation:rrExtSweep 1.15s cubic-bezier(.3,.6,.4,1) 1.7s forwards}
+ #rraExt.ext-in .ext-sweep::after{animation:rrExtGlow 1s ease-out 2.5s forwards}
+}
+@media(prefers-reduced-motion:reduce){#rraExt .ext-sweep::after{opacity:1}#rraExt .ext-lift{display:none}}
+@keyframes rrExtLift{0%{transform:translateY(100%);opacity:0}8%{opacity:1}85%{opacity:1}100%{transform:translateY(0);opacity:0}}
+@media(min-width:981px){#rraExt .ext-lift b{-webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 8%,#000 34%);mask-image:linear-gradient(90deg,transparent 0,transparent 8%,#000 34%)}}
+@keyframes rrExtSafeC{to{clip-path:inset(-15% -15% -15% -15%)}}
+@keyframes rrExtSafeO{to{opacity:0}}
+@keyframes rrExtSweep{to{transform:translateX(330%)}}
+@keyframes rrExtGlow{to{opacity:1}}
+/* 26 */
+#outlets .ot-no{display:none!important}
+html body #bestsellers .rr-food-card.rr-signature-card .rr-qadd svg{width:28px!important;height:28px!important;filter:drop-shadow(0 1px 3px rgba(0,0,0,.55))}
+html body #bestsellers .rr-food-card.rr-signature-card .rr-qadd:active{transform:scale(.9)}
+/* 27. Home hero: each photo opens from its focal point like an iris, ringed by a thin band of gold light, while the
+   camera settles; a warm flash at the centre; the words rise out of a mask one after another. Plays on first load
+   and on every slide change. Transform/opacity/clip-path only. */
+@media(prefers-reduced-motion:no-preference){
+ html body #home.hero .slide.active{opacity:1!important;transition:none!important}
+ html body #home.hero.hero .slide.active .slide-photo{animation:rrIris 1.35s cubic-bezier(.7,0,.2,1) both!important}
+ html body #home.hero .slide.active .rr-iris-rim{animation:rrIrisRim 1.35s cubic-bezier(.7,0,.2,1) both}
+ html body #home.hero .slide.active .rr-iris-glow{animation:rrIrisGlow 1.5s ease-out both}
+ html body #home.hero .slide.active .hero-copy>*{animation:rrHeroRise .95s cubic-bezier(.16,1,.3,1) both!important}
+ html body #home.hero .slide.active .hero-copy>.hero-eyebrow{animation-delay:.42s!important}
+ html body #home.hero .slide.active .hero-copy>.rr-rule{animation-delay:.48s!important}
+ html body #home.hero .slide.active .hero-copy>.hero-title{animation-delay:.55s!important}
+ html body #home.hero .slide.active .hero-copy>.hero-desc{animation-delay:.7s!important}
+ html body #home.hero .slide.active .hero-copy>.hero-actions{animation-delay:.82s!important}
+ html body #home.hero .slide.active .hero-copy>.slide-index{animation-delay:.92s!important}
+}
+#home .rr-iris-rim,#home .rr-iris-glow{position:absolute;pointer-events:none;opacity:0}
+#home .rr-iris-rim{background:radial-gradient(circle at var(--ix,60%) var(--iy,52%),#fff1c4 0,#f2c86a 40%,#b8862b 100%);z-index:0}
+#home .rr-iris-glow{background:radial-gradient(circle at var(--ix,60%) var(--iy,52%),rgba(255,214,140,.75) 0,rgba(255,180,80,.28) 18%,transparent 46%);mix-blend-mode:screen}
+#home .slide-photo,#home .rr-iris-rim,#home .rr-iris-glow{--ix:var(--fx,60%);--iy:var(--fy,52%)}
+@media(max-width:700px){#home .slide-photo,#home .rr-iris-rim,#home .rr-iris-glow{--ix:50%;--iy:46%}}
+@keyframes rrIris{0%{clip-path:circle(0% at var(--ix,60%) var(--iy,52%))}100%{clip-path:circle(150% at var(--ix,60%) var(--iy,52%))}}
+@keyframes rrIrisRim{0%{opacity:1;clip-path:circle(.45% at var(--ix,60%) var(--iy,52%))}88%{opacity:1}100%{opacity:0;clip-path:circle(150.45% at var(--ix,60%) var(--iy,52%))}}
+@keyframes rrIrisGlow{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+@keyframes rrHeroRise{0%{opacity:0;transform:translateY(34px);clip-path:inset(0 0 100% 0)}60%{opacity:1}100%{opacity:1;transform:none;clip-path:inset(-30% -6% -40% -6%)}}
+/* 29. Menu: dishes rise into place in 3D (tilted back, then settling flat) one after another as you scroll; the photo
+   is unveiled from the bottom and zooms gently; desktop cards tilt toward the pointer with a moving gold glare. */
+html.rr-js #m52.m-armed .m52-t:not(.m-in){opacity:0;transform:perspective(1000px) rotateX(22deg) translateY(70px) scale(.92)!important}
+html.rr-js #m52.m-armed .m52-t:not(.m-in) img{clip-path:inset(100% 0 0 0);transform:scale(1.28)!important}
+html.rr-js #m52.m-armed .m52-t:not(.m-in) :is(.nm,.m52-plus,.m52-dot){opacity:0;transform:translateY(14px)}
+#m52.m-armed .m52-t{animation:none!important;transform-origin:50% 100%}
+#m52.m-armed .m52-t.m-go{transition:opacity .7s ease-out var(--md,0s),transform 1.05s cubic-bezier(.16,1,.3,1) var(--md,0s)!important}
+#m52.m-armed .m52-t.m-go img{transition:clip-path 1.1s cubic-bezier(.65,.05,.25,1) calc(var(--md,0s) + .12s),transform 1.6s cubic-bezier(.16,1,.3,1) calc(var(--md,0s) + .12s)!important;clip-path:inset(0 0 0 0)}
+#m52.m-armed .m52-t.m-go :is(.nm,.m52-plus,.m52-dot){transition:opacity .5s ease-out calc(var(--md,0s) + .55s),transform .7s cubic-bezier(.16,1,.3,1) calc(var(--md,0s) + .55s)}
+#m52 .m52-t .m-glare{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(circle at var(--gx,50%) var(--gy,30%),rgba(255,236,190,.38),transparent 55%);transition:opacity .35s ease-out}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ html body #m52 .m52-t.m-in.m-tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-6px) scale(1.02)!important;transition:transform .12s linear!important;box-shadow:0 30px 56px rgba(74,15,18,.42)!important;z-index:3}
+ html body #m52 .m52-t.m-in.m-tilt .m-glare{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){html.rr-js #m52.m-armed .m52-t:not(.m-in),html.rr-js #m52.m-armed .m52-t:not(.m-in) img,html.rr-js #m52.m-armed .m52-t:not(.m-in) :is(.nm,.m52-plus,.m52-dot){opacity:1;transform:none!important;clip-path:none}}
+
+@media(min-width:981px){html body #about #rraExt .rra-frame img{-webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 6%,rgba(0,0,0,.45) 16%,rgba(0,0,0,.85) 27%,#000 36%)!important;mask-image:linear-gradient(90deg,transparent 0,transparent 6%,rgba(0,0,0,.45) 16%,rgba(0,0,0,.85) 27%,#000 36%)!important}}
+/* 17. maps: no overlapping labels. Vijayawada pill hidden at all sizes (dome stays); desktop shows only the selected or hovered outlet name; pickup map and list without 1-5 numbers */
+#br-locator .hub span{display:none!important}
+@media(min-width:621px){#br-locator .pin:not(.on):not(:hover):not(.is-hover) .pin-lab{display:none}}
+#pickup .pk-pin b,#pickup .pk-no{display:none!important}
+
+/* 19-20: Google name line above the area name; AC + parking line */
+#br-list .brx-brand,#br-locator #pName[data-brand]:not([data-brand=""])::before,#pickup .pk-name[data-brand]:not([data-brand=""])::before{display:block;margin:0 0 4px;font:800 10.5px/1.3 'Manrope',Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#a8781f}
+#br-locator #pName[data-brand]:not([data-brand=""])::before{content:attr(data-brand);color:#e7b85c}
+#pickup .pk-name[data-brand]:not([data-brand=""])::before{content:attr(data-brand)}
+#br-list .brx-body .brx-am{margin:0 0 6px!important;padding:0 0 0 20px!important;font:500 13.5px/1.4 'Manrope',Arial,sans-serif!important;color:#5a4a3a!important}
+#br-list .brx-body .brx-am::before,#br-list .brx-body .brx-am::after{content:none!important;display:none!important}

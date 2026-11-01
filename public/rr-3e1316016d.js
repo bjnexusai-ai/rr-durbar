@@ -695,8 +695,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   function quickAdd(btn,d){
     window.rrAddToCart(d.id,btn,1);
     if(btn.classList&&btn.classList.contains('rr-qadd')){
-      var old=btn.dataset.l||btn.textContent;btn.dataset.l=old;btn.classList.add('rr-done');btn.textContent='Added';
-      clearTimeout(btn._t);btn._t=setTimeout(function(){btn.classList.remove('rr-done');btn.innerHTML=PLUS+' Add'},1300);
+      var old=btn.dataset.l||btn.textContent;btn.dataset.l=old;btn.classList.add('rr-done');var sig=btn.closest&&btn.closest('.rr-signature-card');if(sig){btn.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'}else{btn.textContent='Added'}
+      clearTimeout(btn._t);btn._t=setTimeout(function(){btn.classList.remove('rr-done');btn.innerHTML=sig?PLUS:PLUS+' Add'},1300);
     }
   }
   function qaddBtn(d,label){var b=el('button','rr-qadd');b.type='button';b.innerHTML=PLUS+(label==='plus'?'':' Add');b.setAttribute('aria-label','Add '+d.name+' to your order');b.dataset.id=d.id;return b}

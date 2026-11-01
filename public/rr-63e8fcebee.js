@@ -141,12 +141,12 @@ function paintList(){
   if(!listBox)return;listBox.textContent='';var cats=S.menu.categories,items;
   if(S.q){var t=S.q.toLowerCase();items=[];cats.forEach(function(c){c.items.forEach(function(d){if(d.name.toLowerCase().indexOf(t)>-1)items.push(d)})});items=items.slice(0,60)}
   else items=(cats[S.cat]||{items:[]}).items;
-  if(!S.q&&S.menu.categories.every(function(c){return !(c.items&&c.items.length)})){var am=el('p','lv-msg','No dishes are available at this outlet right now. It may be closed or still getting ready. ');var aa=el('a','','Call 77020 77999');aa.href='tel:+917702077999';am.appendChild(aa);listBox.appendChild(am);return}
+  if(!S.q&&S.menu.categories.every(function(c){return !(c.items&&c.items.length)})){var am=el('p','lv-msg','No dishes are available at this outlet right now. It may be closed or still getting ready. ');var aa=el('a','','Call 98499 82052');aa.href='tel:+919849982052';am.appendChild(aa);listBox.appendChild(am);return}
    if(!items.length){listBox.appendChild(el('p','lv-msg',S.q?'No dish found. Try another word.':'No dishes in this section.'));return}
   items.forEach(function(d){listBox.appendChild(dishRow(d))})}
 
 function note(text,err,retry){var m=el('p','lv-msg'+(err?' err':''),text);if(retry){var b=el('button','','Try again');b.type='button';b.addEventListener('click',function(){S.loadedAt=0;render()});m.appendChild(b)}
-  var a=el('a','','Call 7702077999');a.href='tel:7702077999';if(err)m.appendChild(a);return m}
+  var a=el('a','','Call 9849982052');a.href='tel:9849982052';if(err)m.appendChild(a);return m}
 
 function render(){
   var slug=slugNow();
@@ -205,7 +205,7 @@ if(osel)osel.addEventListener('change',function(e){
   e.stopImmediatePropagation();
   var t=(o.text+' '+o.value).toLowerCase(),slug=null;for(var k in LIVE)if(t.indexOf(k)>-1)slug=k;
   osel.selectedIndex=0;
-  if(slug)window.rrOrderLive(slug);else toast('This outlet takes orders by phone: 7702077999',true)
+  if(slug)window.rrOrderLive(slug);else toast('This outlet takes orders by phone: 9849982052',true)
 },true);
 window.RR_LIVE_OUTLETS=LIVE;
 })();
