@@ -13,7 +13,7 @@ const errs = (docs, opt) => validate(docs, opt).errors.join('\n');
 test('the seed from the live site is valid and complete', () => {
   const { errors } = validate(SEED);
   assert.deepEqual(errors, []);
-  assert.equal(SEED.filter((d) => d._type === 'outlet').length, 6);
+  assert.equal(SEED.filter((d) => d._type === 'outlet').length, 5);   // Patamatalanka removed 1 Nov (owner)
   assert.equal(SEED.filter((d) => d._type === 'page').length, 16);
   assert.equal(SEED.filter((d) => d._type === 'legalPage').length, 3);
 });
@@ -27,11 +27,11 @@ test('a price anywhere on a dish stops the build', () => {
   assert.match(errs(d3), /rupee amount is in the text/);
 });
 
-test('outlet codes, Rista codes and Patamatalanka call-only are enforced', () => {
+test('outlet codes, Rista codes and call-only are enforced', () => {
   const a = fresh(); one(a, 'outlet-poranki').ristaCode = 'XX';
   assert.match(errs(a), /Rista code must be PO/);
-  const b = fresh(); one(b, 'outlet-patamatalanka').onlineOrdering = true;
-  assert.match(errs(b), /call-to-order only/);
+  const b = fresh(); const o = one(b, 'outlet-poranki'); o.callOnly = true; o.onlineOrdering = true;
+  assert.match(errs(b), /call to order only/);
   const c = fresh(); one(c, 'outlet-autonagar').code = 'auto';
   assert.match(errs(c), /unknown code/);
 });
@@ -117,5 +117,5 @@ test('the build stops and writes nothing when Sanity is down', async () => {
 test('the committed id lock matches the seed', () => {
   const lock = JSON.parse(readFileSync('tools/cms/cms-ids.lock.json', 'utf8'));
   assert.deepEqual(validate(SEED, { lock }).errors, []);
-  assert.deepEqual(Object.keys(lock.outlets).sort(), ['autonagar', 'bhavanipuram', 'moghalrajpuram', 'patamatalanka', 'poranki', 'singhnagar']);
+  assert.deepEqual(Object.keys(lock.outlets).sort(), ['autonagar', 'bhavanipuram', 'moghalrajpuram', 'poranki', 'singhnagar']);
 });

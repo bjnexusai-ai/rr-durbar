@@ -51,9 +51,18 @@ doc({'_id': 'siteSettings', '_type': 'siteSettings', 'brandName': org.get('name'
 CODES = {'singhnagar': 'SN', 'moghalrajpuram': 'MR', 'bhavanipuram': 'BH', 'poranki': 'PO', 'autonagar': 'AT', 'patamatalanka': 'PL'}
 GPS = {'singhnagar': (16.5332, 80.6358), 'moghalrajpuram': (16.5057, 80.6384), 'bhavanipuram': (16.5369, 80.5898),   # plan section 3,
        'poranki': (16.4801, 80.6922), 'patamatalanka': (16.4912, 80.6554), 'autonagar': (16.5161, 80.6728)}            # NOT verified (C32)
+# outlets are recognised by AREA (street + name), not by the name: since 1 Nov the site uses the Google Business names
+# ("RR's Joints (Take Away)", "RR Durbar, Poranki"...), which do not contain the area.
+AREA = {'singhnagar': ('singh nagar', 'singhnagar', 'budameru', 'ramakrishnapuram', 'rama krishna puram'),
+        'moghalrajpuram': ('moghalrajpuram', 'mogalrajapuram', 'labbipet'), 'bhavanipuram': ('bhavanipuram',),
+        'poranki': ('poranki',), 'autonagar': ('auto nagar', 'autonagar', 'kanuru'), 'patamatalanka': ('patamatalanka',)}
+PRETTY = {'singhnagar': 'Singhnagar', 'moghalrajpuram': 'Moghalrajpuram', 'bhavanipuram': 'Bhavanipuram', 'poranki': 'Poranki',
+          'autonagar': 'Autonagar', 'patamatalanka': 'Patamatalanka'}
 for i, r in enumerate(rest):
-    name = r['name'].replace('RR Durbar', '').strip(); code = name.lower()
-    if code not in CODES: continue
+    a0 = r.get('address', {}); hay = (r.get('name', '') + ' ' + a0.get('streetAddress', '')).lower()
+    code = next((k for k, words in AREA.items() if any(w in hay for w in words)), None)
+    if code is None: continue
+    name = PRETTY[code]
     a = r.get('address', {}); oh = re.match(r'Mo-Su (\d\d:\d\d)-(\d\d:\d\d)', r.get('openingHours', '') or '')
     fssai = (r.get('identifier') or {}).get('value', '')
     lat, lng = GPS[code]
@@ -62,7 +71,7 @@ for i, r in enumerate(rest):
          'street': a.get('streetAddress', ''), 'locality': a.get('addressLocality', 'Vijayawada'), 'pincode': a.get('postalCode', ''),
          'phone': r.get('telephone', ''), 'opens': oh.group(1) if oh else None, 'closes': oh.group(2) if oh else None,
          'callForHours': not oh, 'lat': lat, 'lng': lng, 'gpsVerified': False,
-         'mapsUrl': 'https://www.google.com/maps/search/?api=1&query=' + re.sub(r'\s+', '+', f'RR Durbar {name}, {a.get("streetAddress", "")}'),
+         'mapsUrl': 'https://www.google.com/maps/search/?api=1&query=' + re.sub(r'\s+', '+', f'{r.get("name", "RR Durbar")}, {a.get("streetAddress", "")}'),
          'fssai': fssai, 'sort': i + 1})
 
 # outlets the site no longer shows (e.g. Patamatalanka, removed 31 Oct) stay in the CMS HIDDEN, never deleted:
