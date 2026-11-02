@@ -6,6 +6,7 @@ export default {
   name: 'outlet', title: 'Outlets', type: 'document',
   fields: [
     { name: 'name', title: 'Outlet name', type: 'string', description: 'For example: Moghalrajpuram', validation: (R) => R.required() },
+    { name: 'googleName', title: 'Name on Google (exactly as on the Google Business Profile)', type: 'string', description: 'Used in the Google data (schema name). Leave empty to use "RR Durbar + outlet name".' },
     { name: 'code', title: 'Website code', type: 'string', options: { list: Object.keys(OUTLETS) }, validation: (R) => R.required(), readOnly: ({ document }) => Boolean(document && document._createdAt && document.code) },
     { name: 'ristaCode', title: 'Rista branch code', type: 'string', options: { list: Object.values(OUTLETS) }, validation: (R) => R.required() },
     { name: 'active', title: 'Show on the website', type: 'boolean', initialValue: true },

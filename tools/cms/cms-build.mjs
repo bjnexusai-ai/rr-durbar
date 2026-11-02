@@ -13,7 +13,7 @@ import { parseNdjson, validate, build, lockFrom } from './cms-lib.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const LOCK = path.join(HERE, 'cms-ids.lock.json');
-const TYPES = ['siteSettings', 'outlet', 'page', 'dish', 'offer', 'legalPage'];
+const TYPES = ['siteSettings', 'outlet', 'page', 'dish', 'offer', 'announcement', 'legalPage'];
 
 export async function fetchSanity({ projectId, dataset = 'production', token = '', fetchImpl = fetch }) {
   if (!/^[a-z0-9]{6,20}$/.test(projectId || '')) throw new Error('SANITY_PROJECT_ID is missing or looks wrong');
@@ -39,7 +39,7 @@ export async function run(argv, { env = process.env, fetchImpl = fetch, outDir =
   try { lock = JSON.parse(await readFile(lockPath, 'utf8')); } catch { lock = null; }
   const { errors, warnings } = validate(docs, { lock });
   const count = (t) => docs.filter((d) => d._type === t).length;
-  log(`Read ${docs.length} documents from ${source}: ${count('outlet')} outlets, ${count('page')} pages, ${count('dish')} dish cards, ${count('offer')} offers, ${count('legalPage')} legal pages.`);
+  log(`Read ${docs.length} documents from ${source}: ${count('outlet')} outlets, ${count('page')} pages, ${count('dish')} dish cards, ${count('offer')} offers, ${count('announcement')} announcements, ${count('legalPage')} legal pages.`);
   for (const w of warnings) log('WARN  ' + w);
   for (const e of errors) log('ERROR ' + e);
   if (errors.length) { log(`STOP: ${errors.length} error(s). Nothing written; the site keeps its last good content.`); return 1; }

@@ -12,6 +12,7 @@ export default {
     { name: 'instagram', title: 'Instagram handle (without @)', type: 'string' },
     { name: 'swiggyUrl', title: 'Swiggy link', type: 'url' },
     { name: 'zomatoUrl', title: 'Zomato link', type: 'url' },
+    { name: 'facebook', title: 'Facebook page link', type: 'url' },
     { name: 'registeredAddress', title: 'Registered address', type: 'text', rows: 3 },
     { name: 'hoursText', title: 'Opening hours (as shown to guests)', type: 'string', description: 'For example: 11:00 AM to 11:30 PM, all days' },
     { name: 'foundingYear', title: 'Year founded', type: 'number', description: 'Shown ONLY when "Year confirmed" is ticked (decision D5).' },

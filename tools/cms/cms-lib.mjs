@@ -57,6 +57,7 @@ export function validate(docs, { lock = null, now = new Date() } = {}) {
     if (!/^\+91[6-9]\d{9}$/.test(s.phone || '')) E.push('Business details: phone must be +91 and 10 digits');
     if (!/^91[6-9]\d{9}$/.test(s.whatsapp || '')) E.push('Business details: WhatsApp must be digits with 91');
     if (!/^\S+@\S+\.\S+$/.test(s.email || '')) E.push('Business details: email looks wrong');
+    if (s.facebook && !/^https:\/\/(www\.)?facebook\.com\//.test(s.facebook)) E.push('Business details: Facebook link must start with https://www.facebook.com/');
   }
   // outlets
   const seen = new Set();
@@ -112,6 +113,25 @@ export function validate(docs, { lock = null, now = new Date() } = {}) {
   }
   // offers
   for (const o of by('offer')) if (!(Date.parse(o.endsAt) > Date.parse(o.startsAt))) E.push(`Offer "${o.title}": end must be after start`);
+  // announcements ("What's new", home page): image + EITHER a line OR a second image; an ended one never blocks the build
+  const tNow = now.getTime();
+  const annLive = [];
+  for (const a of by('announcement')) {
+    if (a.active === false) continue;
+    const st = Date.parse(a.startsAt), en = Date.parse(a.endsAt);
+    if (Number.isFinite(st) && Number.isFinite(en) && en > st && en <= tNow) continue;   // already ended
+    const n = `Announcement \"${a.line || a._id}\"`;
+    const hasLine = typeof a.line === 'string' && a.line.trim() !== '', hasImg2 = Boolean(a.image2 && a.image2.asset && a.image2.asset._ref);
+    if (!(a.image && a.image.asset && a.image.asset._ref)) E.push(`${n}: needs a main image`);
+    else if (!(a.image.alt || '').trim()) W.push(`${n}: the main image has no description (alt text)`);
+    if (hasLine && hasImg2) E.push(`${n}: has both a line and a second image: keep only one`);
+    if (!hasLine && !hasImg2) E.push(`${n}: needs either a one-line description or a second image`);
+    if (hasLine && a.line.length > 120) E.push(`${n}: the line is longer than 120 characters`);
+    if (a.link && !/^(https:\/\/|\/)/.test(a.link)) E.push(`${n}: link must start with / or https://`);
+    if (!(en > st)) E.push(`${n}: end must be after start`);
+    else if (st <= tNow && tNow < en) annLive.push(a);
+  }
+  if (annLive.length > 2) W.push(`${annLive.length} announcements are live at once: only the first 2 (by order number) are shown`);
   // legal
   const approvedKinds = new Set();
   for (const l of by('legalPage')) {
@@ -137,21 +157,21 @@ export function build(docs, { now = new Date(), projectId = '', dataset = 'produ
   const cfg = { projectId, dataset };
   const by = (t) => docs.filter((d) => d._type === t);
   const s = by('siteSettings')[0] || {};
-  const settings = { brandName: s.brandName, legalName: s.legalName, gstin: s.gstin, phone: s.phone, whatsapp: s.whatsapp, email: s.email, instagram: s.instagram || '',
+  const settings = { brandName: s.brandName, legalName: s.legalName, gstin: s.gstin, phone: s.phone, whatsapp: s.whatsapp, email: s.email, instagram: s.instagram || '', facebook: s.facebook || '',
     swiggyUrl: s.swiggyUrl || '', zomatoUrl: s.zomatoUrl || '', registeredAddress: s.registeredAddress || '', hoursText: s.hoursText || '' };
   if (s.yearConfirmed && s.foundingYear) settings.foundingYear = s.foundingYear;
   if (s.grievanceOfficer) settings.grievanceOfficer = s.grievanceOfficer;
   const outlets = by('outlet').filter((o) => o.active !== false).sort((a, b) => (a.sort ?? 99) - (b.sort ?? 99)).map((o) => ({
-    code: o.code, ristaCode: o.ristaCode, name: o.name, street: o.street, locality: o.locality || 'Vijayawada', pincode: o.pincode, phone: o.phone,
+    code: o.code, ristaCode: o.ristaCode, name: o.name, googleName: o.googleName || '', street: o.street, locality: o.locality || 'Vijayawada', pincode: o.pincode, phone: o.phone,
     hours: o.callForHours ? null : { opens: o.opens, closes: o.closes }, callForHours: !!o.callForHours, onlineOrdering: !!o.onlineOrdering, callOnly: !!o.callOnly,
     mapsUrl: o.mapsUrl || '', reviewUrl: o.reviewUrl || '', fssai: o.fssai || '', photo: imageUrl(o.photo, cfg),
     geo: o.gpsVerified ? { lat: o.lat, lng: o.lng } : null }));
   const site = 'https://rrdurbar.com';
   const org = { '@type': 'Organization', '@id': `${site}/#organization`, name: settings.brandName, url: `${site}/`, telephone: settings.phone, email: settings.email,
-    taxID: settings.gstin, sameAs: settings.instagram ? [`https://www.instagram.com/${settings.instagram}/`] : [] };
+    taxID: settings.gstin, sameAs: [settings.instagram ? `https://www.instagram.com/${settings.instagram}/` : null, settings.facebook || null].filter(Boolean) };
   if (settings.foundingYear) org.foundingDate = String(settings.foundingYear);
   const restaurants = outlets.map((o) => {
-    const r = { '@type': 'Restaurant', name: `${settings.brandName} ${o.name}`, url: `${site}/branches/#${o.code}`, telephone: o.phone, servesCuisine: ['Indian', 'Andhra', 'Biryani'],
+    const r = { '@type': 'Restaurant', name: o.googleName || `${settings.brandName} ${o.name}`, url: `${site}/branches/#${o.code}`, telephone: o.phone, servesCuisine: ['Indian', 'Andhra', 'Biryani'],
       address: { '@type': 'PostalAddress', streetAddress: o.street, addressLocality: o.locality, addressRegion: 'Andhra Pradesh', postalCode: o.pincode, addressCountry: 'IN' },
       hasMenu: `${site}/menu/`, image: o.photo || `${site}/assets/logo/rr-logo-800.webp`, sameAs: org.sameAs, parentOrganization: { '@id': org['@id'] } };
     if (o.hours) r.openingHoursSpecification = [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: o.hours.opens, closes: o.hours.closes }];
@@ -168,7 +188,10 @@ export function build(docs, { now = new Date(), projectId = '', dataset = 'produ
   }
   const t = now.getTime();
   const offers = by('offer').filter((o) => o.active !== false && Date.parse(o.startsAt) <= t && t < Date.parse(o.endsAt)).map((o) => ({ title: o.title, text: o.text || '', linkText: o.linkText || '', linkUrl: o.linkUrl || '', pages: o.pages || ['home'], endsAt: o.endsAt }));
+  const announcements = by('announcement').filter((a) => a.active !== false && Date.parse(a.startsAt) <= t && t < Date.parse(a.endsAt))
+    .sort((a, b) => (a.sort ?? 99) - (b.sort ?? 99) || Date.parse(a.startsAt) - Date.parse(b.startsAt)).slice(0, 2)
+    .map((a) => ({ line: a.line || '', link: a.link || '/order-now/', startsAt: a.startsAt, endsAt: a.endsAt, img: imageUrl(a.image, cfg), img2: imageUrl(a.image2, cfg), alt: (a.image && a.image.alt) || '' }));
   const legal = {};
   for (const l of by('legalPage').filter((x) => x.approvedByOwner)) legal[l.kind] = { route: LEGAL_KINDS[l.kind], version: l.version, effectiveDate: l.effectiveDate || '', html: ptToHtml(l.body) };
-  return { generatedAt: now.toISOString(), source, settings, outlets, jsonLd: { '@context': 'https://schema.org', '@graph': [org, ...restaurants] }, dishes, pages, offers, legal };
+  return { generatedAt: now.toISOString(), source, settings, outlets, jsonLd: { '@context': 'https://schema.org', '@graph': [org, ...restaurants] }, dishes, pages, offers, announcements, legal };
 }

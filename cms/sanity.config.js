@@ -16,6 +16,7 @@ export default defineConfig({
     S.documentTypeListItem('page').title('Pages and sections'),
     S.documentTypeListItem('dish').title('Dish cards (no prices)'),
     S.documentTypeListItem('offer').title('Offers banner'),
+    S.documentTypeListItem('announcement').title("What's new announcements"),
     S.documentTypeListItem('legalPage').title('Legal pages'),
   ]) })],
   schema: { types: schemaTypes, templates: (t) => t.filter((x) => x.schemaType !== 'siteSettings') },

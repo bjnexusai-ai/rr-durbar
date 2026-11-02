@@ -119,3 +119,61 @@ test('the committed id lock matches the seed', () => {
   assert.deepEqual(validate(SEED, { lock }).errors, []);
   assert.deepEqual(Object.keys(lock.outlets).sort(), ['autonagar', 'bhavanipuram', 'moghalrajpuram', 'poranki', 'singhnagar']);
 });
+
+
+// ---- announcements (1 Nov) ----
+const ann = (id, o = {}) => ({ _id: id, _type: 'announcement', image: { _type: 'image', asset: { _ref: 'image-abc123def456-800x600-jpg' }, alt: 'Biryani' },
+  line: 'Family combo today', startsAt: '2026-10-30T00:00:00Z', endsAt: '2026-11-05T00:00:00Z', active: true, sort: 1, ...o });
+const NOW = new Date('2026-11-01T10:00:00Z');
+
+test('announcement: both a line and a second image is an error', () => {
+  const a = fresh(); a.push(ann('a1', { image2: { _type: 'image', asset: { _ref: 'image-fff111-800x600-jpg' } } }));
+  assert.match(errs(a), /both a line and a second image/);
+});
+
+test('announcement: neither a line nor a second image is an error; image and dates are required', () => {
+  const a = fresh(); a.push(ann('a1', { line: '' }));
+  assert.match(errs(a), /either a one-line description or a second image/);
+  const b = fresh(); b.push(ann('a2', { image: undefined }));
+  assert.match(errs(b), /needs a main image/);
+  const c = fresh(); c.push(ann('a3', { endsAt: '2026-10-29T00:00:00Z' }));
+  assert.match(errs(c), /end must be after start/);
+  const d = fresh(); d.push(ann('a4', { line: 'x'.repeat(121) }));
+  assert.match(errs(d), /longer than 120/);
+  const e = fresh(); e.push(ann('a5', { link: 'javascript:alert(1)' }));
+  assert.match(errs(e), /link must start with/);
+  const ok = fresh(); ok.push(ann('a6')); ok.push(ann('a7', { line: undefined, image2: { _type: 'image', asset: { _ref: 'image-fff111-800x600-jpg' } } }));
+  assert.deepEqual(validate(ok, { now: NOW }).errors, []);
+});
+
+test('announcement: ended, not started and switched-off ones are not output', () => {
+  const a = fresh();
+  a.push(ann('live'), ann('old', { line: 'Old', startsAt: '2026-10-01T00:00:00Z', endsAt: '2026-10-10T00:00:00Z' }));
+  a.push(ann('soon', { line: 'Soon', startsAt: '2026-11-03T00:00:00Z', endsAt: '2026-11-09T00:00:00Z' }), ann('off', { line: 'Off', active: false }));
+  assert.deepEqual(validate(a, { now: NOW }).errors, []);   // an ended announcement never blocks the build
+  const out = build(a, { now: NOW, projectId: 'm8b62ufn' });
+  assert.deepEqual(out.announcements.map((x) => x.line), ['Family combo today']);
+  assert.equal(out.announcements[0].img, 'https://cdn.sanity.io/images/m8b62ufn/production/abc123def456-800x600.jpg');
+  assert.equal(out.announcements[0].link, '/order-now/');
+  assert.equal(out.announcements[0].img2, null);
+});
+
+test('announcement: more than 2 live shows only the first 2 by order number', () => {
+  const a = fresh();
+  a.push(ann('c', { line: 'C', sort: 3 }), ann('a', { line: 'A', sort: 1 }), ann('b', { line: 'B', sort: 2 }));
+  const out = build(a, { now: NOW });
+  assert.deepEqual(out.announcements.map((x) => x.line), ['A', 'B']);
+  assert.match(validate(a, { now: NOW }).warnings.join('\n'), /3 announcements are live/);
+});
+
+test('facebook link and Google name: checked and passed through', () => {
+  const a = fresh(); one(a, 'siteSettings').facebook = 'https://example.com/RRDurbar';
+  assert.match(errs(a), /Facebook link/);
+  const b = fresh(); one(b, 'siteSettings').facebook = 'https://www.facebook.com/RRDurbar'; one(b, 'outlet-poranki').googleName = 'RR Durbar Poranki Vijayawada';
+  assert.deepEqual(validate(b).errors, []);
+  const out = build(b, { now: NOW });
+  assert.equal(out.settings.facebook, 'https://www.facebook.com/RRDurbar');
+  assert.equal(out.outlets.find((o) => o.code === 'poranki').googleName, 'RR Durbar Poranki Vijayawada');
+  assert.equal(out.jsonLd['@graph'].find((x) => x.url && x.url.endsWith('#poranki')).name, 'RR Durbar Poranki Vijayawada');
+  assert.ok(out.jsonLd['@graph'][0].sameAs.includes('https://www.facebook.com/RRDurbar'));
+});
