@@ -5,6 +5,7 @@
   3 upright screens (980x1730 desktop-site mode, 820x1180 tablet) get the tall photo; landscape 1280 keeps the wide one
   4 desktop 1280/1440: nothing else changed (removes the new rules and compares every element)"""
 from playwright.sync_api import sync_playwright
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'hero')); import rr_test_shim  # doors off: sessionStorage.rrDoorsSeen
 B = "http://localhost:8765"; bad = 0
 def res(ok, m):
     global bad; bad += (not ok); print(("PASS  " if ok else "FAIL  ") + m)

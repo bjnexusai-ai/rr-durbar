@@ -2,6 +2,7 @@
 """Home hero at 360px: geometry + colours of all 8 slides, screenshots into tmp-shots/. Needs a server on :8765 serving public/. Run from repo root."""
 import pathlib
 from playwright.sync_api import sync_playwright
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'hero')); import rr_test_shim  # doors off: sessionStorage.rrDoorsSeen
 from PIL import Image
 pathlib.Path("tmp-shots").mkdir(exist_ok=True)
 JS = """(n)=>{const sl=[...document.querySelectorAll('#home .slide')];sl.forEach((e,i)=>e.classList.toggle('active',i===n));

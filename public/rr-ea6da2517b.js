@@ -336,7 +336,7 @@
 
 (() => {
   const pageSections = {
-    home: ['home', 'whats-new', 'bestsellers', 'menu', 'trust', 'honours', 'reviews', 'gallery', 'loyalty', 'outlets', 'cta'],
+    home: ['home', 'hero-next', 'whats-new', 'bestsellers', 'menu', 'trust', 'honours', 'reviews', 'gallery', 'loyalty', 'outlets', 'cta'],
     loyalty: ['loyalty'],
     'about-us': ['about', 'story', 'foundation', 'family', 'why-us', 'about-sig', 'about-go', 'purpose', 'promise-green', 'stats', 'awards', 'reels'],
     'our-story': ['about', 'story', 'foundation', 'family', 'why-us', 'about-sig', 'about-go', 'purpose', 'promise-green', 'stats', 'awards', 'reels'],

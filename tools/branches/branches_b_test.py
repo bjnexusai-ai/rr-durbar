@@ -5,6 +5,7 @@
   3 reduced motion: bulbs shown lit, no animation
   4 map on its dark plate and not cut off; no script errors on the Branches and Home pages"""
 from playwright.sync_api import sync_playwright
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'hero')); import rr_test_shim  # doors off: sessionStorage.rrDoorsSeen
 B = "http://localhost:8765"; bad = 0
 def res(ok, m):
     global bad; bad += (not ok); print(("PASS  " if ok else "FAIL  ") + m)

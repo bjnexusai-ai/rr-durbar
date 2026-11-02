@@ -6,6 +6,7 @@
   4 nothing else changed: computed styles of every element outside the signature photos and the tab bar, with and without the new rules (1280, 1440, 360)
   5 no script errors from the new code"""
 from playwright.sync_api import sync_playwright
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'hero')); import rr_test_shim  # doors off: sessionStorage.rrDoorsSeen
 B = "http://localhost:8765"
 bad = 0
 def res(ok, msg):

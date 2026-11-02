@@ -1,0 +1,124 @@
+/* rr-hero-v6 START: 2 Nov home hero redesign (plan RR_Durbar_PLAN_MobileHero_02Nov.md). To revert: delete this block, script#rr-hero-v6-js, script#rr-doors-js and the .rr-fx, #rr-doors and #hero-next markup, and the .rr-fx element. */
+/* ---------- effects, phone and laptop (transform + opacity only; the one-off heading shimmer is the only paint animation) ---------- */
+#home .rr-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:6}
+#home .rr-sweep{position:absolute;inset:-10% -60%;opacity:0;mix-blend-mode:screen;background:linear-gradient(105deg,transparent 38%,rgba(255,210,130,.42) 50%,transparent 62%)}
+#home .rr-sweep.go{animation:rrSweep 1s cubic-bezier(.4,0,.2,1)}
+@keyframes rrSweep{0%{opacity:1;transform:translateX(-45%)}100%{opacity:1;transform:translateX(45%)}}
+#home .rr-steam{position:absolute;left:var(--sx,var(--sx-d,50%));top:var(--sy,var(--sy-d,40%));width:0;height:0;opacity:0;transition:opacity .6s}
+#home[data-steam="1"] .rr-steam{opacity:1}
+#home .rr-wisp{position:absolute;left:-55px;top:-40px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 65%);filter:blur(10px);opacity:0;animation:rrRise 5s ease-out infinite}
+#home .rr-wisp:nth-child(2){left:-20px;animation-delay:1.7s}
+#home .rr-wisp:nth-child(3){left:-85px;animation-delay:3.3s}
+@keyframes rrRise{0%{opacity:0;transform:translateY(20px) scale(.8)}25%{opacity:.3}100%{opacity:0;transform:translateY(-90px) scale(1.5)}}
+@keyframes rrPush{from{transform:scale(1)}to{transform:scale(1.08)}}
+#home.rr-fx-paused .rr-sweep,#home.rr-fx-paused .rr-wisp,#home.rr-fx-paused .slide .hero-image,#home.rr-fx-paused .slide .slide-photo{animation-play-state:paused!important}
+/* heading rise: each line rises out of a mask */
+#home .hero-title .rr-ln{display:block;overflow:hidden;padding-bottom:.08em}
+#home .hero-title .rr-li{display:inline-block;transform:translateY(105%)}
+#home .slide.active .hero-title .rr-li{transform:none;transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+#home .slide.active .hero-title .rr-ln:nth-child(2) .rr-li{transition-delay:.08s}
+html.rr-doors-wait #home .slide .hero-title .rr-li{transform:translateY(105%)!important;transition:none!important}
+#home .slide.active .hero-title em{animation:rrShim 1.4s .5s ease-out both}
+@keyframes rrShim{from{background-position:100% 0}to{background-position:0 0}}
+/* laptop: the description fades in after the heading */
+@media(min-width:900px){#home .slide.active .hero-desc{animation:rrDescIn .6s .45s ease-out both}@keyframes rrDescIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}}
+/* ---------- Durbar doors (first visit only) ---------- */
+#rr-doors{position:fixed;inset:0;z-index:3000;display:flex;pointer-events:auto;animation:rrDoorsGone .01s linear 2.5s forwards;font-family:'Manrope',Arial,sans-serif}
+@keyframes rrDoorsGone{to{visibility:hidden;pointer-events:none}}
+#rr-doors:not(.rr-go):not(.rr-skip),#rr-doors:not(.rr-go):not(.rr-skip) *{animation-play-state:paused!important}
+#rr-doors .rr-door{flex:1;position:relative;animation:rrDoorOpen .9s cubic-bezier(.7,0,.2,1) 1.5s both;background:repeating-linear-gradient(90deg,rgba(213,178,108,0) 0 22px,rgba(213,178,108,.12) 22px 23px),radial-gradient(120% 70% at 50% 50%,#4c0813 0%,#2a0810 55%,#14040a 100%)}
+#rr-doors .rr-door::before{content:"";position:absolute;inset:26px 18px;border:1px solid rgba(233,184,92,.55);border-radius:120px 120px 6px 6px;box-shadow:inset 0 0 0 6px rgba(20,4,10,.5),inset 0 0 0 7px rgba(233,184,92,.25)}
+#rr-doors .rr-door.l{border-right:1px solid rgba(233,184,92,.7);--to:-101%}
+#rr-doors .rr-door.r{border-left:1px solid rgba(233,184,92,.7);--to:101%}
+@keyframes rrDoorOpen{from{transform:none}to{transform:translateX(var(--to))}}
+#rr-doors .rr-crest{position:absolute;left:50%;top:40%;width:92px;height:92px;margin:-46px 0 0 -46px;border-radius:50%;display:grid;place-items:center;font:600 34px/1 'Cormorant Garamond',Georgia,serif;color:#2b1412;background:radial-gradient(circle at 35% 30%,#fff1c9,#e9b85c 55%,#a87522);box-shadow:0 0 0 2px #f2d99b,0 0 0 rgba(255,200,110,0);animation:rrCrest 1.25s ease-out .25s both,rrWelOut .4s ease 1.5s forwards}
+@keyframes rrCrest{to{box-shadow:0 0 0 2px #f2d99b,0 0 60px 18px rgba(255,200,110,.55)}}
+#rr-doors .rr-welcome{position:absolute;left:0;right:0;top:calc(40% + 62px);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;opacity:0;animation:rrWelIn .5s ease .25s forwards,rrWelOut .4s ease 1.5s forwards}
+@keyframes rrWelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes rrWelOut{to{opacity:0;transform:scale(.96)}}
+#rr-doors .w1{font:800 12px/1 'Manrope',Arial,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#e9b85c}
+#rr-doors .w2{font:600 40px/1 'Cormorant Garamond',Georgia,serif;letter-spacing:.06em;color:#f2d99b;text-shadow:0 0 24px rgba(255,200,110,.45)}
+#rr-doors .w3{display:flex;align-items:center;gap:10px;font:600 italic 18px/1 'Cormorant Garamond',Georgia,serif;color:#efe0c4}
+#rr-doors .w3::before,#rr-doors .w3::after{content:"";width:28px;height:1px;background:rgba(213,178,108,.55)}
+#rr-doors .rr-tap{position:absolute;bottom:calc(90px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;font:700 11px/1 'Manrope',Arial,sans-serif;letter-spacing:.18em;color:rgba(242,217,155,.7);text-transform:uppercase;animation:rrWelOut .4s ease 1.5s forwards}
+#rr-doors.rr-skip .rr-door{animation:rrDoorOpen2 .5s cubic-bezier(.7,0,.2,1) 0s both}
+@keyframes rrDoorOpen2{from{transform:none}to{transform:translateX(var(--to))}}
+#rr-doors.rr-skip .rr-crest,#rr-doors.rr-skip .rr-welcome,#rr-doors.rr-skip .rr-tap{animation:rrWelOut2 .25s ease 0s forwards}
+@keyframes rrWelOut2{to{opacity:0}}
+@media(min-width:900px){#rr-doors .w1{font-size:14px}#rr-doors .w2{font-size:64px}#rr-doors .rr-crest{width:112px;height:112px;margin:-56px 0 0 -56px;font-size:42px}#rr-doors .rr-welcome{top:calc(40% + 76px)}}
+/* next section (phone only) */
+#hero-next{display:none}
+/* phone only: the router's rr-page-visible class must not show it on laptop or landscape phones */
+@media(min-width:900px),(max-height:499px){html body #home ~ #hero-next,html body #hero-next.rr-page-visible,html body #hero-next{display:none!important}}
+/* ---------- laptop: haze is gone, nothing else changes ---------- */
+/* ---------- phone (portrait and small tablets) ---------- */
+@media(max-width:899px) and (min-height:500px){
+html body #home.hero{--rr-ph:calc(58vh + 26px);--rr-photo-h:calc(58vh + 8px);--rr-panel:250px;height:calc(var(--rr-ph) - 26px + var(--rr-panel))!important;min-height:0!important;background:#fff8ef!important;overflow:hidden!important}
+@supports(height:1svh){html body #home.hero{--rr-ph:calc(58svh + 26px);--rr-photo-h:calc(58svh + 8px)}}
+html body #home .hero-grain,html body #home .hero-orbit,html body #home .hero-sparkles,html body #home .hero-first,html body #home .hero-thumbs,html body #home .hero-arrow{display:none!important}
+html body #home.hero article.slide .hero-desc,html body #home.hero article.slide .hero-actions,html body #home.hero article.slide .slide-index{display:none!important}
+html body #home.hero::before,html body #home.hero::after{display:none!important}
+/* clean photo */
+html body #home .slide .slide-photo{position:absolute!important;inset:0 0 auto 0!important;width:100%!important;height:var(--rr-ph)!important;overflow:hidden!important;transform:none!important;filter:none!important;animation:none!important;clip-path:none!important;-webkit-mask-image:none!important;mask-image:none!important;background:#14040a!important}
+html body #home .slide .slide-photo::before,html body #home .slide .slide-photo::after{display:none!important}
+html body #home.hero article.slide[data-scene].slide .slide-photo picture img.hero-image{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover!important;object-position:50% 100%!important;transform:scale(1)!important;transform-origin:50% 62%!important;filter:none!important;animation:none!important;will-change:transform}
+html body #home.hero article.slide.active[data-scene].slide .slide-photo picture img.hero-image{animation:rrPush 7s linear forwards!important}
+/* per-slide focus: the dish sits low in these phone photos */
+html body #home.hero article.slide[data-scene="0"].slide .slide-photo picture img.hero-image{object-position:50% 100%!important}
+html body #home.hero article.slide[data-scene="1"].slide .slide-photo picture img.hero-image{object-position:50% 94%!important}
+html body #home.hero article.slide[data-scene="2"].slide .slide-photo picture img.hero-image{object-position:50% 100%!important}
+html body #home.hero article.slide[data-scene="3"].slide .slide-photo picture img.hero-image{object-position:50% 100%!important}
+html body #home.hero article.slide[data-scene="4"].slide .slide-photo picture img.hero-image{object-position:50% 100%!important}
+html body #home.hero article.slide[data-scene="5"].slide .slide-photo picture img.hero-image{object-position:50% 98%!important}
+html body #home.hero article.slide[data-scene="6"].slide .slide-photo picture img.hero-image{object-position:50% 100%!important}
+html body #home.hero article.slide[data-scene="7"].slide .slide-photo picture img.hero-image{object-position:50% 100%!important}
+html body #home .rr-fx{bottom:auto;height:var(--rr-ph)}
+html body #home[data-rr-scene="1"]{--sx:50%;--sy:36%}html body #home[data-rr-scene="2"]{--sx:50%;--sy:33%}html body #home[data-rr-scene="3"]{--sx:50%;--sy:26%}html body #home[data-rr-scene="4"]{--sx:50%;--sy:33%}
+/* cream panel (arch + diamond) is painted by each slide's own content box, so it crossfades with the slide */
+html body #home.hero article.slide .slide-content{position:absolute!important;inset:calc(var(--rr-ph) - 26px) 0 0 0!important;width:100%!important;max-width:none!important;height:auto!important;min-height:0!important;margin:0!important;padding:24px 16px 0!important;display:block!important;transform:none!important;translate:none!important;z-index:4;box-sizing:border-box;background:#fff8ef!important;border-radius:50% 50% 0 0/26px 26px 0 0!important;border-top:1.5px solid #d5b26c!important;opacity:1}
+html body #home.hero article.slide .slide-content::before{content:""!important;display:block!important;position:absolute!important;top:-8px!important;left:50%!important;width:13px!important;height:13px!important;margin-left:-6.5px!important;transform:rotate(45deg)!important;background:#fff8ef!important;border:1.5px solid #d5b26c!important;inset:auto auto auto 50%!important;top:-8px!important}
+html body #home.hero article.slide .slide-content::after{display:none!important}
+html body #home.hero article.slide .hero-copy{width:100%!important;max-width:none!important;margin:0!important;padding:0!important;text-shadow:none!important}
+html body #home.hero article.slide .hero-eyebrow{display:block!important;margin:0!important;color:#7a1f2b!important;-webkit-text-fill-color:#7a1f2b!important;text-shadow:none!important;font:800 12px/1.25 'Manrope',Arial,sans-serif!important;letter-spacing:.18em!important;text-transform:uppercase!important;white-space:normal!important;max-width:100%!important}
+html body #home.hero article.slide .hero-eyebrow .rr-sfx{display:none}
+html body #home.hero article.slide .hero-eyebrow::after{content:"";display:block;width:56px;height:1px;margin-top:11px;background:rgba(213,178,108,.55)}
+html body #home.hero article.slide .hero-title{margin:11px 0 0!important;padding:0!important;max-width:none!important;font:600 clamp(36px,11.5vw,46px)/1 'Cormorant Garamond',Georgia,serif!important;letter-spacing:-.01em!important;color:#4c0813!important;-webkit-text-fill-color:#4c0813!important;text-shadow:none!important;display:block!important}
+html body #home.hero article.slide .hero-title em{font-style:italic!important;color:#9a6a14!important;background:linear-gradient(100deg,#8a5a10 0%,#a8741c 40%,#d9a640 50%,#a8741c 60%,#8a5a10 100%);background-size:250% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent!important}
+html body #home .hero-bottom::before,html body #home .hero-bottom::after{display:none!important}
+/* dashes, buttons, music chip */
+html body #home .hero-bottom,html body #home .bottom-inner{display:contents!important}
+html body #home .rr-hero-order{position:absolute!important;left:16px!important;right:16px!important;bottom:18px!important;z-index:8;display:grid!important;grid-template-columns:1fr 1fr;gap:10px!important;width:auto!important;margin:0!important;padding:0!important}
+html body #home .rr-hero-order>*{height:50px!important;min-width:0!important;padding:0!important;border-radius:999px!important;font:800 15px/1 'Manrope',Arial,sans-serif!important;letter-spacing:.06em!important;text-transform:uppercase!important;display:grid!important;place-items:center;text-align:center;white-space:nowrap!important}
+html body #home .rr-hero-order .cb-go{background:linear-gradient(135deg,#f5b544,#e9902a)!important;color:#2b1412!important;border:0!important;box-shadow:0 8px 22px rgba(233,144,42,.35)!important}
+html body #home .rr-hero-order .cb-pk{background:#2b1412!important;color:#f2d99b!important;border:1.5px solid #2b1412!important;box-shadow:none!important}
+html body #home .hero-nav-controls{position:absolute!important;left:16px!important;right:auto!important;bottom:79px!important;z-index:8;display:flex!important;align-items:center;margin:0!important;padding:0!important;width:auto!important;background:none!important;border:0!important}
+html body #home .progress{display:flex!important;gap:6px!important;width:auto!important;margin:0!important}
+html body #home #progressBars button{border:0!important;background-clip:padding-box;position:relative;width:22px!important;min-width:0!important;height:3px!important;min-height:0!important;max-height:3px!important;padding:0!important;margin:0!important;flex:none!important;border-radius:2px!important;background:rgba(43,20,18,.16)!important;transform:none!important;overflow:hidden}
+html body #home #progressBars button::before{content:"";position:absolute;inset:-10px -2px}
+html body #home #progressBars button::after{background:#c58a1b!important;animation:none!important}
+html body #home #musicBox{position:absolute!important;left:14px!important;right:auto!important;top:calc(var(--rr-ph) - 26px - 62px)!important;bottom:auto!important;z-index:8;margin:0!important}
+html body #home .music-box,html body #home .music-box *{transform:none}
+/* top buttons: frosted glass circles (the order button stays gold) */
+html body .nav-actions a.outlet-pill.outlet-pill.outlet-pill,html body .nav-actions a.nav-contact.nav-contact.nav-contact,html body .nav-actions a.order-pill.order-pill.order-pill{min-height:44px!important;width:44px!important;height:44px!important;min-width:44px!important;border-radius:50%!important;padding:0!important;display:grid!important;place-items:center}
+html body .nav-actions a.outlet-pill.outlet-pill.outlet-pill,html body .nav-actions a.nav-contact.nav-contact.nav-contact{background:rgba(20,4,10,.32)!important;-webkit-backdrop-filter:blur(12px) saturate(140%);backdrop-filter:blur(12px) saturate(140%);border:1px solid rgba(255,243,209,.35)!important;color:#fff3d9!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 16px rgba(0,0,0,.25)!important}
+html body .nav-actions a.order-pill.order-pill.order-pill{background:linear-gradient(135deg,#f5d27a,#d9a640)!important;color:#2b1412!important;border:1px solid rgba(255,243,209,.7)!important}
+html body .nav-actions a.nav-contact .nc-t{display:none!important}
+/* next section */
+html body #hero-next{display:flex;flex-direction:column;gap:10px;background:#fff8ef;color:#2b1412;padding:22px 20px 24px;border-top:1px solid rgba(91,20,28,.12)}
+html body #hero-next .hn-eyebrow{margin:0;font:800 11px/1.3 'Manrope',Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7a1f2b}
+html body #hero-next .hn-hair{width:56px;height:1px;background:rgba(213,178,108,.55)}
+html body #hero-next h2{margin:0;font:600 34px/1.05 'Cormorant Garamond',Georgia,serif;color:#4c0813;text-wrap:balance}
+html body #hero-next h2 em{font-style:italic;color:#9a6a14}
+html body #hero-next p.hn-line{margin:0;font:500 15px/1.65 'Manrope',Arial,sans-serif;color:#6b4a43;max-width:34ch}
+/* floating chat / call / Instagram: hidden while the hero is on screen */
+html #rrw{transition:opacity .35s ease,transform .35s ease}
+html.rr-hero-vis #rrw{opacity:0;transform:translateY(12px);pointer-events:none}
+}
+@media(prefers-reduced-motion:reduce){
+#home .rr-sweep,#home .rr-steam,#rr-doors{display:none!important}
+#home .slide .hero-image,#home .slide .slide-photo{animation:none!important}
+html body #home .hero-title .rr-li{transform:none!important;transition:none!important}
+#home .slide.active .hero-title em,#home .slide.active .hero-desc{animation:none!important}
+html body #home.hero article.slide.active[data-scene].slide .slide-photo picture img.hero-image{animation:none!important}
+}
+/* rr-hero-v6 END */

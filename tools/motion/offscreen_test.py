@@ -5,6 +5,7 @@ then scrolls through the whole page and checks that every section's loops are RU
 that nothing fixed on the screen (music, WhatsApp, bars) is ever paused, and that there are no script errors."""
 import sys
 from playwright.sync_api import sync_playwright
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'hero')); import rr_test_shim  # doors off: sessionStorage.rrDoorsSeen
 B = "http://localhost:8765"
 PAGES = sys.argv[1:] or ["/", "/about-us/", "/menu/", "/catering/", "/branches/", "/loyalty/", "/order-now/", "/contact/"]
 COUNT = """()=>{const vh=innerHeight,M=200;let off=0,offPaused=0,onPaused=0,pinPaused=0,run=0;

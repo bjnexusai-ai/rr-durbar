@@ -7,6 +7,7 @@ Env: BASE (default http://127.0.0.1:8765)
 """
 import json, os, sys
 from playwright.sync_api import sync_playwright
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'hero')); import rr_test_shim  # doors off: sessionStorage.rrDoorsSeen
 
 BASE = os.environ.get('BASE', 'http://127.0.0.1:8765')
 FAILS = []
@@ -59,7 +60,16 @@ def functional(b):
     ctx, page = open_home(b, body=payload())
     r = page.evaluate("""() => { const q = (s) => document.querySelector(s), top = (e) => e ? e.getBoundingClientRect().top + scrollY : null, bot = (e) => e ? e.getBoundingClientRect().bottom + scrollY : null;
       const wn = q('#whats-new'); return { wnTop: top(wn), heroBot: bot(q('#home')), honoursTop: top(q('#honours')), bestTop: top(q('#bestsellers')) } }""")
-    check('section is under the hero', r['wnTop'] is not None and abs(r['wnTop'] - r['heroBot']) < 4, r)
+    check('laptop: section is directly under the hero', r['wnTop'] is not None and abs(r['wnTop'] - r['heroBot']) < 4, r)
+    check('laptop: #hero-next is hidden', page.evaluate("getComputedStyle(document.getElementById('hero-next')).display") == 'none')
+    ctx.close()
+    # phone: hero, then #hero-next, then #whats-new
+    ctx, page = open_home(b, w=390, h=844, body=payload())
+    r2 = page.evaluate("""() => { const q = (s) => document.querySelector(s), top = (e) => e ? e.getBoundingClientRect().top + scrollY : null, bot = (e) => e ? e.getBoundingClientRect().bottom + scrollY : null;
+      return { heroBot: bot(q('#home')), hnTop: top(q('#hero-next')), hnBot: bot(q('#hero-next')), wnTop: top(q('#whats-new')) } }""")
+    check('phone: #hero-next sits directly under the hero', r2['hnTop'] is not None and abs(r2['hnTop'] - r2['heroBot']) < 4, r2)
+    check('phone: #whats-new sits directly under #hero-next', r2['hnBot'] is not None and abs(r2['wnTop'] - r2['hnBot']) < 4, r2)
+    ctx.close(); ctx, page = open_home(b, body=payload())
     check('section is before Wall of Honours', r['honoursTop'] is None or r['wnTop'] < r['honoursTop'], r)
     # 2 content from the mocked API
     cards = page.locator('#whats-new .rr-wn-ann .rr-wn-ac'); check('2 announcement cards', cards.count() == 2)

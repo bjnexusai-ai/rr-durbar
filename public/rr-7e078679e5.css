@@ -172,8 +172,8 @@ footer h4{color:#f5d48c!important;font-size:15px!important;letter-spacing:.22em!
 /* The hero bottom control rail stays translucent instead of becoming a dark maroon block. */
 .bottom-inner{background:linear-gradient(180deg,rgba(18,8,9,.02),rgba(18,8,9,.08))!important;border-top-color:rgba(255,255,255,.42)!important;}
 /* Final cinematic camera move: begin at the natural frame, then push slowly toward the viewer. */
-.slide.active .slide-photo{animation:rrViewerZoom 9s cubic-bezier(.22,.62,.22,1) both!important;}
-@keyframes rrViewerZoom{0%{transform:scale(1) translate3d(0,0,0);filter:saturate(1) contrast(1) brightness(1)}18%{transform:scale(1.012) translate3d(0,0,0);filter:saturate(1.02) contrast(1.01) brightness(.99)}100%{transform:scale(1.16) translate3d(0,-.5%,0);filter:saturate(1.1) contrast(1.05) brightness(1.02)}}
+.slide.active .slide-photo{animation:rrViewerZoom 7s linear both!important;}
+@keyframes rrViewerZoom{0%{transform:scale(1) translate3d(0,0,0)}100%{transform:scale(1.08) translate3d(0,0,0)}}
 
 
 

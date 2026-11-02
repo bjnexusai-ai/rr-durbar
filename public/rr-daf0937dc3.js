@@ -246,12 +246,12 @@ Order:'<path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/>',
 Branches:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
 Contact:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>'};
 P.About='<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>';P.Catering='<path d="M3 17h18"/><path d="M5 17a7 7 0 0 1 14 0"/><path d="M12 7V5"/>';
-var T=[['Home','Home'],['About Us','About'],['Menu','Menu'],['Order Now','Order'],['Branches','Branches'],['Catering','Catering'],['Contact','Contact']];
+var T=[['Home','Home'],['About Us','About'],['Menu','Menu'],['Order Now','Order'],['Branches','Branches'],['Catering','Catering']];
 var src=document.querySelectorAll('.nav-links a');if(!src.length)return;
 var bar=document.createElement('nav');bar.id='rr-tabbar';bar.setAttribute('aria-label','Main navigation');
 T.forEach(function(t){var a=[].filter.call(src,function(x){return x.textContent.trim().toLowerCase()===t[0].toLowerCase()})[0];if(!a)return;
  var l=document.createElement('a');l.setAttribute('href',a.getAttribute('href'));l.dataset.k=t[1];
- l.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+P[t[1]]+'</svg><span>'+t[0]+'</span>';bar.appendChild(l)});
+ l.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+P[t[1]]+'</svg><span>'+t[1]+'</span>';bar.appendChild(l)});
 if(bar.children.length<3)return;
 document.body.appendChild(bar);document.documentElement.classList.add('rr-tabs');
 function sync(){var q=location.search+location.hash,cur='Home';
