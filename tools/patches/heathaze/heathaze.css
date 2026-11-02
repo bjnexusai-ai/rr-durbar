@@ -1,0 +1,6 @@
+/* 30. Home hero heat-haze: one WebGL canvas melts each slide into the next through rising heat shimmer. The CSS iris (27)
+   stays as the fallback and is switched off only while #home has .hz-on (set by the script after WebGL is confirmed). */
+#home .rr-haze{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:0;z-index:0;transition:opacity .35s ease-out}
+#home .rr-haze.on{opacity:1;transition:none}
+html body #home.hero.hero.hz-on .slide.active .slide-photo{animation:none!important}
+html body #home.hero.hz-on .slide .rr-iris-rim,html body #home.hero.hz-on .slide .rr-iris-glow{display:none!important}
