@@ -3296,11 +3296,11 @@ background:radial-gradient(120% 90% at 20% 0%,rgba(255,255,255,.55),transparent 
 @keyframes lcSp{0%,100%{transform:scale(.4) rotate(0);opacity:.4}50%{transform:scale(1.2) rotate(30deg);opacity:1}}
 #loyalty .lc-st{animation:lcSt 3s ease-in-out infinite}
 @keyframes lcSt{0%,100%{opacity:.2;transform:translateY(4px)}50%{opacity:.8;transform:translateY(-4px)}}
-#loyalty .lc-pig{transform-box:fill-box;transform-origin:50% 100%;animation:lcBob 3.6s ease-in-out infinite}
-@keyframes lcBob{0%,100%{transform:scale(1,1)}86%{transform:scale(1,1)}92%{transform:scale(1.03,.97)}96%{transform:scale(.99,1.02)}}
-#loyalty .lc-cn use{transform-box:fill-box;animation:lcDrop 3.6s cubic-bezier(.5,0,.8,.6) infinite;opacity:0}
-#loyalty .lc-cn .c2{animation-delay:1.2s}#loyalty .lc-cn .c3{animation-delay:2.4s}
-@keyframes lcDrop{0%{transform:translateY(-30px) rotate(0);opacity:0}8%{opacity:1}60%{transform:translateY(88px) rotate(300deg);opacity:1}72%{transform:translateY(96px) rotate(360deg) scaleX(.2);opacity:0}100%{opacity:0}}
+#loyalty .lc-pig{transform-box:fill-box;transform-origin:50% 100%;animation:lcBob 1.2s ease-in-out infinite}
+@keyframes lcBob{0%,70%,100%{transform:scale(1,1)}76%{transform:scale(1.03,.97)}86%{transform:scale(.99,1.02)}}
+#loyalty .lc-cn use{transform-box:fill-box;transform-origin:center;animation:lcDrop 3.6s linear infinite;opacity:0}
+#loyalty .lc-cn .c2{animation-delay:-1.2s}#loyalty .lc-cn .c3{animation-delay:-2.4s}
+@keyframes lcDrop{0%{transform:translateY(-30px) scaleX(1);opacity:0}8%{transform:translateY(-29px) scaleX(.55);opacity:1}15%{transform:translateY(-25px) scaleX(.1)}22%{transform:translateY(-19px) scaleX(.55)}28%{transform:translateY(-11px) scaleX(1)}36%{transform:translateY(-1px) scaleX(.55)}42%{transform:translateY(8px) scaleX(.1)}50%{transform:translateY(25px) scaleX(.7)}56%{transform:translateY(38px) scaleX(1)}62%{transform:translateY(53px) scaleX(.45)}66%{transform:translateY(66px) scaleX(.12)}72%{transform:translateY(85px) scaleX(.12);opacity:1}80%{transform:translateY(112px) scaleX(.12);opacity:1}81%{opacity:0}100%{transform:translateY(112px) scaleX(.12);opacity:0}}
 #loyalty .lc-note{margin:26px 0 0;text-align:center;font:500 13px/1.6 'Manrope',Arial,sans-serif;color:#33140c}
 #loyalty .lc-note a{color:#9D692B;font-weight:800}
 #loyalty .lc-terms{max-width:640px;margin:14px auto 0}
