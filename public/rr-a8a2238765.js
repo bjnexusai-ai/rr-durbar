@@ -336,7 +336,7 @@
 
 (() => {
   const pageSections = {
-    home: ['home', 'bestsellers', 'menu', 'trust', 'honours', 'reviews', 'gallery', 'loyalty', 'outlets', 'cta'],
+    home: ['home', 'whats-new', 'bestsellers', 'menu', 'trust', 'honours', 'reviews', 'gallery', 'loyalty', 'outlets', 'cta'],
     loyalty: ['loyalty'],
     'about-us': ['about', 'story', 'foundation', 'family', 'why-us', 'about-sig', 'about-go', 'purpose', 'promise-green', 'stats', 'awards', 'reels'],
     'our-story': ['about', 'story', 'foundation', 'family', 'why-us', 'about-sig', 'about-go', 'purpose', 'promise-green', 'stats', 'awards', 'reels'],
@@ -360,7 +360,7 @@
     'menu-page': 'menu',
     ordering: 'order-now', outlets: 'home', loyalty: 'home', awards: 'home', cta: 'home', locations: 'locations', 'track-order': 'track-order', tracking: 'track-order',
     pickup: 'pickup', 'pickup-menu': 'pickup-menu', 'br-locator': 'branches', 'br-list': 'branches', catering: 'catering', 'catering-form': 'catering', 'catering-occasions': 'catering', 'catering-serve': 'catering', 'catering-why': 'catering', 'catering-cta': 'catering', contact: 'contact', 'contact-form': 'contact', policies: 'policies',
-    'privacy-policy': 'policies', terms: 'policies', refunds: 'policies', gallery: 'home', reviews: 'home', speciality: 'home', reels: 'about-us',
+    'privacy-policy': 'policies', terms: 'policies', refunds: 'policies', gallery: 'home', 'whats-new': 'home', reviews: 'home', speciality: 'home', reels: 'about-us',
   };
   const pageTitles = {
     home: 'Home', 'about-us': 'About Us', 'our-story': 'Our Story', menu: 'Menu',
