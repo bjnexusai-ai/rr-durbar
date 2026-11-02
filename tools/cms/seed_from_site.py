@@ -41,7 +41,7 @@ insta = next((u for u in org.get('sameAs', []) if 'instagram.com' in u), '')
 _wa = collections.Counter(re.findall(r'wa\.me/(91[6-9]\d{9})\b', src))
 WA = _wa.most_common(1)[0][0] if _wa else ''   # the WhatsApp number the site actually uses
 doc({'_id': 'siteSettings', '_type': 'siteSettings', 'brandName': org.get('name', 'RR Durbar'),
-     'legalName': 'RR Fresh Foods (RR Durbar)' if legal else '', 'gstin': org.get('taxID', ''), 'phone': org.get('telephone', ''),
+     'legalName': 'RR Fresh Foods' if legal else '', 'gstin': org.get('taxID', ''), 'phone': org.get('telephone', ''),
      'whatsapp': WA, 'email': org.get('email', ''),
      'instagram': insta.rstrip('/').split('/')[-1] if insta else '', 'swiggyUrl': listings.get('swiggy', ''), 'zomatoUrl': listings.get('zomato', ''),
      'registeredAddress': 'D.No 40-7-3, Near Jammichettu Centre, Moghalrajpuram, Vijayawada, AP 520010',
