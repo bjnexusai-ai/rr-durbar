@@ -1,0 +1,26 @@
+/* rr-catering-2: "Lighting the Durbar" on /catering/. One-time sequence (picture 30% in view), idle current, hover/tap spotlight. Revert: restore src/site.html.bak2 */
+.rrs-dim2{position:absolute;inset:0;background:#0b0001;opacity:0;pointer-events:none;transition:opacity .25s;-webkit-mask-image:radial-gradient(ellipse var(--sw,20%) var(--sh,30%) at var(--sx,50%) var(--sy,50%),transparent 62%,#000 100%);mask-image:radial-gradient(ellipse var(--sw,20%) var(--sh,30%) at var(--sx,50%) var(--sy,50%),transparent 62%,#000 100%)}
+.rrs-dim2.on{opacity:.15}
+.rrs-hg{position:absolute;z-index:1;pointer-events:none;border-radius:50%;opacity:0;transform:scale(.9);background:radial-gradient(closest-side,rgba(255,206,120,.85),rgba(255,160,60,.42) 45%,rgba(255,140,40,0) 100%);transition:opacity .7s ease-out,transform .7s ease-out}
+.rrs-hg.on{opacity:1;transform:none}
+.rrs-hg.off{opacity:0;transition:opacity 1.2s}
+.rrs-fx{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:1}
+.rrs-fx .rrs-lw{opacity:0;transition:opacity .25s}
+.rrs-fx .rrs-lw path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.rrs-fx .rrs-lg{stroke:#FFAA3C;stroke-opacity:.38}
+.rrs-fx .rrs-lc{stroke:#FFE9B0}
+.rrs-fx .rrs-sp{pointer-events:none}
+.rrs-pb{position:absolute;z-index:3;width:0;height:0;pointer-events:none}
+.rrs-pb i{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle,#fff3c4,#e9b85c 60%,rgba(233,184,92,0));opacity:0}
+.rrs-wl.rrs-fx{display:block}.rrs-wp.rrs-fx{display:none}
+@media(max-width:899px){.rrs-wl.rrs-fx{display:none}.rrs-wp.rrs-fx{display:block}}
+.rrs.seq .rrs-dim{opacity:.6;-webkit-mask-composite:source-in;mask-composite:intersect}
+.rrs.seq.fin .rrs-dim{opacity:0;transition:opacity 1s ease-out}
+.rrs.seq .rrs-b:not(.lit)::before{opacity:0;transform:scale(.96)}
+.rrs.seq .rrs-b::before{transition:opacity .5s,transform .5s}
+.rrs.seq .rrs-b:not(.lit) .rrs-t{opacity:0;transform:translateY(6px)}
+.rrs.seq .rrs-t{transition:opacity .4s,transform .4s}
+.rrs.steam .rrs-steam i{animation:rrsSteam 4.5s ease-out infinite}
+.rrs.steam .rrs-steam i:nth-child(2){animation-delay:1.5s}.rrs.steam .rrs-steam i:nth-child(3){animation-delay:3s}
+.rrs.rrs-done .rrs-hint{animation:rrsHint 1.1s ease-in-out 1s 2 backwards}
+@media(prefers-reduced-motion:reduce){.rrs-dim,.rrs-hg{display:none!important}.rrs-dim2,.rrs-fx .rrs-lw{transition:none!important}.rrs.rrs-done .rrs-hint{animation:none}}

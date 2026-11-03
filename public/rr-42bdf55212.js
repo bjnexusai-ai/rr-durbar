@@ -1,7 +1,6 @@
 /* rr-catering-stages: lights on when 30% in view, detail card, Enquire preselects the event in #catering-form */
 (function(){var root=document.getElementById('rrs');if(!root)return;
 var rmq=matchMedia('(prefers-reduced-motion:reduce)'),wide=matchMedia('(min-width:900px)');
-root.classList.add('js');
 var sec=document.getElementById('rrs-wrap'),card=sec.querySelector('.rrs-card'),scrim=sec.querySelector('.rrs-scrim');
 document.body.appendChild(scrim);document.body.appendChild(card);
 var D={
@@ -13,7 +12,7 @@ var D={
  baby:{t:'Baby Showers',l:'Warm, festive menus for baby showers and family get-togethers.',o:'Baby shower'}};
 var cur=null,last=null,isOpen=false,timer=0;
 function on(){root.classList.add('on')}
-if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){on();io.disconnect()}},{threshold:.3});io.observe(root)}else on();
+/* lights-on: see rr-catering-2-js (it adds .on when the sequence ends) */
 function place(btn){
  if(!wide.matches){card.style.left=card.style.top='';return}
  var r=btn.getBoundingClientRect(),W=card.offsetWidth||320,H=card.offsetHeight||190;
@@ -27,10 +26,13 @@ function show(k,btn){var d=D[k];if(!d)return;cur=k;last=btn;clearTimeout(timer);
  card.classList.add('open');scrim.classList.add('open');isOpen=true;
  card.querySelector('.rrs-x').focus({preventScroll:true})}
 function hide(back){if(!isOpen)return;isOpen=false;card.classList.remove('open');scrim.classList.remove('open');
+if(window.rrsSpot&&!root.querySelector('.rrs-b:hover'))window.rrsSpot(null);
  var done=function(){card.hidden=true;scrim.hidden=true};
  if(rmq.matches)done();else timer=setTimeout(done,330);
  if(back&&last)last.focus({preventScroll:true})}
-root.addEventListener('click',function(e){var b=e.target.closest('.rrs-b');if(b)show(b.getAttribute('data-k'),b)});
+root.addEventListener('click',function(e){var b=e.target.closest('.rrs-b');if(!b)return;var k=b.getAttribute('data-k');
+ if(window.rrsSpot)window.rrsSpot(k);var lag=window.rrsSpotLag?window.rrsSpotLag():0;
+ if(lag)setTimeout(function(){show(k,b)},lag);else show(k,b)});
 scrim.addEventListener('click',function(){hide(true)});
 card.querySelector('.rrs-x').addEventListener('click',function(){hide(true)});
 document.addEventListener('keydown',function(e){if(!isOpen)return;
