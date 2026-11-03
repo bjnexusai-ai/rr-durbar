@@ -11,7 +11,7 @@ export const ROUTES = {
   'pickup-menu': { title: 'Pickup menu', sections: ['pickup-menu'] },
   branches: { title: 'Branches', sections: ['br-locator', 'br-list'] },
   locations: { title: 'Locations (to merge into Branches, plan 3.1)', sections: ['locations'] },
-  catering: { title: 'Catering', sections: ['catering', 'catering-occasions', 'catering-why', 'catering-cta'] },
+  catering: { title: 'Catering', sections: ['catering', 'catering-why', 'catering-cta'] },
   contact: { title: 'Contact', sections: ['contact'] },
   loyalty: { title: 'Loyalty / Rewards (also /rewards/)', sections: ['loyalty'] },
   'track-order': { title: 'Track order', sections: ['track-order', 'tracking'] },

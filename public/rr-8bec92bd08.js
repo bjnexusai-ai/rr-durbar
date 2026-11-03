@@ -255,7 +255,7 @@ T.forEach(function(t){var a=[].filter.call(src,function(x){return x.textContent.
 if(bar.children.length<3)return;
 document.body.appendChild(bar);document.documentElement.classList.add('rr-tabs');
 function sync(){var q=location.search+location.hash,cur='Home';
- if(/page=menu/.test(q))cur='Menu';else if(/page=order|page=pickup|ordering/.test(q))cur='Order';else if(/page=branches|br-locator/.test(q))cur='Branches';else if(/page=about/.test(q))cur='About';else if(/page=catering/.test(q))cur='Catering';else if(/page=contact|#contact/.test(q))cur='Contact';
+ if(/page=menu/.test(q))cur='Menu';else if(/page=order|page=pickup|ordering/.test(q))cur='Order';else if(/page=branches|br-locator/.test(q))cur='Branches';else if(/page=about/.test(q))cur='About';else if(/page=catering/.test(q)||/^\/catering\/?$/.test(location.pathname))cur='Catering';else if(/page=contact|#contact/.test(q))cur='Contact';
  else if(/page=home/.test(q))cur='Home';else if(/page=/.test(q))cur='';
  [].forEach.call(bar.children,function(a){var on=a.dataset.k===cur;a.classList.toggle('on',on);if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});if(cur!==bar.__cur){bar.__cur=cur;var o=bar.querySelector('.on');if(o&&bar.scrollWidth>bar.clientWidth+2)bar.scrollTo({left:Math.max(0,o.offsetLeft-(bar.clientWidth-o.offsetWidth)/2),behavior:'auto'})}}
 sync();['popstate','hashchange','click'].forEach(function(e){addEventListener(e,function(){setTimeout(sync,60);setTimeout(sync,500)})});

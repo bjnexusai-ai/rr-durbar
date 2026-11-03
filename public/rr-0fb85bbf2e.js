@@ -2,7 +2,7 @@
 (function(){var root=document.getElementById('rrs');if(!root)return;
 var rmq=matchMedia('(prefers-reduced-motion:reduce)'),wide=matchMedia('(min-width:900px)');
 root.classList.add('js');
-var sec=document.getElementById('catering-occasions'),card=sec.querySelector('.rrs-card'),scrim=sec.querySelector('.rrs-scrim');
+var sec=document.getElementById('rrs-wrap'),card=sec.querySelector('.rrs-card'),scrim=sec.querySelector('.rrs-scrim');
 document.body.appendChild(scrim);document.body.appendChild(card);
 var D={
  weddings:{t:'Weddings',l:'Wedding-day feasts and receptions, planned around your menu and your date.',o:'Wedding'},

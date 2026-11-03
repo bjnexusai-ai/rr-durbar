@@ -1,5 +1,4 @@
 /* rr-catering-stages: lit catering stages picture. Delete this block + the script below + restore the old section to revert */
-html body #catering-occasions{background:radial-gradient(120% 90% at 50% 38%,#2a0508 0%,#16030a 55%,#0a0002 100%)!important;overflow:hidden}
 .rrs{position:relative;margin:26px auto 0;width:100%;max-width:1280px;aspect-ratio:1672/941}
 .rrs-art{position:absolute;inset:0;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%);mask-composite:intersect}
 .rrs-art picture,.rrs-art img{display:block;width:100%;height:100%}
