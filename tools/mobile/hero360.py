@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Home hero at 360px: geometry + colours of all 8 slides, screenshots into tmp-shots/. Needs a server on :8765 serving public/. Run from repo root."""
+"""Home hero (v6 phone layout) at 360px: geometry + colours of all 8 slides, screenshots into tmp-shots/. Needs a server on :8765 serving public/. Run from repo root."""
 import pathlib
 from playwright.sync_api import sync_playwright
 import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'hero')); import rr_test_shim  # doors off: sessionStorage.rrDoorsSeen
@@ -15,9 +15,9 @@ with sync_playwright() as p:
     for n in range(8):
         d = pg.evaluate(JS, n); pg.wait_for_timeout(900); d = pg.evaluate(JS, n)
         ib = d["idx"][1] + d["idx"][3]; mt = d["music"][1] if d["music"] else 9999
-        ok = d["panel"][0] == 0 and d["panel"][2] == 360 and d["eyec"] == "rgb(136, 25, 41)" and d["descc"] == "rgb(58, 20, 8)" and (ib <= mt - 4 or (d["music"] and d["music"][1] + d["music"][3] <= d["panel"][1]))  # v5: music chip may sit on the photo, above the panel
+        ok = d["panel"][0] == 0 and d["panel"][2] == 360 and d["eyec"] == "rgb(122, 31, 43)" and d["eye"][3] > 0 and d["title"][3] > 0 and d["desc"][3] == 0 and abs(d["photo"][3] - round(780 * .58 + 26)) <= 3 and bool(d["music"]) and d["music"][1] + d["music"][3] <= d["panel"][1] + 26  # v6 phone: eyebrow #7a1f2b, description hidden, photo = 58svh + 26px, music chip on the photo
         bad += (not ok)
-        print(f"slide {n+1}: panel x{d['panel'][0]} w{d['panel'][2]} | photo h{d['photo'][3]} | eyebrow h{d['eye'][3]} {d['eyec']} | desc h{d['desc'][3]} {d['descc']} | counter bottom {ib} vs music top {mt} (or chip above panel) | {'OK' if ok else 'PROBLEM'}")
+        print(f"slide {n+1}: panel x{d['panel'][0]} w{d['panel'][2]} | photo h{d['photo'][3]} | eyebrow h{d['eye'][3]} {d['eyec']} | heading h{d['title'][3]} | desc h{d['desc'][3]} | music chip bottom {d['music'][1] + d['music'][3]} vs panel top {d['panel'][1]} | {'OK' if ok else 'PROBLEM'}")
         f = f"tmp-shots/m360-{n+1}.png"; pg.screenshot(path=f); shots.append(f)
     for name, grp in (("A", shots[:4]), ("B", shots[4:])):
         im = [Image.open(f) for f in grp]; sheet = Image.new("RGB", (sum(i.width for i in im), im[0].height)); x = 0
