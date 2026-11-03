@@ -1,0 +1,17 @@
+/* ===== Step L (3 Nov): loyalty = 5% cashback as Coins. No tiers. Nothing decorative sits over card text. ===== */
+html body #loyalty .lc-royal::after,html body #loyalty .lc-card::before{content:none!important;display:none!important}
+html body #loyalty .lc-royal{background:linear-gradient(135deg,#1f5a3a,#123a24)!important;border-color:#C58A2A}
+html body #loyalty .lc-card,html body #loyalty .lc-card>*{position:relative}
+html body #loyalty .lc-card .lc-medal{width:clamp(46px,5vw,64px);height:auto}
+html body #loyalty .lc-card li b{white-space:nowrap}
+html body #loyalty .lc-card li span{min-width:0;overflow-wrap:break-word}
+html body #loyalty .lc-pill{font-size:clamp(15px,1.25vw,19px)}
+@media(min-width:1100px){
+html body #loyalty .lc-card ul{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:16px}
+html body #loyalty .lc-card li{flex-direction:column;align-items:flex-start;gap:4px;padding-top:10px!important}
+html body #loyalty .lc-card li b{border-right:0;padding-right:0;min-width:0}
+}
+html body #loyalty .lc-art{background:#2a0d10}
+html body #loyalty .lc-art svg{width:100%;height:100%;display:block}
+@media(max-width:900px){html body #loyalty .lc-art{aspect-ratio:auto;height:clamp(360px,106vw,440px)}}
+@media(max-width:600px){html body #loyalty .lc-card ul{display:block}html body #loyalty .lc-card li{border-top:1px solid rgba(74,8,16,.16)}html body #loyalty .lc-royal li{border-top-color:rgba(231,184,92,.4)}}

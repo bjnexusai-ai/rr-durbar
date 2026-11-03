@@ -3369,7 +3369,6 @@ background:radial-gradient(120% 90% at 20% 0%,rgba(255,255,255,.55),transparent 
 #loyalty .lc-silver{background:linear-gradient(160deg,#FFFFFF,#F4F1EA)}
 #loyalty .lc-gold{background:linear-gradient(160deg,#FFF4D2,#FBE3A0)}
 #loyalty .lc-royal{grid-column:1/3;display:grid;grid-template-columns:auto 1fr auto;column-gap:18px;align-items:center;background:linear-gradient(135deg,#6b0f1c,#33050B);color:#F8EFDF;border-color:#C58A2A}
-#loyalty .lc-royal::after{content:"";position:absolute;right:-6%;bottom:-40%;width:50%;height:120%;border-radius:50%;border:2px solid rgba(231,184,92,.4);pointer-events:none}
 #loyalty .lc-medal{width:clamp(62px,6.5vw,86px);height:auto;display:block;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25));transition:transform .6s var(--e)}
 #loyalty .lc-card:hover .lc-medal{transform:rotate(-8deg) scale(1.08)}
 #loyalty .lc-from{position:absolute;top:18px;right:18px;padding:8px 14px;border-radius:12px;font:800 11px/1.35 'Manrope',Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-align:center;background:rgba(0,0,0,.07);color:#4a4a4a}
