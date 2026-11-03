@@ -4,3 +4,9 @@
 # Our Story merged into About Us (28 Oct, decision w2).
 /our-story /about-us/ 301
 /our-story/ /about-us/ 301
+# Old rrdurbar.com pages (before 3 Nov 2026) -> new pages
+/index.html / 301
+/menu-split.html /menu/ 301
+/page-about.html /about-us/ 301
+/page-contacts.html /contact/ 301
+/page-gallery.html /about-us/ 301
