@@ -345,7 +345,7 @@
     locations: ['locations'],
     'track-order': ['track-order', 'tracking'],
     catering: ['catering', 'catering-occasions', 'catering-serve', 'catering-why', 'catering-cta'],
-    branches: ['br-locator', 'br-list'],
+    branches: ['br-locator', 'br-map', 'br-list'],
     pickup: ['pickup'],
     'pickup-menu': ['pickup-menu'],
     contact: ['contact'],

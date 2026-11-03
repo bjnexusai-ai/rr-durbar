@@ -9,7 +9,7 @@ export const ROUTES = {
   'order-now': { title: 'Order now', sections: ['ordering'] },
   pickup: { title: 'Pickup', sections: ['pickup'] },
   'pickup-menu': { title: 'Pickup menu', sections: ['pickup-menu'] },
-  branches: { title: 'Branches', sections: ['br-locator', 'br-list'] },
+  branches: { title: 'Branches', sections: ['br-locator', 'br-map', 'br-list'] },
   locations: { title: 'Locations (to merge into Branches, plan 3.1)', sections: ['locations'] },
   catering: { title: 'Catering', sections: ['catering', 'catering-why', 'catering-cta'] },
   contact: { title: 'Contact', sections: ['contact'] },

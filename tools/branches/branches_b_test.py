@@ -26,7 +26,7 @@ with sync_playwright() as p:
         pg.evaluate("document.getElementById('skyline').scrollIntoView({block:'center'})"); pg.wait_for_timeout(2600)
         on = pg.evaluate("(()=>{const s=document.querySelector('#br-locator .rr-bulbs');if(!s)return [false,0,0];const b=[...s.querySelectorAll('.b')];return [s.classList.contains('on'),b.length,Math.min(...b.slice(0,10).map(x=>+getComputedStyle(x).opacity))]})()")
         res(al and on[0] and on[1] >= 35 and on[2] > 0.4, f"{w}px: bulbs on the photo {bool(al)}, switched on {on[0]}, {on[1]} bulbs, lowest opacity {round(on[2],2)}")
-        res(g["plate"].startswith("radial") and g["map"] and g["map"][1] <= g["sec"][1] and not errs, f"{w}px: map on dark plate {g['plate'].startswith('radial')}, map not cut {g['map'] and g['map'][1] <= g['sec'][1]}, script errors {len(errs)}")
+        res(g["map"] is None and not errs, f"{w}px: old hero map removed on 3 Nov (Step M), now only the portrait map in #br-map; hero map hidden {g['map'] is None}, script errors {len(errs)}")
         pg.close()
     ctx = br.new_context(viewport={"width": 390, "height": 844}, reduced_motion="reduce"); pg = ctx.new_page()
     pg.goto(B + "/branches/", wait_until="load"); pg.wait_for_timeout(1200)
