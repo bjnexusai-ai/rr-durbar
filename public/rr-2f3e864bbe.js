@@ -32,9 +32,9 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeo
 /* ambience (unchanged behaviour) */
 if(royalAudio){royalAudio.volume=.72;royalAudio.loop=true}
 function updateMusicUI(on){if(!musicBox)return;musicBox.classList.toggle('playing',on);musicButton.textContent=on?'Ⅱ':'♫';musicButton.setAttribute('aria-label',on?'Turn ambience off':'Turn ambience on');musicText.textContent=on?'On · ambience only':'Off · tap to play'}
-async function startMusic(){ambience=true;try{await royalAudio.play();updateMusicUI(true)}catch(e){ambience=false;updateMusicUI(false)}}
-function stopMusic(){ambience=false;royalAudio.pause();updateMusicUI(false)}
-musicButton?.addEventListener('click',()=>ambience?stopMusic():startMusic());
+async function startMusic(){ambience=true;try{if(window.rrMusic)await window.rrMusic.start();else await royalAudio.play();updateMusicUI(true)}catch(e){ambience=false;updateMusicUI(false)}}
+function stopMusic(){ambience=false;if(window.rrMusic)window.rrMusic.off(true);else royalAudio.pause();updateMusicUI(false)}
+window.rrHeroMusicUI=updateMusicUI;musicButton?.addEventListener('click',()=>(royalAudio&&!royalAudio.paused)?stopMusic():startMusic());
 paint(0);schedule();updateMusicUI(false);raf=requestAnimationFrame(frame);
 })();
 

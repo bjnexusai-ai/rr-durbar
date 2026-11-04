@@ -1,0 +1,46 @@
+/* rr-music (Step 3): the Royal ambience mini player that travels between pages. To revert: delete this style block, the rr-music-js script and the 3 hero music lines (tools/music/patch_music.py says which). */
+.rrm{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:var(--rrm-b,24px);z-index:860;box-sizing:border-box;display:flex;align-items:center;gap:8px;width:210px;height:44px;padding:0 6px 0 14px;border-radius:999px;background:rgba(30,10,14,.82);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(233,184,92,.55);box-shadow:0 10px 26px rgba(0,0,0,.38),inset 0 1px 0 rgba(242,217,155,.14);color:#f2d99b;font:700 12.5px/1 'Manrope',Arial,sans-serif;letter-spacing:.02em;-webkit-tap-highlight-color:transparent;transition:opacity .3s ease,transform .3s ease,visibility 0s}
+.rrm[hidden]{display:none}
+.rrm.rrm-ho{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(12px);transition:opacity .3s ease,transform .3s ease,visibility 0s .3s}
+.rrm.rrm-in{animation:rrmIn .38s cubic-bezier(.2,.8,.2,1) both}
+.rrm.rrm-out{opacity:0;transform:translateX(-130%);pointer-events:none}
+@keyframes rrmIn{from{opacity:0;transform:translateX(-130%)}to{opacity:1;transform:none}}
+.rrm-eq{flex:none;display:flex;align-items:flex-end;gap:3px;width:17px;height:16px}
+.rrm-eq i{flex:1;height:100%;border-radius:2px;background:currentColor;transform-origin:50% 100%;transform:scaleY(.45)}
+.rrm-eq i:nth-child(2){transform:scaleY(.9)}
+.rrm-eq i:nth-child(3){transform:scaleY(.65)}
+.rrm.is-play .rrm-eq i{animation:rrmEq 1.1s ease-in-out infinite}
+.rrm.is-play .rrm-eq i:nth-child(2){animation-duration:.8s;animation-delay:-.3s}
+.rrm.is-play .rrm-eq i:nth-child(3){animation-duration:.95s;animation-delay:-.6s}
+@keyframes rrmEq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.rrm-lbl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rrm button{-webkit-appearance:none;appearance:none;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
+.rrm button:focus-visible{outline:2px solid #f2d99b;outline-offset:2px}
+.rrm-p,.rrm-x{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%}
+.rrm-p:hover,.rrm-x:hover{background:rgba(242,217,155,.16)}
+.rrm-p svg{width:16px;height:16px;fill:currentColor;display:block}
+.rrm-x svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;display:block}
+.rrm .ic-play{display:none}
+.rrm.is-pause .ic-play,.rrm.is-wait .ic-play{display:block}
+.rrm.is-pause .ic-pause,.rrm.is-wait .ic-pause{display:none}
+.rrm-tip{display:none}
+.rrm-toast{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:var(--rrm-b,24px);z-index:861;box-sizing:border-box;display:flex;align-items:center;height:44px;padding:0 18px;border-radius:999px;background:rgba(30,10,14,.9);border:1px solid rgba(233,184,92,.5);color:#f2d99b;font:700 12.5px/1 'Manrope',Arial,sans-serif;letter-spacing:.02em;white-space:nowrap;opacity:0;visibility:hidden;transform:translateY(8px);pointer-events:none;transition:opacity .25s ease,transform .25s ease,visibility 0s .25s}
+.rrm-toast.on{opacity:1;visibility:visible;transform:none;transition:opacity .25s ease,transform .25s ease,visibility 0s}
+html:has(#drawer.open) .rrm,html:has(.mobile-nav-panel.open) .rrm{opacity:0;visibility:hidden;pointer-events:none}
+@media(max-width:1050px) and (min-height:500px){
+html.rr-tabs .rrm,html.rr-tabs .rrm-toast{left:max(12px,env(safe-area-inset-left,0px));bottom:calc(var(--rrm-b,92px) + env(safe-area-inset-bottom,0px))}
+html.rr-tabs .rrm{width:44px;padding:0;gap:0;justify-content:center;border:1.5px solid #E7B85C;background:linear-gradient(180deg,#F0C56E,#C58A2A);color:#3a0b14;box-shadow:0 8px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.35)}
+html.rr-tabs .rrm-lbl,html.rr-tabs .rrm .ic-pause{display:none!important}
+html.rr-tabs .rrm-p{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;z-index:1}
+html.rr-tabs .rrm-p:hover{background:none}
+html.rr-tabs .rrm-p svg{width:18px;height:18px}
+html.rr-tabs .rrm.is-pause .rrm-eq,html.rr-tabs .rrm.is-wait .rrm-eq{visibility:hidden}
+html.rr-tabs .rrm-x{position:absolute;top:-9px;right:-9px;width:24px;height:24px;z-index:2;background:#3a0b14;color:#f2d99b;border:1px solid rgba(242,217,155,.6);box-shadow:0 2px 8px rgba(0,0,0,.4)}
+html.rr-tabs .rrm-x:hover{background:#3a0b14}
+html.rr-tabs .rrm-x::after{content:"";position:absolute;inset:-6px}
+html.rr-tabs .rrm-x svg{width:10px;height:10px}
+html.rr-tabs .rrm.is-wait .rrm-tip{display:block;position:absolute;left:0;bottom:calc(100% + 10px);padding:9px 12px;border-radius:12px;background:rgba(30,10,14,.92);border:1px solid rgba(233,184,92,.5);color:#f2d99b;font:700 12px/1 'Manrope',Arial,sans-serif;letter-spacing:.02em;white-space:nowrap;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+}
+@media(prefers-reduced-motion:no-preference){.rrm{view-transition-name:rr-music}}
+@media(prefers-reduced-motion:reduce){.rrm,.rrm-toast{transition:none!important;animation:none!important}.rrm.is-play .rrm-eq i{animation:none!important}}
+@media print{.rrm,.rrm-toast{display:none!important}}
