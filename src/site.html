@@ -10867,7 +10867,7 @@ init();
 })();
 </script>
 <style id="rr-igbox-css">
-/* rr-igbox (Step 4A): floating "Latest from Instagram" box, bottom-left on every page except checkout / pickup / track-order / legal / catering. To revert: delete this style block, the rr-igbox-js script and the 2 whats-new edits (tools/igbox/patch_igbox.py says which). */
+/* rr-igbox (Step 4A + 4B): floating "Latest from Instagram" box, bottom-left on every page except checkout / pickup / track-order / legal. On /catering/ only for #rrcatering posts. To revert: delete this style block, the rr-igbox-js script and the 2 whats-new edits (tools/igbox/patch_igbox.py says which). */
 .rrig{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:24px;z-index:855;box-sizing:border-box;font-family:'Manrope',Arial,sans-serif;color:#f6ead0}
 .rrig[hidden]{display:none}
 .rrig,.rrig *{box-sizing:border-box}
@@ -10919,6 +10919,8 @@ html body .rrig.has-code .rrig-tx{-webkit-line-clamp:1}
 .rrig[data-m="disc"] .rrig-disc{display:grid}
 html:has(#drawer.open) .rrig,html:has(.mobile-nav-panel.open) .rrig,html:has(#rrw.open) .rrig,html.rr-wn-lock .rrig{opacity:0;visibility:hidden;pointer-events:none}
 @media(max-width:1050px) and (min-height:500px){
+/* 4B: the catering "Plan my event" pill owns the bottom centre above the phone nav, so the box lifts above it while it shows */
+html.rr-tabs:has(#rrp.on) .rrig{bottom:calc(152px + env(safe-area-inset-bottom,0px))}
 html.rr-tabs .rrig{left:max(12px,env(safe-area-inset-left,0px));bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 html.rr-tabs .rrig-card{width:min(calc(100vw - 84px),380px);height:72px;border-radius:14px}
 html.rr-tabs .rrig-sl{gap:9px;padding:8px 36px 8px 8px}
@@ -10940,16 +10942,18 @@ html.rr-tabs .rrig-x{width:40px;height:40px}
 .rrig-sl,.rrig-sl.o,.rrig-sl.n{transition:none;transform:none}
 }
 </style>
-<script id="rr-igbox-js">/* rr-igbox (Step 4A): floating "Latest from Instagram" box.
+<script id="rr-igbox-js">/* rr-igbox (Step 4A + 4B): floating "Latest from Instagram" box.
    Data: ONE GET <API>/api/whats-new per page, shared with the home What's new section through window.rrWNFetch (cached promise, cloned response).
    Live (instagram.live=true): up to 6 posts, #rroffer posts first, labels OFFER / REEL / NEW, first caption line cleaned, "Code: XXXX" gets a Copy chip.
    Not live yet (no IG_TOKEN): the 4 site reels + a Follow @rr_durbar card. API error: nothing is shown.
    sessionStorage rrIgC=1 keeps it collapsed to the disc for the visit. Phone collapses itself after 10 s.
+   4B: a tap opens the What's new pop-up player on EVERY page (home uses RR_WHATSNEW.open, other pages use a copy of the same pop-up built here with the same rr-wn-* classes).
+       /catering/: the box shows only posts with #rrcatering in the caption, no fallback reels; no such post = nothing shown. Lifts above the "Plan my event" pill on phones.
    Sets --rrm-b on <html> so the music player sits above the box (the box owns the bottom-left corner). */
 (function(){'use strict';
 var path=location.pathname.replace(/\/+$/,'')||'/';
-if(/^\/(checkout|pickup|track-order|policies|privacy-policy|terms-of-service|refund-cancellation|catering|404)(\/|$)/.test(path))return;
-var wnSec=document.getElementById('whats-new'),isHome=!!wnSec;
+if(/^\/(checkout|pickup|track-order|policies|privacy-policy|terms-of-service|refund-cancellation|404)(\/|$)/.test(path))return;
+var wnSec=document.getElementById('whats-new'),isHome=!!wnSec,isCat=/^\/catering(\/|$)/.test(path);
 var API=((wnSec&&wnSec.getAttribute('data-api'))||'https://rr-durbar-api.ramana-peravali.workers.dev').replace(/\/$/,'');
 var IG='https://www.instagram.com/rr_durbar/',COUPON='Show this code at the counter or mention it on WhatsApp';
 var FB=[
@@ -10989,14 +10993,16 @@ function findCode(c){
 function norm(m){
   if(!m||!okHttps(m.image)||!/^https:\/\/(www\.)?instagram\.com\//.test(m.permalink||''))return null;
   var v=okHttps(m.video)?m.video:null,cap=String(m.caption||'').slice(0,300);
-  return {kind:(m.kind==='reel'||v)?'reel':'photo',offer:!!m.offer,caption:cap,image:m.image,video:v,link:m.permalink};
+  return {kind:(m.kind==='reel'||v)?'reel':'photo',offer:!!m.offer,cat:/#rrcatering(?![A-Za-z0-9_])/i.test(String(m.caption||'')),caption:cap,image:m.image,video:v,link:m.permalink};
 }
 function fromApi(j){
   var ig=j&&j.instagram;if(!ig||!ig.live||!Array.isArray(ig.items))return [];
-  var all=ig.items.slice(0,9).map(norm).filter(Boolean),o=all.filter(function(x){return x.offer}),n=all.filter(function(x){return !x.offer});
+  var all=ig.items.slice(0,30).map(norm).filter(Boolean);
+  if(isCat)all=all.filter(function(x){return x.cat});else all=all.slice(0,9);
+  var o=all.filter(function(x){return x.offer}),n=all.filter(function(x){return !x.offer});
   return o.concat(n).slice(0,6);
 }
-function fallback(){return FB.map(function(x){var o={kind:x.kind,offer:false,caption:x.caption,image:x.image||null,video:x.video||null,link:IG};return o})}
+function fallback(){return FB.map(function(x){var o={kind:x.kind,offer:false,cat:false,caption:x.caption,image:x.image||null,video:x.video||null,link:IG};return o})}
 function label(it){return it.kind==='follow'?'FOLLOW':it.offer?'OFFER':it.kind==='reel'?'\u25B6 REEL':'NEW'}
 
 /* ---- DOM ---- */
@@ -11049,9 +11055,54 @@ function swap(to){
 }
 function open(){
   var it=items[idx];if(!it)return;
-  if(it.kind!=='follow'&&isHome&&window.RR_WHATSNEW&&typeof window.RR_WHATSNEW.open==='function'){window.RR_WHATSNEW.open(it,th);return}
-  window.open(it.link||IG,'_blank','noopener');
+  if(it.kind==='follow'){window.open(it.link||IG,'_blank','noopener');return}
+  if(isHome&&window.RR_WHATSNEW&&typeof window.RR_WHATSNEW.open==='function'){window.RR_WHATSNEW.open(it,th);return}
+  popOpen(it,th);
 }
+/* ---- pop-up for pages without the home What's new section: same markup and rr-wn-* classes as the home pop-up ---- */
+var pm=null,pOpener=null;
+function popBuild(){
+  var m=mk('div','rr-wn-modal');m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.setAttribute('aria-label','Instagram post from @rr_durbar');m.setAttribute('aria-hidden','true');
+  var p=mk('div','rr-wn-panel'),x=mk('button','rr-wn-x','\u00D7');x.type='button';x.setAttribute('aria-label','Close');
+  var media=mk('div','rr-wn-media'),info=mk('div','rr-wn-info'),cap=mk('p','rr-wn-mcap'),act=mk('div','rr-wn-act');
+  var ord=mk('a','rr-wn-btn','Order now');ord.href='/order-now/';
+  var ig=mk('a','rr-wn-btn rr-wn-btn2','Watch on Instagram');ig.target='_blank';ig.rel='noopener noreferrer';
+  act.appendChild(ord);act.appendChild(ig);info.appendChild(cap);info.appendChild(act);
+  p.appendChild(x);p.appendChild(media);p.appendChild(info);m.appendChild(p);document.body.appendChild(m);
+  m.addEventListener('click',function(e){if(e.target===m)popClose()});
+  x.addEventListener('click',function(){popClose()});ord.addEventListener('click',function(){popClose(true)});
+  m.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){e.preventDefault();popClose();return}
+    if(e.key!=='Tab')return;
+    var f=[].filter.call(m.querySelectorAll('button,a[href]'),function(n){return !n.disabled});if(!f.length)return;
+    var a=f[0],z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}
+  });
+  pm={el:m,media:media,cap:cap,ig:ig,x:x};
+}
+function popOpen(it,from){
+  if(!pm)popBuild();
+  pOpener=from;pm.media.textContent='';
+  if(it.video){
+    var v=mk('video');v.src=it.video;if(it.image)v.poster=it.image;v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.autoplay=true;v.setAttribute('aria-label',it.caption||'Reel from @rr_durbar');
+    var s=mk('button','rr-wn-snd','\uD83D\uDD07');s.type='button';s.setAttribute('aria-label','Turn sound on');s.setAttribute('aria-pressed','false');
+    s.addEventListener('click',function(){v.muted=!v.muted;s.textContent=v.muted?'\uD83D\uDD07':'\uD83D\uDD0A';s.setAttribute('aria-label',v.muted?'Turn sound on':'Turn sound off');s.setAttribute('aria-pressed',v.muted?'false':'true')});
+    pm.media.appendChild(v);pm.media.appendChild(s);
+    var pr2=v.play();if(pr2&&pr2.catch)pr2.catch(function(){});
+  }else{var im=mk('img');im.src=it.image;im.alt=it.caption||'Post from @rr_durbar';im.referrerPolicy='no-referrer';pm.media.appendChild(im)}
+  var c=String(it.caption||'').replace(/\s*#\S+/g,'').replace(/[ \t]+/g,' ').trim().slice(0,110);
+  pm.cap.textContent=c;pm.cap.hidden=!c;pm.ig.href=okHttps(it.link)?it.link:IG;
+  root.classList.add('rr-wn-lock');
+  pm.el.classList.add('is-open');pm.el.setAttribute('aria-hidden','false');pm.x.focus();
+}
+function popClose(skipFocus){
+  if(!pm||!pm.el.classList.contains('is-open'))return;
+  pm.el.classList.remove('is-open');pm.el.setAttribute('aria-hidden','true');
+  var v=pm.media.querySelector('video');if(v){v.pause();v.removeAttribute('src');v.load()}
+  pm.media.textContent='';root.classList.remove('rr-wn-lock');
+  if(skipFocus!==true&&pOpener&&document.contains(pOpener))pOpener.focus();pOpener=null;
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')popClose()});
 function copy(){
   var v=cv.textContent;if(!v)return;
   function done(){cp.textContent='Copied \u2713';clearTimeout(copyT);copyT=setTimeout(function(){cp.textContent='Copy'},1800)}
@@ -11060,9 +11111,11 @@ function copy(){
 }
 
 /* ---- layout: box owns the bottom-left corner, music player goes above it ---- */
+function pillOn(){var p=document.getElementById('rrp');return !!p&&p.classList.contains('on')}
 function pushVar(){
   if(!shown){root.style.removeProperty('--rrm-b');return}
   var full=mode==='full',v=phone()?(full?174:146):(full?140:80);
+  if(isCat&&phone()&&pillOn())v+=64;
   root.style.setProperty('--rrm-b',v+'px');
 }
 function setMode(m,keep){
@@ -11102,15 +11155,16 @@ function ready(list){
 function load(){
   if(load.d)return;load.d=true;
   window.rrWNFetch(API).then(function(r){if(!r.ok)throw new Error('http');return r.json()})
-    .then(function(j){var l=fromApi(j);ready(l.length?l:fallback())})
+    .then(function(j){var l=fromApi(j);if(isCat){if(l.length)ready(l);return}ready(l.length?l:fallback())})
     .catch(function(){});            /* API error: show nothing */
 }
 var first=function(){removeEventListener('scroll',first);load()};
 addEventListener('scroll',first,{passive:true});
 if(document.readyState==='complete')setTimeout(load,2000);else addEventListener('load',function(){setTimeout(load,2000)});
+if(isCat&&'MutationObserver' in window){var pw=function(){var p=document.getElementById('rrp');if(!p)return false;new MutationObserver(function(){if(shown)pushVar()}).observe(p,{attributes:true,attributeFilter:['class']});return true};if(!pw())addEventListener('load',pw)}
 function relayout(){if(shown){pushVar();if(phone())schedAuto();else clearTimeout(autoT)}}
 addEventListener('resize',relayout);if(mqPhone.addEventListener)mqPhone.addEventListener('change',relayout);
-window.rrIgBox={state:function(){return {shown:shown,mode:mode,idx:idx,n:items.length}},load:load};
+window.rrIgBox={state:function(){return {shown:shown,mode:mode,idx:idx,n:items.length,cat:isCat}},load:load};
 })();
 </script>
 <script id="lv-listings">(function(){var L=window.RR_LISTINGS||{};var h=document.querySelector('#m52 .ord');if(!h)return;h.querySelectorAll('a.m52-btn').forEach(function(a){var u=L[a.textContent.trim().toLowerCase()];if(!u||a.getAttribute('href'))return;a.href=u;a.target='_blank';a.rel='noopener noreferrer';a.classList.remove('off');a.removeAttribute('aria-disabled');a.removeAttribute('title')})})();</script><script id="rr-no-pl-order">(function(){function fix(){var s=document.getElementById("rr-order-outlet");if(!s)return;Array.prototype.slice.call(s.options).forEach(function(o){if(/patamatalanka/i.test(o.text+" "+o.value))s.removeChild(o)})}fix();var s=document.getElementById("rr-order-outlet");if(s&&window.MutationObserver)new MutationObserver(fix).observe(s,{childList:true});document.addEventListener("DOMContentLoaded",fix);window.addEventListener("load",fix)})();</script>

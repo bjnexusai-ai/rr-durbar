@@ -1,5 +1,5 @@
 
-/* rr-igbox (Step 4A): floating "Latest from Instagram" box, bottom-left on every page except checkout / pickup / track-order / legal / catering. To revert: delete this style block, the rr-igbox-js script and the 2 whats-new edits (tools/igbox/patch_igbox.py says which). */
+/* rr-igbox (Step 4A + 4B): floating "Latest from Instagram" box, bottom-left on every page except checkout / pickup / track-order / legal. On /catering/ only for #rrcatering posts. To revert: delete this style block, the rr-igbox-js script and the 2 whats-new edits (tools/igbox/patch_igbox.py says which). */
 .rrig{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:24px;z-index:855;box-sizing:border-box;font-family:'Manrope',Arial,sans-serif;color:#f6ead0}
 .rrig[hidden]{display:none}
 .rrig,.rrig *{box-sizing:border-box}
@@ -51,6 +51,8 @@ html body .rrig.has-code .rrig-tx{-webkit-line-clamp:1}
 .rrig[data-m="disc"] .rrig-disc{display:grid}
 html:has(#drawer.open) .rrig,html:has(.mobile-nav-panel.open) .rrig,html:has(#rrw.open) .rrig,html.rr-wn-lock .rrig{opacity:0;visibility:hidden;pointer-events:none}
 @media(max-width:1050px) and (min-height:500px){
+/* 4B: the catering "Plan my event" pill owns the bottom centre above the phone nav, so the box lifts above it while it shows */
+html.rr-tabs:has(#rrp.on) .rrig{bottom:calc(152px + env(safe-area-inset-bottom,0px))}
 html.rr-tabs .rrig{left:max(12px,env(safe-area-inset-left,0px));bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 html.rr-tabs .rrig-card{width:min(calc(100vw - 84px),380px);height:72px;border-radius:14px}
 html.rr-tabs .rrig-sl{gap:9px;padding:8px 36px 8px 8px}

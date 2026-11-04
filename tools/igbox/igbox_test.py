@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Step 4A tests: floating Instagram box (plan section 4, core). Needs a server on :8765 serving public/. Run from the repo root.
+"""Step 4A + 4B tests: floating Instagram box (plan section 4: core, pop-up on every page, #rrcatering on /catering/). Needs a server on :8765 serving public/. Run from the repo root.
   cd public && python3 -m http.server 8765 &      python3 tools/igbox/igbox_test.py
 Uses tools/hero/rr_test_shim.py (doors off). /api/whats-new is mocked; Instagram images are mocked too (no network needed)."""
 import sys, os, json, base64
@@ -18,6 +18,9 @@ LIVE = {'announcements': [], 'instagram': {'live': True, 'fetchedAt': '2026-11-0
     item(2, 'Weekend feast, flat 20% off!\nCode: RRFEST20 #rroffer', offer=True),
     item(3, 'Kebab night'), item(4, '#tag only line\nSecond real line here', reel=True), item(5, 'Dessert time'),
     item(6, 'Family pack offer #rroffer', offer=True), item(7, 'Chef special'), item(8, 'Late night bites'), item(9, 'Royal ambience')]}}
+CAT = {'announcements': [], 'instagram': {'live': True, 'fetchedAt': '2026-11-04T05:00:00Z', 'items': [
+    item(1, 'Fresh dum biryani again #rrdurbar', reel=True), item(2, 'Wedding spread for 300 guests #RRCatering #events', reel=True),
+    item(3, 'Weekend feast, flat 20% off!\nCode: RRFEST20 #rroffer', offer=True), item(4, 'Corporate lunch boxes delivered\n#rrcatering'), item(5, 'Dessert time #rrcateringx')]}}
 OFFLINE = {'announcements': [], 'instagram': {'live': False, 'items': []}}
 class Ctx:
     def __init__(s, br, w, h, mobile, payload, music=False, status=200):
@@ -89,7 +92,7 @@ with sync_playwright() as p:
     x = Ctx(br, 1440, 900, False, LIVE, status=500); pg = x.page(); go(pg, '/menu/'); scroll_down(pg); pg.wait_for_timeout(6500)
     res(not st(pg)['has'], 'API error: nothing shown, no box in the page'); pg.close(); x.c.close()
     x = Ctx(br, 1440, 900, False, LIVE); pg = x.page()
-    for path in ('/checkout/', '/pickup/', '/privacy-policy/', '/refund-cancellation/', '/policies/', '/catering/'):
+    for path in ('/checkout/', '/pickup/', '/privacy-policy/', '/refund-cancellation/', '/policies/'):
         go(pg, path, 2500); scroll_down(pg); pg.wait_for_timeout(5000)
         res(not st(pg)['has'], 'hidden on %s' % path)
     go(pg, '/', 2500); s = st(pg); res(not s['has'] or not s['shown'], 'home: not shown at the top')
@@ -105,6 +108,54 @@ with sync_playwright() as p:
     res(x.hits == 1, 'home: one /api/whats-new request shared by What\'s new and the box (%d)' % x.hits)
     pg.click('.rrig-th'); pg.wait_for_timeout(700)
     res(pg.evaluate("!!document.querySelector('.rr-wn-modal.is-open, .rr-wn-modal[aria-hidden=false]')") or pg.evaluate("document.documentElement.classList.contains('rr-wn-lock')"), 'home: tap opens the What\'s new pop-up'); pg.close(); x.c.close()
+    # 4B-1. tap opens the pop-up player on any page (not only home); Watch on Instagram = the post permalink
+    for (w, h, mob) in SIZES:
+        for path in ('/menu/', '/branches/'):
+            x = Ctx(br, w, h, mob, LIVE); pg = x.page(); go(pg, path); scroll_down(pg); s = st(pg)
+            if not s['shown']: res(False, '%d %s: box shown before tap' % (w, path)); pg.close(); x.c.close(); continue
+            tag = '%d %s' % (w, path)
+            pg.evaluate("window.__pops=0;const o=window.open;window.open=function(){window.__pops++;return null}"); pg.wait_for_timeout(50); pg.evaluate("window.__pops=0")
+            lab = s['lb']
+            pg.click('.rrig-th'); pg.wait_for_timeout(700)
+            m = pg.evaluate("""() => { const m=document.querySelector('.rr-wn-modal.is-open'); if(!m) return null; const v=m.querySelector('video'), a=m.querySelector('.rr-wn-btn2'), cs=getComputedStyle(m);
+              return {video:!!v, img:!!m.querySelector('.rr-wn-media img'), href:a&&a.href, vis:cs.visibility==='visible'&&parseFloat(cs.opacity)>.9, lock:document.documentElement.classList.contains('rr-wn-lock'), pops:window.__pops, boxHidden:getComputedStyle(document.getElementById('rrig')).visibility==='hidden'} }""")
+            res(bool(m) and m['vis'] and m['lock'] and m['pops'] == 0, '%s: tap opens the pop-up (no new tab) %s' % (tag, m))
+            res(bool(m) and m['href'] == 'https://www.instagram.com/p/X2/', '%s: Watch on Instagram uses the permalink (%s)' % (tag, m and m['href']))
+            res(bool(m) and m['boxHidden'], '%s: box hides while the pop-up is open' % tag)
+            pg.keyboard.press('Escape'); pg.wait_for_timeout(600)
+            c = pg.evaluate("() => ({open:!!document.querySelector('.rr-wn-modal.is-open'), lock:document.documentElement.classList.contains('rr-wn-lock'), vid:!!document.querySelector('.rr-wn-modal video')})")
+            res(not c['open'] and not c['lock'] and not c['vid'], '%s: Escape closes, unlocks, drops the video %s' % (tag, c))
+            pg.click('.rrig-tx'); pg.wait_for_timeout(500)
+            res(pg.evaluate("!!document.querySelector('.rr-wn-modal.is-open')"), '%s: caption tap opens it too' % tag)
+            pg.click('.rr-wn-x'); pg.wait_for_timeout(500)
+            res(not pg.evaluate("!!document.querySelector('.rr-wn-modal.is-open')"), '%s: close button closes it' % tag)
+            pg.close(); x.c.close()
+    # 4B-1b. a reel opens a video player, a photo opens the picture
+    x = Ctx(br, 1440, 900, False, LIVE); pg = x.page(); go(pg, '/menu/'); scroll_down(pg); pg.evaluate("window.open=()=>null")
+    pg.evaluate("document.querySelector('.rrig-th').click()"); pg.wait_for_timeout(500)
+    res(pg.evaluate("!!document.querySelector('.rr-wn-modal.is-open')"), 'reel/photo: pop-up opens'); pg.close(); x.c.close()
+    # 4B-2. /catering/: only #rrcatering posts, otherwise hidden
+    x = Ctx(br, 1440, 900, False, CAT); pg = x.page(); go(pg, '/catering/', 2500); scroll_down(pg); pg.wait_for_timeout(1500); s = st(pg)
+    res(s['has'] and s['shown'], 'catering: box shows when posts carry #rrcatering (%s)' % {k: s.get(k) for k in ('has', 'shown', 'mode')})
+    res(s['n'] == '2' or s['mode'] == 'full', 'catering: only the 2 tagged posts (badge/mode: %s/%s)' % (s['n'], s['mode']))
+    pg.click('.rrig-x'); pg.wait_for_timeout(400); s = st(pg)
+    res(s['n'] == '2', 'catering: exactly 2 posts (#rrcatering in any case, "#rrcateringx" and untagged ones excluded) n=%s' % s['n'])
+    pg.click('.rrig-disc'); pg.wait_for_timeout(400); pg.mouse.move(700, 300)
+    seen = []
+    for k in range(3):
+        seen.append(pg.evaluate("document.querySelector('.rrig-tx').textContent")); pg.wait_for_timeout(6400)
+    res(not any('Fresh dum' in t or 'Dessert' in t or 'Weekend feast' in t for t in seen), 'catering: rotation never shows untagged posts (%s)' % seen)
+    res(any('Wedding' in t for t in seen) and any('Corporate' in t for t in seen), 'catering: shows the tagged posts (%s)' % seen)
+    pg.evaluate("window.open=()=>null"); pg.click('.rrig-th'); pg.wait_for_timeout(500)
+    res(pg.evaluate("!!document.querySelector('.rr-wn-modal.is-open')"), 'catering: tap opens the pop-up'); pg.close(); x.c.close()
+    x = Ctx(br, 1440, 900, False, LIVE); pg = x.page(); go(pg, '/catering/', 2500); scroll_down(pg); pg.wait_for_timeout(7000)
+    res(not st(pg)['has'], 'catering: live posts but none tagged -> hidden, no box'); pg.close(); x.c.close()
+    x = Ctx(br, 1440, 900, False, OFFLINE); pg = x.page(); go(pg, '/catering/', 2500); scroll_down(pg); pg.wait_for_timeout(7000)
+    res(not st(pg)['has'], 'catering: not live yet (fallback reels) -> hidden, no box'); pg.close(); x.c.close()
+    x = Ctx(br, 1440, 900, False, CAT, status=500); pg = x.page(); go(pg, '/catering/', 2500); scroll_down(pg); pg.wait_for_timeout(7000)
+    res(not st(pg)['has'], 'catering: API error -> hidden'); pg.close(); x.c.close()
+    x = Ctx(br, 1440, 900, False, CAT); pg = x.page(); go(pg, '/menu/'); scroll_down(pg); s = st(pg)
+    res(s['shown'] and s['tx'].startswith('Weekend feast'), 'other pages: tagged posts do not filter the box (%r)' % s['tx']); pg.close(); x.c.close()
     # 5. layouts: size, fit, overlaps (box full + disc, music on), no horizontal scroll
     for (w, h, mob) in SIZES:
         for payload, tag in ((LIVE, 'live'), (OFFLINE, 'fallback')):
