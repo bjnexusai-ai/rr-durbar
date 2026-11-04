@@ -641,7 +641,7 @@ function view(v) {
     '<div class="row t"><span>' + (cod ? 'To pay at pickup' : 'Total paid') + '</span><span>' + rs(o.totalPaise || (S.quote && S.quote.totalPaise) || 0) + '</span></div>' +
     (o.items && o.items.length ? '<p class="done-items">' + o.items.map(function (i) { return i.qty + ' x ' + esc(i.name); }).join(', ') + '</p>' : '') +
     (o.earnPoints ? '<div class="done-earn">You will earn <b>' + o.earnPoints + '</b> RR Durbar points ' + (cod ? 'after you pay at the counter.' : 'on this order.') + '</div>' : '') +
-    '<p class="muted">Keep this page or note your order number. For help call <a href="tel:' + CFG.CALL + '">+91 98499 82052</a>.</p><a class="btn btn-pri" href="/?page=pickup-menu">Order more</a><a class="btn btn-sec" href="/">Back to home</a></div>'; }
+    '<p class="muted">Keep this page or note your order number. For help call <a href="tel:' + CFG.CALL + '">+91 98499 82052</a>.</p><p class="cat-line" style="margin:10px 0"><a href="/catering/#catering-form" style="display:inline-block;padding:10px 0;color:var(--m,#4a0e1a);font-weight:700">Catering &amp; Events: Plan your event &rarr;</a></p><a class="btn btn-pri" href="/?page=pickup-menu">Order more</a><a class="btn btn-sec" href="/">Back to home</a></div>'; }
   if (v === 'failed') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big">Payment not completed</h1><p>' + esc(S.err || 'Your payment did not go through and your order has not been placed. You have not been charged.') + '</p><button class="btn btn-pri" data-act="retry" type="button">Try again</button><a class="btn btn-sec" href="tel:' + CFG.CALL + '">Call the outlet</a></div>';
 }
 

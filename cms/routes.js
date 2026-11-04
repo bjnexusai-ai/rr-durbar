@@ -3,7 +3,7 @@
 // When the page split (Phase 3) changes a page, change it HERE first.
 // 'catering-serve', 'purpose' and 'cta' are in the site's route map but no element has those ids (26 Oct check), so they are left out here.
 export const ROUTES = {
-  home: { title: 'Home', sections: ['home', 'whats-new', 'bestsellers', 'menu', 'trust', 'honours', 'reviews', 'loyalty', 'outlets'] },
+  home: { title: 'Home', sections: ['home', 'whats-new', 'home-catering', 'bestsellers', 'menu', 'trust', 'honours', 'reviews', 'loyalty', 'outlets'] },
   'about-us': { title: 'About us', sections: ['about', 'story', 'foundation', 'family', 'why-us', 'about-sig', 'about-go', 'promise-green', 'stats', 'awards', 'reels'] },
   menu: { title: 'Menu', sections: ['menu-page'] },
   'order-now': { title: 'Order now', sections: ['ordering'] },
