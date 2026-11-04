@@ -1,0 +1,51 @@
+
+/* rr-step-n START: footer credit, dock always visible, /branches/ cream top section. Revert: restore src/site.html.bakN */
+.rrf-credit{margin:14px 0 0;padding:0 16px;text-align:center;font:500 12px/1.4 'Manrope',Arial,sans-serif;color:rgba(255,243,225,.6)}
+.rrf-credit a{color:#e9b85c;text-decoration:none;font-weight:700}.rrf-credit a:hover,.rrf-credit a:focus-visible{text-decoration:underline}
+/* dock: always visible. Phone: 44px launcher; over the home hero it sits above the hero buttons and clear of the glass nav */
+@media(max-width:1050px){html #rrw .rrw-launch{width:44px!important;height:44px!important}html.rr-tabs.rr-hero-vis #rrw{bottom:calc(max(156px,24svh) + env(safe-area-inset-bottom))!important}}
+/* /branches/ top: cream page, framed night map, cream outlet card, bridge strip */
+html body section#br-locator#br-locator{--sh:clamp(96px,10vw,200px);--mh:clamp(500px,calc(100svh - 96px - var(--sh) - 56px),820px);position:relative;display:block;height:auto!important;min-height:0!important;max-height:none!important;padding:0!important;overflow:hidden;
+ background:radial-gradient(120% 90% at 30% 15%,#fff8ef,#f3e6d0)!important;color:#2b1412}
+.brt-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;justify-items:center;width:min(1180px,100%);margin:0 auto;padding:22px 20px 34px;box-sizing:border-box}
+.brt-head{text-align:center;display:block;max-width:460px}
+.brt-eye{margin:0 0 8px;font:800 11px/1 'Manrope',Arial,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#9a6a14}
+html body section#br-locator#br-locator .brt-head h1{margin:0;font:600 clamp(34px,9vw,52px)/1.02 'Cormorant Garamond',Georgia,serif;color:#4c0813!important;text-shadow:none!important;text-wrap:balance;order:0}
+.brt-sub{margin:10px 0 0;font:600 13px/1.6 'Manrope',Arial,sans-serif;color:#6b4a43}
+html body #br-locator .brt .brm-fig,html body #br-locator .brm-fig{position:static;margin:0;padding:0;width:100%;display:flex;justify-content:center}
+html body #br-locator .brm-map{width:min(100%,420px);max-width:420px;margin:0;border-radius:24px;box-shadow:0 0 0 1px #d5b26c,0 0 0 7px #fffaf2,0 0 0 8px rgba(213,178,108,.6),0 30px 70px rgba(76,8,19,.3)}
+html body #br-locator .brm-art{border-radius:24px;-webkit-mask-image:none;mask-image:none;background:#14040a}
+.brt-side{width:100%;max-width:420px;min-width:0}
+.brt-cards{display:grid}
+.brt-card{grid-area:1/1;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;padding:24px 24px 22px;border-radius:18px;background:#fffaf2;border:1px solid rgba(213,178,108,.7);box-shadow:0 18px 44px rgba(76,8,19,.12);opacity:0;visibility:hidden;transition:opacity .28s ease,visibility 0s linear .28s,border-color .25s,box-shadow .25s}
+.brt-card.is-sel{opacity:1;visibility:visible;transition:opacity .28s ease,visibility 0s}
+.brt-card.is-on{border-color:#e9b85c}
+.brt-ce{margin:0;font:800 11px/1 'Manrope',Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#9a6a14}
+.brt-card h2{margin:0;font:600 32px/1.05 'Cormorant Garamond',Georgia,serif;color:#4c0813}
+.brt-card p{margin:0}
+.brt-ad,.brt-hr{font:600 14px/1.6 'Manrope',Arial,sans-serif;color:#5a3a33}
+.brt-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.brt-btns a{display:inline-flex;align-items:center;height:44px;padding:0 18px;border-radius:999px;font:800 13px/1 'Manrope',Arial,sans-serif;text-decoration:none;color:#4c0813;border:1px solid rgba(76,8,19,.25)}
+.brt-btns a.g{background:linear-gradient(135deg,#f5d27a,#d9a640);border-color:transparent;color:#2b1412}
+.brt-btns a:focus-visible,.brt-tab:focus-visible{outline:2px solid #9a6a14;outline-offset:2px}
+.brt-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.brt-tab{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(76,8,19,.25);background:transparent;color:#4c0813;font:700 13px/1 'Manrope',Arial,sans-serif;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.brt-tab:hover,.brt-tab.is-on{border-color:#9a6a14}
+.brt-tab[aria-pressed="true"]{background:#4c0813;border-color:#4c0813;color:#f6dfa6}
+/* bridge strip: the lit bridge over the river, cropped by the strip (the string-lights script follows the photo) */
+.brt-bridge{position:relative}
+.brt-crown{position:absolute;left:50%;top:0;z-index:2;display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;transform:translate(-50%,-50%);background:#4c0813;border:1px solid #d5b26c;color:#e9b85c;box-shadow:0 6px 16px rgba(76,8,19,.35)}
+.brt-crown svg{width:20px;height:20px}
+.brt-strip{position:relative;height:var(--sh);overflow:hidden;background:#0b0002;border-top:1px solid rgba(209,171,86,.55)}
+.brt-strip img{position:absolute;right:0;top:calc(max(100vw,var(--sh)*10)*-0.133);width:max(100vw,calc(var(--sh)*10));max-width:none;height:auto;display:block}
+@media(min-width:900px){
+ html body section#br-locator#br-locator{--sh:clamp(80px,11vh,130px);--pt:46px;--pb:24px;--mh:clamp(380px,calc(100svh - 96px - var(--pt) - var(--pb) - var(--sh)),820px)}
+ .brt-wrap{grid-template-columns:auto minmax(0,500px);grid-template-areas:"fig head" "fig side";column-gap:clamp(36px,5vw,72px);row-gap:20px;justify-content:center;align-content:center;justify-items:stretch;padding:var(--pt) 28px var(--pb)}
+ .brt-head{grid-area:head;text-align:left;align-self:end;max-width:none}
+ .brt-wrap>.brm-fig{grid-area:fig;width:auto;align-self:center}
+ .brt-side{grid-area:side;align-self:start;max-width:none}
+ html body #br-locator .brm-map{width:auto;max-width:none;height:var(--mh);aspect-ratio:941/1672}
+ html body section#br-locator#br-locator .brt-head h1{font-size:clamp(38px,3.6vw,52px)}
+}
+@media(prefers-reduced-motion:reduce){.brt-card,.brt-card.is-sel,.brt-tab{transition:none}}
+/* rr-step-n END */

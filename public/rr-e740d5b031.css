@@ -166,7 +166,6 @@ html body #hero-next h2 em{font-style:italic;color:#9a6a14}
 html body #hero-next p.hn-line{margin:0;font:500 15px/1.65 'Manrope',Arial,sans-serif;color:#6b4a43;max-width:34ch}
 /* floating chat / call / Instagram: hidden while the hero is on screen */
 html #rrw{transition:opacity .35s ease,transform .35s ease}
-html.rr-hero-vis #rrw{opacity:0;transform:translateY(12px);pointer-events:none}
 }
 @media(prefers-reduced-motion:reduce){
 #home .rr-sweep,#home .rr-steam,#rr-doors{display:none!important}

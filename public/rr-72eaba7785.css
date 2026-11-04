@@ -1500,7 +1500,6 @@ body #menu .category:hover,body #menu .category:focus-visible,body #bestsellers 
 /* contact dock */
 .rrw-badge{display:none!important}
 .rrw{transition:transform .3s ease,opacity .3s ease}
-.rrw.rr-away:not(.open){transform:translateY(140%);opacity:0;pointer-events:none}
 .rrw-launch{width:56px;height:56px}.rrd-btn{width:46px;height:46px}
 @media(max-width:760px){.hero-arrow{width:44px!important;height:44px!important}}
 /* awards marquee */
@@ -3344,81 +3343,3 @@ background:radial-gradient(120% 90% at 20% 0%,rgba(255,255,255,.55),transparent 
 #reviews.rv-in-view .rv-stagewrap{transition-delay:.15s}#reviews.rv-in-view .rv-cta{transition-delay:.3s}
 @media(max-width:760px){#reviews .rv-stage{--cw:min(78vw,380px);--ch:300px}#reviews .rv-ar{top:auto;bottom:-6px;margin:0}#reviews .rv-ar.prev{left:calc(50% - 130px)}#reviews .rv-ar.next{right:calc(50% - 130px)}#reviews .rv-dots{margin-top:46px}#reviews .rv-brush .sep{display:none}#reviews .rv-brush{text-align:center;padding:24px 34px}#reviews .rv-c p{font-size:20px}}
 @media(prefers-reduced-motion:reduce){#reviews .rv-bg .b{animation:none}#reviews .rv-c,#reviews.rv-js .rv-head,#reviews.rv-js .rv-stagewrap,#reviews.rv-js .rv-cta{transition:none}#reviews .rv-c.is-c .rv-q{animation:none}}
-
-/* ===== v41 Loyalty: RR Durbar Royal Club ===== */
-#loyalty.lc{position:relative;overflow:hidden!important;padding:clamp(40px,5.5vw,76px) 0 clamp(34px,5vw,60px)!important;background:radial-gradient(90% 60% at 50% 0,#FFFBF0,transparent 70%),linear-gradient(180deg,#FBF3E0,#F6E9CC)!important;color:#33140c;--e:cubic-bezier(.22,.61,.36,1);isolation:isolate}
-#loyalty .lc-leaf{position:absolute;width:clamp(110px,16vw,220px);height:auto;pointer-events:none;z-index:0}
-#loyalty .lc-leaf.tl{top:-10px;left:-6px}#loyalty .lc-leaf.br{bottom:-10px;right:-6px;transform:rotate(180deg)}
-#loyalty .lc-in{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 clamp(14px,3vw,36px)}
-#loyalty .lc-head{text-align:center}
-#loyalty .lc-ic{width:36px;height:27px;display:block;margin:0 auto 8px}
-#loyalty .lc-eye{margin:0 0 10px;display:flex;justify-content:center;align-items:center;gap:16px;font:800 13px/1 'Manrope',Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#4A0810}
-#loyalty .lc-eye::before,#loyalty .lc-eye::after{content:"";width:clamp(30px,8vw,100px);height:1px;background:#9D692B}
-#loyalty .lc-head h2{margin:0;font:500 clamp(40px,5.6vw,76px)/1.04 'Cormorant Garamond',Georgia,serif;color:#33050B;letter-spacing:-.01em}
-#loyalty .lc-head h2 em{font-style:italic;font-weight:500;color:#9D692B;position:relative;white-space:nowrap}
-#loyalty .lc-head h2 em::after{content:"";position:absolute;left:4%;right:2%;bottom:-6px;height:8px;border-bottom:2px solid #9D692B;border-radius:0 0 50% 50%/0 0 100% 100%;opacity:.8}
-#loyalty .lc-pill{display:inline-flex;align-items:center;gap:10px;margin:20px 0 0;padding:10px 24px 10px 12px;border-radius:999px;background:linear-gradient(180deg,#6b0f1c,#4A0810);border:1px solid #C58A2A;color:#F8EFDF;font:700 clamp(17px,1.8vw,22px) 'Manrope',Arial,sans-serif;box-shadow:0 10px 22px rgba(74,8,16,.28);position:relative;overflow:hidden}
-#loyalty .lc-pill svg{width:30px;height:30px;flex:none}
-#loyalty .lc-pill::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,236,170,.35) 48%,transparent 60%) -150% 0/250% 100% no-repeat}
-#loyalty.lc-in-view .lc-pill::after{animation:lcSh 1.4s var(--e) .8s 1 both}
-@keyframes lcSh{to{background-position:150% 0}}
-#loyalty .lc-sub{max-width:520px;margin:16px auto 0;font:400 clamp(15px,1.5vw,18px)/1.6 'Manrope',Arial,sans-serif;color:#5b4640}
-#loyalty .lc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) minmax(0,1.05fr);grid-template-rows:auto auto;gap:16px;margin-top:clamp(26px,3.5vw,44px);align-items:stretch}
-#loyalty .lc-card{position:relative;border-radius:22px;padding:clamp(18px,2vw,26px);border:1px solid rgba(197,138,42,.45);box-shadow:0 14px 34px rgba(88,8,16,.12);transition:transform .45s var(--e),box-shadow .45s var(--e);overflow:hidden}
-#loyalty .lc-card:hover{transform:translateY(-6px);box-shadow:0 24px 46px rgba(88,8,16,.22)}
-#loyalty .lc-silver{background:linear-gradient(160deg,#FFFFFF,#F4F1EA)}
-#loyalty .lc-gold{background:linear-gradient(160deg,#FFF4D2,#FBE3A0)}
-#loyalty .lc-royal{grid-column:1/3;display:grid;grid-template-columns:auto 1fr auto;column-gap:18px;align-items:center;background:linear-gradient(135deg,#6b0f1c,#33050B);color:#F8EFDF;border-color:#C58A2A}
-#loyalty .lc-medal{width:clamp(62px,6.5vw,86px);height:auto;display:block;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25));transition:transform .6s var(--e)}
-#loyalty .lc-card:hover .lc-medal{transform:rotate(-8deg) scale(1.08)}
-#loyalty .lc-from{position:absolute;top:18px;right:18px;padding:8px 14px;border-radius:12px;font:800 11px/1.35 'Manrope',Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-align:center;background:rgba(0,0,0,.07);color:#4a4a4a}
-#loyalty .lc-gold .lc-from{background:rgba(231,184,92,.45);color:#6b4310}
-#loyalty .lc-royal .lc-from{grid-column:3;grid-row:1;position:static;background:linear-gradient(135deg,#f5d48c,#C9922F);color:#33050B;font-size:12px;padding:10px 16px;white-space:nowrap}
-#loyalty .lc-card h3{margin:12px 0 2px;font:600 clamp(26px,2.8vw,36px)/1.1 'Cormorant Garamond',Georgia,serif;color:#33140c}
-#loyalty .lc-tag{margin:0;font:400 14.500px/1.4 'Manrope',Arial,sans-serif;color:#5b4640}
-#loyalty .lc-card ul{list-style:none;margin:18px 0 0;padding:0}
-#loyalty .lc-card li{display:flex;align-items:center;gap:16px;padding:12px 0;border-top:1px solid rgba(74,8,16,.16)}
-#loyalty .lc-card li b{flex:none;min-width:92px;padding-right:16px;border-right:1.500px solid rgba(74,8,16,.5);font:700 clamp(26px,2.6vw,34px)/1 'Cormorant Garamond',Georgia,serif;color:#1f5a3a}
-#loyalty .lc-gold li b{color:#8a5a1c}
-#loyalty .lc-card li b small{font:800 11px 'Manrope',Arial,sans-serif;letter-spacing:.04em;margin-left:3px;text-transform:uppercase}
-#loyalty .lc-card li span{font:700 15.500px/1.35 'Manrope',Arial,sans-serif;color:#33140c}
-#loyalty .lc-royal h3,#loyalty .lc-royal .lc-tag{color:#F8EFDF}#loyalty .lc-royal h3{margin:0 0 4px;color:#f5d48c}
-#loyalty .lc-royal ul{grid-column:1/-1;margin-top:14px}
-#loyalty .lc-royal li{border-top-color:rgba(231,184,92,.4)}
-#loyalty .lc-royal li b{color:#f5d48c;border-right-color:rgba(231,184,92,.6)}
-#loyalty .lc-royal li span{color:#F8EFDF}
-#loyalty .lc-royal .lc-medal{grid-row:1}
-#loyalty .lc-art{grid-column:3;grid-row:1/3;margin:0;border-radius:22px;overflow:hidden;border:3px solid #C58A2A;box-shadow:0 0 0 5px #F8EFDF,0 0 0 6px #C58A2A,0 22px 44px rgba(88,8,16,.3);min-height:340px;background:#2a0d10}
-#loyalty .lc-art svg{width:100%;height:100%;display:block;object-fit:cover}
-#loyalty .lc-bk circle{animation:lcTw 4.500s ease-in-out infinite alternate}#loyalty .lc-bk circle:nth-child(2n){animation-delay:-2s}
-@keyframes lcTw{from{opacity:.5}to{opacity:1}}
-#loyalty .lc-sp path{transform-box:fill-box;transform-origin:center;animation:lcSp 2.800s ease-in-out infinite}#loyalty .lc-sp path:nth-child(2){animation-delay:-1s}#loyalty .lc-sp path:nth-child(3){animation-delay:-2s}
-@keyframes lcSp{0%,100%{transform:scale(.4) rotate(0);opacity:.4}50%{transform:scale(1.2) rotate(30deg);opacity:1}}
-#loyalty .lc-st{animation:lcSt 3s ease-in-out infinite}
-@keyframes lcSt{0%,100%{opacity:.2;transform:translateY(4px)}50%{opacity:.8;transform:translateY(-4px)}}
-#loyalty .lc-pig{transform-box:fill-box;transform-origin:50% 100%;animation:lcBob 1.2s ease-in-out infinite}
-@keyframes lcBob{0%,70%,100%{transform:scale(1,1)}76%{transform:scale(1.03,.97)}86%{transform:scale(.99,1.02)}}
-#loyalty .lc-cn use{transform-box:fill-box;transform-origin:center;animation:lcDrop 3.6s linear infinite;opacity:0}
-#loyalty .lc-cn .c2{animation-delay:-1.2s}#loyalty .lc-cn .c3{animation-delay:-2.4s}
-@keyframes lcDrop{0%{transform:translateY(-30px) scaleX(1);opacity:0}8%{transform:translateY(-29px) scaleX(.55);opacity:1}15%{transform:translateY(-25px) scaleX(.1)}22%{transform:translateY(-19px) scaleX(.55)}28%{transform:translateY(-11px) scaleX(1)}36%{transform:translateY(-1px) scaleX(.55)}42%{transform:translateY(8px) scaleX(.1)}50%{transform:translateY(25px) scaleX(.7)}56%{transform:translateY(38px) scaleX(1)}62%{transform:translateY(53px) scaleX(.45)}66%{transform:translateY(66px) scaleX(.12)}72%{transform:translateY(85px) scaleX(.12);opacity:1}80%{transform:translateY(112px) scaleX(.12);opacity:1}81%{opacity:0}100%{transform:translateY(112px) scaleX(.12);opacity:0}}
-#loyalty .lc-note{margin:26px 0 0;text-align:center;font:500 13px/1.6 'Manrope',Arial,sans-serif;color:#33140c}
-#loyalty .lc-note a{color:#9D692B;font-weight:800}
-#loyalty .lc-terms{max-width:640px;margin:14px auto 0}
-#loyalty .lc-tb{width:100%;display:flex;justify-content:space-between;align-items:center;min-height:52px;padding:0 24px;border:1.500px solid #C58A2A;border-radius:999px;background:#FFF8EA;color:#4A0810;font:800 16px 'Manrope',Arial,sans-serif;cursor:pointer;transition:background .3s,box-shadow .3s}
-#loyalty .lc-tb i{font-style:normal;font-size:24px;transition:transform .4s var(--e)}
-#loyalty .lc-tb[aria-expanded="true"] i{transform:rotate(45deg)}
-#loyalty .lc-tb:hover{background:#fff;box-shadow:0 8px 20px rgba(88,8,16,.14)}
-#loyalty .lc-tb:focus-visible,#loyalty .lc-note a:focus-visible{outline:2px solid #4A0810;outline-offset:3px}
-#loyalty .lc-tc{margin-top:10px;padding:16px 22px;border-radius:18px;background:#FFF8EA;border:1px solid rgba(197,138,42,.45);animation:lcOpen .4s var(--e) both}
-#loyalty .lc-tc[hidden]{display:none}
-@keyframes lcOpen{from{opacity:0;transform:translateY(-6px)}}
-#loyalty .lc-tc ul{margin:0;padding-left:20px;font:500 14px/1.7 'Manrope',Arial,sans-serif;color:#5b4640}
-#loyalty.lc-js .lc-r{opacity:0;transform:translateY(26px);transition:opacity .8s var(--e),transform .8s var(--e)}
-#loyalty.lc-in-view .lc-r{opacity:1;transform:none}
-#loyalty.lc-in-view .lc-silver{transition-delay:.1s}#loyalty.lc-in-view .lc-gold{transition-delay:.2s}#loyalty.lc-in-view .lc-royal{transition-delay:.3s}#loyalty.lc-in-view .lc-art{transition-delay:.25s}
-#loyalty.lc-in-view .lc-card:hover{transition-delay:0s}
-@media(max-width:900px){#loyalty .lc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#loyalty .lc-art{grid-column:1/3;grid-row:auto;min-height:0;aspect-ratio:1/1.12;order:4}#loyalty .lc-royal{order:3}}
-@media(max-width:600px){#loyalty .lc-grid{grid-template-columns:1fr}#loyalty .lc-royal{grid-column:1}#loyalty .lc-art{grid-column:1}#loyalty .lc-royal{grid-template-columns:auto 1fr}#loyalty .lc-royal .lc-from{grid-column:1/-1;grid-row:auto;justify-self:start;margin-top:12px;order:5}#loyalty .lc-card li b{min-width:80px}}
-@media(prefers-reduced-motion:reduce){#loyalty .lc-bk circle,#loyalty .lc-sp path,#loyalty .lc-st,#loyalty .lc-pig,#loyalty.lc-in-view .lc-pill::after{animation:none}#loyalty .lc-cn use{animation:none;opacity:0}#loyalty.lc-js .lc-r{opacity:1;transform:none;transition:none}#loyalty .lc-card,#loyalty .lc-medal{transition:none}}
-
-

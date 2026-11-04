@@ -336,7 +336,7 @@
 
 (() => {
   const pageSections = {
-    home: ['home', 'hero-next', 'whats-new', 'home-catering', 'bestsellers', 'menu', 'trust', 'honours', 'reviews', 'gallery', 'loyalty', 'outlets', 'cta'],
+    home: ['home', 'hero-next', 'whats-new', 'home-catering', 'honours', 'menu', 'loyalty', 'trust', 'reviews', 'gallery', 'outlets', 'bestsellers', 'cta'],
     loyalty: ['loyalty'],
     'about-us': ['about', 'story', 'foundation', 'family', 'why-us', 'about-sig', 'about-go', 'purpose', 'promise-green', 'stats', 'awards', 'reels'],
     'our-story': ['about', 'story', 'foundation', 'family', 'why-us', 'about-sig', 'about-go', 'purpose', 'promise-green', 'stats', 'awards', 'reels'],
@@ -345,7 +345,7 @@
     locations: ['locations'],
     'track-order': ['track-order', 'tracking'],
     catering: ['catering', 'catering-occasions', 'catering-serve', 'catering-why', 'catering-cta'],
-    branches: ['br-locator', 'br-map', 'br-list'],
+    branches: ['br-locator', 'br-list'],
     pickup: ['pickup'],
     'pickup-menu': ['pickup-menu'],
     contact: ['contact'],

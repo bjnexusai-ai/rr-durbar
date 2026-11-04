@@ -137,9 +137,7 @@ function run(){
   b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')==='true';b.setAttribute('aria-pressed',String(!on));b.textContent=on?'Pause awards':'Play awards';t&&t.classList.toggle('is-paused',!on)});mq.before(b)}
 }
 run();new MutationObserver(kick).observe(document.body,{childList:true,subtree:true});
-/* contact dock: hide while scrolling down, return on scroll up */
-const dock=document.querySelector('.rrw');let y=window.scrollY;
-if(dock)addEventListener('scroll',()=>{const c=window.scrollY,d=c-y;if(Math.abs(d)<8)return;dock.classList.toggle('rr-away',d>0&&c>240);y=c},{passive:true});
+/* contact dock: always visible (Step N removed the hide-on-scroll-down) */
 })();
 
 ;
@@ -158,7 +156,7 @@ build();var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeo
 (function(){
 const OUTLETS = [{"id": "singhnagar", "name": "Singhnagar", "address": "42-3-3, Budameru Centre, Ramakrishnapuram, Vijayawada, 520011", "hours": "Open daily 11:00 AM – 11:59 PM", "pos": [154, 85], "lat": 16.5332, "lng": 80.6358, "phone": "+91 78931 12999", "tel": "+917893112999", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.5332,80.6358", "photo": "assets/br-singhnagar-m.webp", "photoAlt": "RR's Joints storefront at the Singhnagar outlet at dusk"}, {"id": "moghalrajpuram", "name": "Moghalrajpuram", "address": "40-7-3, Near Jammichettu Centre, Moghalrajpuram, Vijayawada, 520010", "hours": "Open daily 11:00 AM – 11:59 PM", "pos": [328, 125], "lat": 16.5057, "lng": 80.6384, "phone": "+91 98499 82304", "tel": "+919849982304", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.5057,80.6384", "photo": "assets/a3767495a0-w.webp", "photoAlt": "Carved golden ceiling, chandelier and framed artwork at the Moghalrajpuram outlet"}, {"id": "bhavanipuram", "name": "Bhavanipuram", "address": "D.No 76/8/15, Taruni Nilayam, Crombay Road, Bhavanipuram, Vijayawada, 520012", "hours": "Open daily 11:00 AM – 11:59 PM", "pos": [171, 245], "lat": 16.5369, "lng": 80.5898, "phone": "+91 78931 15999", "tel": "+917893115999", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.5369,80.5898", "photo": "assets/72e238c39f.webp", "photoAlt": "Booth seating along the painted elephant mural wall at the Bhavanipuram outlet"}, {"id": "poranki", "name": "Poranki", "address": "15-160, Vijayawada Rd, Poranki, Vijayawada, 521137", "hours": "Open daily 11:00 AM – 11:59 PM", "pos": [261, 370], "lat": 16.4801, "lng": 80.6922, "phone": "+91 78931 16999", "tel": "+917893116999", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.4801,80.6922", "photo": "assets/br-poranki-m.webp", "photoAlt": "RR Durbar building and signage at the Poranki outlet"}, {"id": "autonagar", "name": "Autonagar", "address": "Besides RR Chickens, Ballemvari Street, Murali Nagar, Auto Nagar, Vijayawada, 520007", "hours": "Open daily 11:00 AM – 11:59 PM", "pos": [502, 510], "lat": 16.5161, "lng": 80.6728, "phone": "+91 99635 51970", "tel": "+919963551970", "directions": "https://www.google.com/maps/dir/?api=1&destination=16.5161,80.6728", "photo": "assets/br-autonagar-m.webp", "photoAlt": "RR Durbar takeaway storefront at the Autonagar outlet at night"}];
 const NS='http://www.w3.org/2000/svg';
-const root=document.getElementById('br-locator');if(!root)return;
+const root=document.getElementById('br-locator');if(!root||!root.querySelector('#olist'))return;
 const $=(s,r=root)=>r.querySelector(s), $$=(s,r=root)=>[...r.querySelectorAll(s)];
 
 /* ── outlet geometry ── */

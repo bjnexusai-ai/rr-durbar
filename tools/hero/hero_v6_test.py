@@ -35,10 +35,12 @@ with sync_playwright() as p:
         res(r['hn'] and "theme-based restaurant" in r['hnTxt'].lower() and 'since 1991' in r['hnTxt'].lower(), f'{w}: tagline + heading in #hero-next')
         res(r['haze'] is False, f'{w}: window.rrHaze.on is false')
         res(not errs, f'{w}: no script errors {errs[:1]}')
-        # floating buttons: hidden at top, shown after scroll
-        o0 = pg.evaluate("getComputedStyle(document.getElementById('rrw')).opacity"); pg.evaluate('window.scrollTo(0, innerHeight*1.1)'); pg.wait_for_timeout(700); pg.evaluate('window.scrollTo(0, innerHeight*1.1 - 60)'); pg.wait_for_timeout(900)
-        o1 = pg.evaluate("getComputedStyle(document.getElementById('rrw')).opacity")
-        res(o0 == '0' and o1 == '1', f'{w}: floating buttons hidden at top ({o0}), shown after scroll ({o1})')
+        # floating contact dock (Step N): always visible, at the top and after scrolling, never over the glass nav or the hero buttons
+        BX = "(()=>{const q=s=>{const e=document.querySelector(s);if(!e)return null;const b=e.getBoundingClientRect();return [b.left,b.top,b.right,b.bottom]};const hit=(a,b)=>a&&b&&a[0]<b[2]&&b[0]<a[2]&&a[1]<b[3]&&b[1]<a[3];const d=q('#rrw .rrw-launch')||q('#rrw');return [getComputedStyle(document.getElementById('rrw')).opacity,hit(d,q('#rr-tabbar')),[...document.querySelectorAll('#home .rr-hero-order>*')].some(e=>{const b=e.getBoundingClientRect();return hit(d,[b.left,b.top,b.right,b.bottom])})]})()"
+        o0 = pg.evaluate(BX); pg.evaluate('window.scrollTo(0, innerHeight*1.1)'); pg.wait_for_timeout(700); pg.evaluate('window.scrollTo(0, innerHeight*1.1 - 60)'); pg.wait_for_timeout(900)
+        o1 = pg.evaluate(BX); aw = pg.evaluate("document.getElementById('rrw').classList.contains('rr-away')")
+        res(o0[0] == '1' and o1[0] == '1' and not aw, f'{w}: floating buttons visible at the top ({o0[0]}) and after scrolling down ({o1[0]}), no hide-on-scroll class ({aw})')
+        res(not o0[1] and not o0[2] and not o1[1], f'{w}: floating buttons do not cover the glass nav ({o0[1]}) or the hero buttons ({o0[2]})')
         res(pg.evaluate("""() => { const f=[...document.querySelectorAll('main *,section')].pop(); const tb=document.getElementById('rr-tabbar').getBoundingClientRect(); window.scrollTo(0, document.documentElement.scrollHeight); return parseFloat(getComputedStyle(document.body).paddingBottom) >= (innerHeight - tb.top) }"""), f'{w}: page bottom padding clears the nav')
         c.close()
     # LCP image priority

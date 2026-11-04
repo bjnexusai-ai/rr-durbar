@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="RR Durbar pickup checkout: choose your outlet and pickup time, verify your mobile, see your rewards and pay.">
+<meta name="theme-color" content="#33050b">
+<title>Checkout | RR Durbar</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%236f0f1c%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2242%22%20text-anchor%3D%22middle%22%20font-family%3D%22Georgia%2Cserif%22%20font-weight%3D%22700%22%20font-size%3D%2230%22%20fill%3D%22%23f2d99b%22%3ERR%3C/text%3E%3C/svg%3E">
+<!-- RR Durbar checkout v2.2 (plan task 6.10, section 17; v2.1 tip and offers, v2.2 piggy-bank rewards card from the home Royal Club art). Layout model: Swagramam v102, rebuilt for RR Durbar on API contract v1.1.
+     New file at a new path. noindex, not linked from the site. CFG.LIVE=false: everything runs on the built-in demo API. -->
+<style>
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/cormorant-garamond-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/cormorant-garamond-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/manrope-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/manrope-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/manrope-latin-700-normal.woff2) format('woff2')}
+:root{--wine:#75131e;--deep:#33050b;--gold:#d5b26c;--gold-hi:#f6e27f;--gold-dk:#8a5a20;--cream:#fffaf3;--paper:#ffffff;--ink:#2b1718;--soft:#5b463d;--line:#ead9c0;--ok:#1f7a4d;--bad:#b3261e;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;--r:16px}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:16px/1.5 var(--sans);color:var(--ink);background:var(--cream);padding-bottom:env(safe-area-inset-bottom)}
+a{color:var(--wine)}button,input,select{font:inherit;color:inherit}
+.skip{position:absolute;left:-999px;top:8px;background:var(--paper);padding:10px 14px;border-radius:10px;z-index:50}.skip:focus{left:8px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.ck-hd{background:var(--deep);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;min-height:56px}
+.ck-logo{display:flex;align-items:center;gap:10px;color:var(--gold-hi);text-decoration:none;font:700 22px/1 var(--serif);letter-spacing:.02em}
+.ck-logo img{width:36px;height:36px;object-fit:contain}
+.ck-back{color:var(--gold);font-weight:700;text-decoration:none;font-size:15px;padding:10px 4px}
+#testbar{background:#fff3cd;color:#5c4300;border-bottom:1px solid #ffe69c;padding:6px 16px;font-size:14px;text-align:center}
+.ck{max-width:1400px;margin:0 auto;padding:12px 16px 112px}
+.ck-load{padding:40px 16px;text-align:center}
+.ck-strip{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:2px 0 12px}
+.ck-strip h1{font:700 28px/1.1 var(--serif);color:var(--wine);margin:0}
+.ck-outname{color:var(--soft);font-weight:600}
+.ck-steps{display:flex;gap:6px;list-style:none;margin:0;padding:0;flex:1 1 260px}
+.ck-steps li{flex:1;font-size:13px;font-weight:700;color:var(--soft);border-top:4px solid var(--line);padding-top:4px;min-width:60px}
+.ck-steps li.on{border-color:var(--gold);color:var(--ink)}.ck-steps li.done{border-color:var(--ok)}
+.ck-demo{background:var(--deep);color:var(--gold-hi);border-radius:99px;padding:3px 10px;font-size:12px;font-weight:700}
+.ck-grid{display:grid;gap:16px}
+.ck-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:0 1px 3px rgba(51,5,11,.06)}
+.ck-card+.ck-card,.ck-card+.rw,.rw+.ck-card{margin-top:14px}
+h2{font:700 21px/1.2 var(--serif);color:var(--wine);margin:0 0 10px}
+label{font-weight:600}.muted,small{color:var(--soft);font-size:14px}
+select,input[type=tel],input[type=text]{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:12px;background:#fff;font-size:16px;min-height:48px}
+.fld{display:block;margin:10px 0 4px}
+.ph{display:flex;gap:8px;align-items:stretch}.ph span{display:flex;align-items:center;padding:0 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--cream);font-weight:700}
+.chk{display:flex;gap:10px;align-items:flex-start;font-weight:400;margin:4px 0 6px}.chk input{width:22px;height:22px;margin-top:2px;flex:none;accent-color:var(--wine)}
+.ck-chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.ck-chip{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;min-height:44px;font-weight:700;cursor:pointer}
+.ck-chip[aria-pressed=true]{border-color:var(--gold-dk);background:#fff6e2}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:13px 18px;min-height:48px;font-weight:700;cursor:pointer;width:100%;margin-top:10px}
+.btn-pri{background:linear-gradient(135deg,#f0d38a,#c99a45);color:#2a1308}.btn-dark{background:var(--wine);color:#fff}.btn-sec{background:#fff;border:1.5px solid var(--wine);color:var(--wine)}
+.btn-lnk{background:none;color:var(--wine);text-decoration:underline;width:auto;min-height:44px;padding:8px;margin:0}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.err{color:var(--bad);font-weight:600;margin:8px 0 0}.okmsg{color:var(--ok);font-weight:700}
+.otp{display:flex;gap:8px;margin:10px 0 4px}
+.otp input{width:100%;max-width:52px;height:56px;text-align:center;font-size:24px;font-weight:700;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:0}
+.otp input:focus{border-color:var(--gold-dk)}
+.when{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--cream);border-radius:12px;padding:10px 12px;margin-top:8px}
+/* Rewards card v2.2: Swagramam model with the RR home-page piggy bank (same SVG art as the Royal Club section). Live text over the art. */
+.rw{position:relative;overflow:hidden;border-radius:20px;color:#fff4dc;isolation:isolate;box-shadow:0 10px 28px rgba(51,5,11,.3);
+  background:radial-gradient(circle at 12% 8%,rgba(255,226,154,.55),transparent 16%),radial-gradient(circle at 88% 4%,rgba(255,226,154,.5),transparent 18%),radial-gradient(circle at 60% 14%,rgba(255,170,60,.3),transparent 14%),linear-gradient(180deg,#2a0d10,#6b1a1d 62%,#9a4a1c)}
+.rw-lights{position:absolute;left:0;right:0;top:0;width:100%;height:40px;pointer-events:none}
+.rw-card{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:6px;padding:26px 8px 6px 16px;min-height:168px}
+.rw-txt{flex:1;min-width:0;align-self:center}
+.rw-k{font:700 11px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-hi)}
+.rw-n{font:700 42px/1.05 var(--serif);margin:6px 0 2px;min-height:44px;font-variant-numeric:tabular-nums;color:#e7b85c;
+  background:linear-gradient(100deg,#e7b85c 40%,#fff3c8 50%,#e7b85c 60%) 200% 0/250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.rw[data-state=open] .rw-n{animation:rwSheen 1.6s ease 1s 1 forwards}
+.rw-bar{height:6px;border-radius:9px;background:rgba(255,244,220,.2);margin:6px 0 6px;overflow:hidden;max-width:220px}.rw-bar i{display:block;height:100%;width:var(--p,0%);background:linear-gradient(90deg,#9d692b,#ffe9a8);border-radius:9px;transition:width 1.2s cubic-bezier(.3,.9,.3,1) .4s}
+.rw-t{font-size:13.5px;line-height:1.35;max-width:230px;min-height:36px;margin:0}
+.rw-pig{width:132px;height:auto;flex:none;transform-origin:50% 92%;transition:filter .7s,opacity .7s;overflow:visible}
+.rw:not([data-state=open]) .rw-pig{filter:grayscale(.7) brightness(.6);opacity:.9}
+.rw[data-state=open] .rw-pig{animation:rwBreathe 4s ease-in-out infinite}.rw.fresh .rw-pig{animation:rwSquash .8s ease 1.1s 1}
+.rw-pig .pile{opacity:0;transition:opacity .6s .8s}.rw[data-fill="1"] .pile.p1,.rw[data-fill="2"] .pile.p1,.rw[data-fill="2"] .pile.p2,.rw[data-fill="3"] .pile{opacity:1}
+.rw-trk{position:relative;margin:0 12px 14px;height:62px;border-radius:32px;overflow:hidden;background:rgba(255,244,220,.12);border:1px solid rgba(231,184,92,.6)}
+.rw-fill{position:absolute;inset:0;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#9d692b,#e7b85c);transition:transform .8s cubic-bezier(.3,.9,.3,1)}
+.rw[data-state=open] .rw-fill{transform:scaleX(1)}
+.rw-lbl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 12px 0 66px;text-align:center;font-weight:700;font-size:14.5px;line-height:1.25;color:#fff4dc}
+.rw[data-state=locked] .rw-lbl::after,.rw[data-state=otp] .rw-lbl::after{content:" \203A\203A\203A";letter-spacing:2px;color:#e7b85c;margin-left:4px}
+.rw[data-state=open] .rw-lbl{color:#33050b;padding:0 66px 0 12px}
+.rw-knob{position:absolute;left:3px;top:3px;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;border:3px solid #fff4dc;
+  background:radial-gradient(circle at 35% 30%,#fff7d6,#e7b85c 55%,#9d692b);box-shadow:0 0 0 3px rgba(231,184,92,.55),0 4px 14px rgba(0,0,0,.5);transition:left .8s cubic-bezier(.3,.9,.3,1);touch-action:none;cursor:grab}
+.rw-knob svg{width:34px;height:34px}
+.rw-knob::after{content:"\1F512";position:absolute;right:-6px;bottom:-6px;font-size:13px;line-height:1;background:#fff4dc;border-radius:50%;padding:2px}
+.rw[data-state=locked] .rw-knob,.rw[data-state=otp] .rw-knob{animation:rwHalo 1.8s ease-out infinite}
+.rw[data-state=verifying] .rw-knob svg{animation:rwSpin 1.2s linear infinite}
+.rw[data-state=open] .rw-knob{left:calc(100% - 59px)}.rw[data-state=open] .rw-knob::after{display:none}.rw.fresh .rw-knob svg{animation:rwSpin .8s ease-out 1}
+.rw.drag .rw-knob{transition:none;cursor:grabbing}
+.rw[data-state=err] .rw-trk{animation:shake .4s;border-color:#ff8a7a}.rw.nudge .rw-trk{animation:rwNudge .5s}
+.coin{position:absolute;width:20px;height:20px;top:-24px;left:var(--x,78%);pointer-events:none;opacity:0;animation:rwRain 1s ease-in var(--d,0s) 1 forwards}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes rwSheen{to{background-position:-100% 0}}@keyframes rwBreathe{50%{transform:scale(1.03)}}
+@keyframes rwSquash{0%{transform:scale(1)}30%{transform:scale(1.12,.88)}60%{transform:scale(.94,1.08)}100%{transform:scale(1)}}
+@keyframes rwSpin{to{transform:rotate(720deg)}}@keyframes rwNudge{30%{transform:translateX(8px)}60%{transform:translateX(-4px)}}
+@keyframes rwHalo{0%{box-shadow:0 0 0 3px rgba(231,184,92,.55),0 0 0 0 rgba(255,226,154,.6),0 4px 14px rgba(0,0,0,.5)}100%{box-shadow:0 0 0 3px rgba(231,184,92,.55),0 0 0 16px rgba(255,226,154,0),0 4px 14px rgba(0,0,0,.5)}}
+@keyframes rwRain{0%{opacity:0;transform:translateY(0) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translateY(120px) rotate(360deg) scale(.6)}}
+@media (max-width:360px){.rw-pig{width:108px}.rw-n{font-size:36px}}
+.line{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.line .nm{font-weight:600}.line.bad .nm{color:var(--bad)}.line>b,.row>span:last-child{white-space:nowrap}
+#s-offers,.ck-sum,#s-pay{margin-top:22px}
+.qty{display:inline-flex;align-items:center;gap:6px;margin-top:4px}.qty button{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--cream);font-size:18px;cursor:pointer}
+.row{display:flex;justify-content:space-between;gap:12px;padding:5px 0}.row.t{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;font-weight:700;font-size:19px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:12px;padding:12px;margin:8px 0;cursor:pointer;font-weight:600}.opt input{width:20px;height:20px;accent-color:var(--wine);margin-top:2px}
+.opt:has(input:checked){border-color:var(--gold-dk);background:#fff8ea}
+#s-offers[inert]{opacity:.5}
+.lock{display:flex;gap:8px;align-items:center;background:var(--cream);border-radius:12px;padding:10px 12px;font-weight:600}
+.ck-gap{display:none}
+.ck-bar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--deep);color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.ck-bar .tot{flex:1}.ck-bar small{color:var(--gold);font-size:12px;letter-spacing:.08em;text-transform:uppercase}.ck-bar b{display:block;font-size:20px}
+.ck-bar .btn{width:auto;margin:0;flex:1.4}
+.ck-ft{text-align:center;color:var(--soft);font-size:14px;padding:16px 16px 100px}
+.ck-dlg{border:0;border-radius:16px;max-width:520px;width:calc(100% - 32px);padding:20px}.ck-dlg::backdrop{background:rgba(20,4,8,.55)}
+.big{font:700 34px/1.1 var(--serif);color:var(--wine)}
+.pill{display:inline-block;background:var(--wine);color:#fff;border-radius:99px;padding:2px 10px;font-size:13px;font-weight:700}
+.hidden{display:none!important}
+@media (min-width:1024px){
+  .ck{padding-bottom:24px}.ck-bar{display:none}.ck-ft{padding-bottom:16px}
+  .ck-grid{grid-template-columns:minmax(0,34fr) 56px minmax(0,62fr);gap:0;align-items:start}
+  .ck-gap{display:flex;align-self:stretch;justify-content:center;position:relative}
+  .ck-gap::before{content:"";position:absolute;top:8px;bottom:8px;left:50%;width:2px;background:linear-gradient(var(--line),var(--gold),var(--line))}
+  .ck-gap span{position:relative;margin-top:120px;width:32px;height:32px;border-radius:50%;background:var(--gold);color:var(--deep);display:grid;place-items:center;font-weight:700}
+  .ck-main .ck-top{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
+  #s-offers,.ck-sum,#s-pay{margin-top:0}
+  .ck-main .ck-bot{display:grid;grid-template-columns:1fr 1fr;gap:18px;border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+}
+/* One screen on desktop: only the order page (class two), only when the window is tall enough. */
+@media (min-width:1024px) and (min-height:680px){
+  body:has(#ck.two){height:100dvh;overflow:hidden;display:flex;flex-direction:column}
+  body:has(#ck.two) .ck-ft{display:none}
+  #ck.two{flex:1;min-height:0;display:flex;flex-direction:column;width:100%}
+  #ck.two .ck-grid{flex:1;min-height:0}
+  #ck.two .ck-left,#ck.two .ck-right{max-height:100%;overflow:auto;padding:2px 6px 10px 2px}
+  #ck.two .ck-grid{height:100%}
+}
+/* Tip, coupons, points, richer confirmation (v2.1, Swagramam model) */
+.tipcard{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+.tipcard h3{font:700 18px/1.2 var(--serif);color:var(--wine);margin:0 0 4px}
+.ck-chip.tip{min-width:64px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.ck-chip.tip[aria-pressed=true]{background:var(--wine);border-color:var(--wine);color:#fff}
+.ck-chip.tip .x{font-size:18px;line-height:1}
+.tipother{display:flex;gap:8px;align-items:center;margin-top:8px}.tipother input{max-width:140px}
+.rwlist{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:10px 12px}.rwl-h{display:block;font:700 15px/1.3 var(--serif);color:var(--wine);margin-bottom:6px}
+.rwi{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}.rwi:first-of-type{border-top:0}.rwi.lock{opacity:.6}.rwi.on{background:rgba(160,120,40,.08);border-radius:10px;padding:8px}.rwi>span{flex:1 1 auto;min-width:0}.rwi .need{white-space:nowrap;color:var(--muted,#7a6a5a);flex:0 0 auto}.rwi .btn{flex:0 0 auto;width:auto;min-width:0;padding:8px 18px;font-size:14px}
+.offbtn{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.offbtn .btn{width:auto;margin:0;min-height:40px;padding:8px 16px}
+.cptag{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#eef7f1;border:1.5px dashed var(--ok);border-radius:12px;padding:8px 12px;margin:8px 0;font-weight:700;color:var(--ok)}
+.cptag button{background:none;border:0;color:var(--bad);font-weight:700;cursor:pointer;min-height:40px}
+.cp{border:1.5px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.cp b.code{font-size:12px;border:1px dashed var(--gold-dk);border-radius:6px;padding:1px 6px;margin-left:6px;color:var(--gold-dk)}
+.cp .save{color:var(--ok);font-weight:700;font-size:14px}.cp .why{color:var(--bad);font-size:14px}
+.cp .btn{width:auto;margin:0;min-height:40px;padding:8px 16px}
+.cpin{display:flex;gap:8px;margin:6px 0 4px}.cpin input{flex:1}.cpin .btn{width:auto;margin:0}
+.ptsbox{margin:8px 0 4px;padding:10px 12px;border-radius:12px;background:var(--cream)}
+.ptsbox input[type=range]{width:100%;accent-color:var(--wine);height:32px}
+.row.disc span:last-child,.row.disc span:first-child{color:var(--ok);font-weight:700}
+.row.earn span{color:var(--ok)}
+.done-hd{text-align:center}.done-ok{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:34px;margin:0 auto 10px}
+.done-no{display:inline-block;border:2px dashed var(--gold-dk);border-radius:12px;padding:6px 16px;font:700 26px/1.2 var(--serif);color:var(--wine);letter-spacing:.04em;margin:6px 0 4px}
+.done-items{font-size:14px;color:var(--soft);margin:8px 0}
+.done-earn{background:var(--deep);color:#fff;border-radius:14px;padding:12px;text-align:center;margin:12px 0}.done-earn b{color:var(--gold-hi)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#ck">Skip to checkout</a>
+<header class="ck-hd"><a class="ck-logo" href="/" aria-label="RR Durbar home"><img src="/assets/logo/rr-logo-480.webp" alt="" width="36" height="36">RR Durbar</a><a class="ck-back" id="ck-back" href="/?page=pickup-menu">&larr; Back to menu</a></header>
+<div id="testbar" hidden></div>
+<main class="ck" id="ck" tabindex="-1" aria-live="polite"><p class="ck-load">Loading your order&hellip;</p></main>
+<dialog id="ck-dlg" class="ck-dlg" aria-labelledby="ck-dlg-t"></dialog>
+<footer class="ck-ft"><p>RR Durbar &middot; Vijayawada &middot; <a href="tel:+919849982052">+91 98499 82052</a></p><p><a href="/?page=terms-of-service">Terms</a> &middot; <a href="/?page=privacy-policy">Privacy</a> &middot; <a href="/?page=refund-cancellation">Refunds</a></p></footer>
+<noscript><p class="ck-load">Please turn on JavaScript to order online, or order on <a href="https://wa.me/919849982052">WhatsApp</a>.</p></noscript>
+<script>
+(function () {
+'use strict';
+/* ===== CONFIG (change here only) ===== */
+var CFG = {
+  LIVE: false,                       // true only when the owner approves and the API is live (plan 6.14)
+  API: 'https://rr-durbar-api.ramana-peravali.workers.dev/api', // own host until decision 0.10-6 (api.rrdurbar.com)
+  TURNSTILE_SITEKEY: '',             // public site key from Cloudflare Turnstile (6.6); empty = no widget
+  OTP_LEN: 6,
+  CALL: '+919849982052',
+  TIP_CHOICES: [5, 10, 15]            // percent of item total; NOTHING preselected: the customer chooses (CCPA: no charge may be added by default)
+};
+var MOCK = !CFG.LIVE;
+var Q = new URLSearchParams(location.search);
+var $ = function (s, r) { return (r || document).querySelector(s); };
+var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+var rs = function (p) { return 'Rs ' + (p / 100).toFixed(2); };
+var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+var uuid = function () { return window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); }); };
+var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ===== STATE ===== */
+var S = { view: 'order', cfg: null, outlet: '', slots: null, slot: '', pickupOpen: true, cart: [], quote: null, quoteErr: '',
+  phone: '', name: '', terms: false, sent: false, pendingSend: false, otp: 'locked', tries: 5, token: '', loy: null, method: '',
+  idem: '', order: null, resend: 0, busy: false, err: '', tsToken: '',
+  tip: null, tipOther: false, offer: null, offers: null, offerMsg: '' };
+
+function loadCart() { try { var c = JSON.parse(localStorage.getItem('rr_cart_v2') || 'null'); if (c && Array.isArray(c.items)) { S.cart = c.items.filter(function (i) { return i && i.id && i.qty > 0; }).map(function (i) { return { id: String(i.id), name: String(i.name || i.id), qty: Math.min(20, i.qty | 0), p: i.p }; }); if (c.outlet) S.outlet = String(c.outlet); } } catch (e) {} }
+function saveCart() { try { localStorage.setItem('rr_cart_v2', JSON.stringify({ items: S.cart, outlet: S.outlet })); } catch (e) {} }
+
+/* ===== DEMO API (contract v1.1 shapes; never used when CFG.LIVE is true) ===== */
+var DEMO = { code: '123456', members: { '9999900001': 240, '9999900002': 2450 }, codOpen: { '9999900003': 60000 }, orders: {}, seq: 1000 };   // 9999900003 already has Rs 600 of pay-at-pickup orders open   // 2450 = Gold, shows the coin piles
+var DEMO_OUTLETS = [
+  { code: 'singhnagar', name: 'Singhnagar', open: true, codAllowed: true }, { code: 'moghalrajpuram', name: 'Moghalrajpuram', open: true, codAllowed: true },
+  { code: 'bhavanipuram', name: 'Bhavanipuram', open: true, codAllowed: true }, { code: 'poranki', name: 'Poranki', open: true, codAllowed: true },
+  { code: 'autonagar', name: 'Autonagar', open: true, codAllowed: false }];
+var SAMPLE = [{ id: 'r1', name: 'Chicken Dum Biryani (Regular)', qty: 1, p: 349 }, { id: 'r2', name: 'Chicken Lollipops', qty: 1, p: 299 }];
+/* Demo offers. PLACEHOLDERS until Reelo rules are confirmed (Reelo spec R1 to R5). Shape = contract v1.2 draft /offers. */
+var DEMO_COUPONS = [
+  { code: 'RR10', title: '10% off', desc: '10% off, up to Rs 100, on orders of Rs 300 or more.', type: 'pct', val: 10, capPaise: 10000, minPaise: 30000 },
+  { code: 'FLAT75', title: 'Rs 75 off', desc: 'Rs 75 off on orders of Rs 600 or more.', type: 'flat', val: 7500, minPaise: 60000 },
+  { code: 'FEAST20', title: '20% off family feasts', desc: '20% off, up to Rs 200, on orders of Rs 1,200 or more.', type: 'pct', val: 20, capPaise: 20000, minPaise: 120000 },
+  { code: 'DIWALI25', title: 'Diwali 25% off', desc: '25% off, up to Rs 150.', type: 'pct', val: 25, capPaise: 15000, minPaise: 0, expired: true }];
+/* RR Durbar Royal Club rewards, exactly as on the home page (Rs 1 spent = 1 point). One reward OR one coupon per order.
+   'off' = money off the entire purchase; 'item' = a free item the counter adds at pickup (no money changes on the website). */
+var RR_REWARDS = [
+  { id: 'drink500', pts: 500, kind: 'item', title: '1 FREE drink', note: 'The counter adds your drink at pickup.' },
+  { id: 'off1000', pts: 1000, kind: 'off', paise: 7500, title: '\u20B975 off entire purchase' },
+  { id: 'off2000', pts: 2000, kind: 'off', paise: 15000, title: '\u20B9150 off entire purchase' },
+  { id: 'treat3000', pts: 3000, kind: 'item', title: '1 FREE starter or dessert', note: 'Choose it at the counter when you collect.' },
+  { id: 'off5000', pts: 5000, kind: 'off', paise: 50000, title: '\u20B9500 off entire purchase' }];
+function rewardById(id) { return RR_REWARDS.filter(function (r) { return r.id === id; })[0] || null; }
+function cpSave(c, sub) { return c.type === 'pct' ? Math.min(c.capPaise || Infinity, Math.round(sub * c.val / 100)) : c.val; }
+function cpWhy(c, sub) { if (c.expired) return 'This offer has expired.'; if (sub < c.minPaise) return 'Add ' + rs(c.minPaise - sub) + ' more to use this.'; return ''; }
+function dErr(code, msg, field) { return { code: code, msg: msg, field: field }; }
+var demo = {
+  config: function () { return sleep(150).then(function () { return { orderingOpen: true, termsVersion: '2026-10-22-v1', codMaxPaise: 100000, branches: DEMO_OUTLETS }; }); },
+  slots: function (b) { return sleep(200).then(function () { if (Q.get('mock') === 'noslots') return { slots: [] }; var out = [], d = new Date(Date.now() + 30 * 60000); d.setMinutes(Math.ceil(d.getMinutes() / 30) * 30, 0, 0); for (var i = 0; i < 16; i++) { out.push({ id: d.toISOString(), label: d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) }); d = new Date(d.getTime() + 30 * 60000); } return { slots: out }; }); },
+  quote: function (body) { return sleep(250).then(function () {
+    if (Q.get('mock') === 'rista_down') throw dErr('provider_down', 'Our kitchen system is not responding right now. Nothing has been charged. Please try again in a few minutes.');
+    var items = body.items.map(function (i) { var c = S.cart.filter(function (x) { return x.id === i.id; })[0] || {}; var unit = Math.round((c.p || 200) * 100); return { id: i.id, name: c.name || i.id, qty: i.qty, unitPaise: unit, linePaise: unit * i.qty }; });
+    var sub = items.reduce(function (a, l) { return a + l.linePaise; }, 0);
+    /* Money order (one path, same as Swagramam): discount -> GST on (items - discount) -> tip, not taxed -> total. */
+    var disc = 0, label = '', offErr = '', o = body.offer;
+    if (o && o.kind === 'coupon') { var c = DEMO_COUPONS.filter(function (x) { return x.code === String(o.code || '').toUpperCase(); })[0];
+      if (!c) offErr = 'That code is not valid.'; else if (cpWhy(c, sub)) offErr = cpWhy(c, sub); else { disc = cpSave(c, sub); label = 'Coupon ' + c.code; } }
+    var free = '', used = 0;
+    if (o && o.kind === 'reward') { var rw = rewardById(o.rewardId), bal = DEMO.members[S.phone] || 0;
+      if (!rw) offErr = 'That reward is not available.'; else if (bal < rw.pts) offErr = 'You need ' + (rw.pts - bal) + ' more points for this reward.';
+      else if (rw.kind === 'off' && sub <= rw.paise) offErr = 'Add ' + rs(rw.paise - sub + 100) + ' more to the order to use ' + rw.title.replace(' entire purchase', '') + '.';
+      else { used = rw.pts; if (rw.kind === 'off') { disc = rw.paise; label = rw.title.replace(' entire purchase', '') + ', ' + rw.pts + ' points'; } else free = rw.title + ': ' + rw.note; } }
+    disc = Math.max(0, Math.min(disc, sub));
+    var taxable = sub - disc, tax = Math.round(taxable * 5 / 100), tip = 0, tp = body.tip;
+    if (tp && tp.pct) tip = Math.round(sub * Math.min(30, Math.max(0, tp.pct)) / 100);
+    if (tp && tp.paise) tip = Math.min(tp.paise | 0, 50000, Math.round(sub * 30 / 100));
+    return { items: items, subtotalPaise: sub, discountPaise: disc, discountLabel: label, offerError: offErr, taxPaise: tax, tipPaise: tip, totalPaise: taxable + tax + tip, earnPoints: Math.floor(taxable / 100), pointsUsed: used, freeItem: free }; }); },
+  offers: function () { return sleep(250).then(function () { var sub = S.quote ? S.quote.subtotalPaise : 0;
+    return { coupons: DEMO_COUPONS.map(function (c) { var why = cpWhy(c, sub); return { code: c.code, title: c.title, desc: c.desc, eligible: !why, reason: why, youSavePaise: why ? 0 : cpSave(c, sub) }; }), rewards: RR_REWARDS, onePerOrder: true }; }); },
+  otpSend: function (b) { return sleep(300).then(function () { if (Q.get('mock') === 'sms_down') throw dErr('provider_down', 'We could not send the code right now. Please try again in a minute.'); return { sent: true, resendAfterSeconds: 30 }; }); },
+  otpVerify: function (b) { return sleep(400).then(function () { if (b.code !== DEMO.code) throw dErr('otp_wrong', 'That code is not right.'); return { token: 'demo.' + b.phone }; }); },
+  limits: function () { return sleep(120).then(function () { var open = DEMO.codOpen[S.phone] || 0; return { codMaxPaise: 100000, codOpenPaise: open, codRemainingPaise: Math.max(0, 100000 - open) }; }); },
+  lookup: function () { return sleep(300).then(function () { if (Q.get('mock') === 'reelo_down') return { available: false }; var bal = DEMO.members[S.phone]; return bal ? { available: true, member: true, balance: bal } : { available: true, member: false, balance: 0 }; }); },
+  start: function (b) { return sleep(400).then(function () {
+    var total = S.quote.totalPaise;
+    if (b.method === 'cod' && total > S.cfg.codMaxPaise) throw dErr('cod_not_allowed', 'Pay at pickup is only for orders up to Rs ' + (S.cfg.codMaxPaise / 100) + '. Please pay online.');
+    if (b.method === 'cod' && total > S.cfg.codMaxPaise - (DEMO.codOpen[S.phone] || 0)) throw dErr('cod_not_allowed', codLeftText(S.cfg.codMaxPaise - (DEMO.codOpen[S.phone] || 0)), 'method');
+    if (b.method === 'cod') DEMO.codOpen[S.phone] = (DEMO.codOpen[S.phone] || 0) + total;
+    if (b.method === 'payu' && Q.get('mock') === 'payu_down') throw dErr('provider_down', 'Online payment is not responding right now. Nothing has been charged. Please try again in a few minutes.');
+    var q = S.quote, id = 'RR-' + (++DEMO.seq); DEMO.orders[id] = { orderId: id, state: b.method === 'cod' ? 'CONFIRMED' : 'PAYMENT_PENDING', method: b.method, totalPaise: total, branchName: outName(), slotLabel: slotLabel(), earnPoints: S.loy && S.loy.member ? q.earnPoints : 0,
+      tipPaise: q.tipPaise || 0, discountPaise: q.discountPaise || 0, discountLabel: q.discountLabel || '', freeItem: q.freeItem || '', pointsUsed: q.pointsUsed || 0, items: q.items.map(function (i) { return { name: i.displayName || i.name, qty: i.qty }; }) };
+    return { orderId: id, statusToken: 'demo-t', state: DEMO.orders[id].state, totalPaise: total, payment: b.method === 'payu' ? { type: 'payu', demo: true } : null }; }); },
+  status: function (id) { return sleep(400).then(function () { var o = DEMO.orders[id]; if (!o) throw dErr('not_found', 'Order not found.'); return o; }); },
+  pay: function (id, ok) { DEMO.orders[id].state = ok ? 'CONFIRMED' : 'PAYMENT_FAILED'; return sleep(250); }
+};
+
+/* ===== LIVE API (contract v1.1) ===== */
+function call(path, opt) {
+  opt = opt || {}; var h = { Accept: 'application/json' }, url = CFG.API + path;
+  if (opt.body) h['Content-Type'] = 'application/json';
+  if (opt.auth && S.token) h.Authorization = 'Bearer ' + S.token;
+  if (opt.idem) h['Idempotency-Key'] = opt.idem;
+  if (opt.query) url += '?' + new URLSearchParams(opt.query).toString();
+  return fetch(url, { method: opt.method || (opt.body ? 'POST' : 'GET'), headers: h, body: opt.body ? JSON.stringify(opt.body) : undefined }).then(function (r) {
+    return r.json().catch(function () { return null; }).then(function (j) { if (!r.ok) { var e = (j && j.error) || {}; throw dErr(e.code || 'http_' + r.status, e.message || 'Something went wrong. Please try again.', e.field); } if (!j) throw dErr('provider_down', 'The server is not responding. Please try again.'); return j; });
+  }, function () { throw dErr('provider_down', 'We cannot reach our server right now. Please check your connection and try again.'); });
+}
+var live = {
+  config: function () { return call('/config'); },
+  slots: function (b) { return call('/slots', { query: { branch: b } }); },
+  quote: function (body) { return call('/quote', { body: body }); },
+  otpSend: function (b) { return call('/otp/send', { body: b }); },
+  otpVerify: function (b) { return call('/otp/verify', { body: b }); },
+  lookup: function (b) { return call('/loyalty/lookup', { body: b, auth: true }); },
+  limits: function () { return call('/checkout/limits', { auth: true }); },   // what pay at pickup still allows for this phone (owner, 27 Oct)
+  start: function (b, idem) { return call('/checkout/start', { body: b, auth: true, idem: idem }); },
+  status: function (id, t) { return call('/order/status', { query: { id: id, t: t || '' } }); },
+  offers: function (b) { return call('/offers', { body: b, auth: true }); }      // contract v1.2 draft; used only when /config features.offers
+};
+var API = MOCK ? demo : live;
+
+/* ===== HELPERS ===== */
+function outlets() { return (S.cfg && S.cfg.branches || []).filter(function (b) { return b.open; }); }
+function outletObj() { return outlets().filter(function (o) { return o.code === S.outlet; })[0] || null; }
+function outName() { var o = outletObj(); return o ? o.name : ''; }
+var SLOT_MIN = 30;   // owner, 27 Oct: half-hour pickup windows in ONE dropdown
+function hm12(d) { var h = d.getUTCHours(), m = d.getUTCMinutes(); return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + (h < 12 ? ' am' : ' pm'); }
+function bandLabel(sl) { var t = Date.parse(sl && sl.id), e = Date.parse(sl && sl.endsAt); if (isNaN(t)) return ''; if (isNaN(e)) e = t + SLOT_MIN * 60000;   // API endsAt when sent, else 30 min
+  var a = new Date(t + 330 * 60000), b = new Date(e + 330 * 60000);   // IST
+  var A = hm12(a), B = hm12(b); return A.slice(-2) === B.slice(-2) ? A.slice(0, -3) + ' \u2013 ' + B : A + ' \u2013 ' + B; }
+function slotLabel() { var s = (S.slots || []).filter(function (x) { return x.id === S.slot; })[0]; return s ? bandLabel(s) : ''; }
+function verified() { return S.otp === 'open' && !!S.token; }
+function phoneOk() { return /^[6-9]\d{9}$/.test(S.phone); }
+/* Pay at pickup (owner, 27 Oct): open pay-at-pickup orders + this order must stay at or under Rs 1000. Online has no limit.
+   S.codLeft comes from the API after the code (null = not known yet: the server still checks at placing). */
+function codOk() { var o = outletObj(); return !!(S.quote && o && o.codAllowed && S.cfg && S.quote.totalPaise <= S.cfg.codMaxPaise && (S.codLeft == null || S.quote.totalPaise <= S.codLeft)); }
+function codLeftText(left) { var max = S.cfg ? S.cfg.codMaxPaise / 100 : 1000; return left > 0 ? 'Pay at pickup is for up to Rs ' + max + ' in total across your open orders. You have ' + rs(left) + ' left, so please pay online for this order.' : 'You already have Rs ' + max + ' of pay-at-pickup orders open. Please pay online for this order.'; }
+function canPay() { return !S.busy && S.outlet && S.slot && verified() && S.quote && S.quote.items.length && !S.quoteErr && (S.method === 'payu' || (S.method === 'cod' && codOk())); }
+/* Tip and offers run in demo mode, and in live mode only when /config announces them (contract v1.2). Live v1.1 stays unchanged. */
+function feat(k) { if (MOCK) return true; var f = S.cfg && S.cfg.features; return !!(f && f[k]); }
+function quoteBody() {
+  var b = { branch: S.outlet, items: S.cart.map(function (i) { return { id: i.id, qty: i.qty }; }) };
+  if (feat('tip') && S.tip) b.tip = S.tip.pct ? { pct: S.tip.pct } : { paise: S.tip.paise };
+  if (feat('offers') && S.offer && verified()) b.offer = S.offer.kind === 'coupon' ? { kind: 'coupon', code: S.offer.code } : { kind: 'reward', rewardId: S.offer.rewardId };
+  return b;
+}
+function step() { if (!S.outlet || !S.slot) return 0; if (!verified()) return 1; if (!S.method) return 2; return 3; }
+
+/* ===== RENDER: order page (built once, then updated in parts so typing never loses focus) ===== */
+function renderOrder() {
+  var ck = $('#ck'); ck.classList.add('two');
+  ck.innerHTML =
+  '<div class="ck-strip"><h1>Pickup checkout</h1><span class="ck-outname" id="ck-outname"></span>' +
+  '<ol class="ck-steps" id="ck-steps" aria-label="Progress"><li>Pickup</li><li>Mobile</li><li>Order</li><li>Pay</li></ol>' + (MOCK ? '<span class="ck-demo">Demo mode</span>' : '') + '</div>' +
+  '<div class="ck-grid">' +
+  '<section class="ck-left" aria-label="Pickup and mobile">' +
+    '<div class="ck-card" id="s-pickup"><h2>1 &middot; Pickup</h2><div id="ck-pickbody"></div></div>' +
+    '<div class="ck-card" id="s-mobile"><h2>2 &middot; Your mobile</h2>' +
+      '<label class="chk"><input type="checkbox" id="ck-terms"><span>I agree to the <a href="#" data-dlg="terms">Terms</a>, <a href="#" data-dlg="privacy">Privacy Policy</a> and rewards club terms.</span></label>' +
+      '<label class="fld" for="ck-ph">Mobile number</label><div class="ph"><span>+91</span><input type="tel" id="ck-ph" inputmode="numeric" autocomplete="tel-national" maxlength="10" placeholder="10-digit mobile"></div>' +
+      '<label class="fld" for="ck-nm">Name <span class="muted">(optional)</span></label><input type="text" id="ck-nm" autocomplete="name" maxlength="60">' +
+      '<p class="err" id="ck-formerr" role="alert"></p>' +
+      '<div id="ck-otpbox" class="hidden"><p id="ck-otpto"></p><div class="otp" role="group" aria-label="One-time code">' + otpBoxes() + '</div>' +
+        '<p id="ck-otpmsg" role="status"></p><div id="ck-ts"></div>' +
+        '<button class="btn btn-dark" data-act="verify" type="button">Verify code</button>' +
+        '<div style="display:flex;justify-content:space-between;flex-wrap:wrap"><button class="btn btn-lnk" id="ck-rs" data-act="resend" type="button" disabled>Resend</button><button class="btn btn-lnk" data-act="editphone" type="button">Edit number</button></div></div>' +
+    '</div>' +
+    rwMarkup() +
+  '</section>' +
+  '<div class="ck-gap" aria-hidden="true"><span>&rsaquo;</span></div>' +
+  '<section class="ck-right" aria-label="Order and payment"><div class="ck-card ck-main">' +
+    '<div class="ck-top"><div id="s-order"><h2>3 &middot; Your order</h2><div id="ck-lines"></div><a href="/?page=pickup-menu" class="muted">+ Add more dishes</a><div id="ck-tip"></div></div>' +
+      '<div id="s-offers" inert><h2>Rewards on this order</h2><div id="ck-offbody"></div></div></div>' +
+    '<div class="ck-bot"><div class="ck-sum" id="ck-sum"></div><div id="s-pay"><h2>4 &middot; Payment</h2><div id="ck-pm"></div><p class="err" id="ck-payerr" role="alert"></p>' +
+      '<button class="btn btn-pri" data-act="place" type="button" disabled>Pay</button><p class="muted" style="margin:8px 0 0">Prices and taxes are confirmed by our system. Online payments go through PayU.</p></div></div>' +
+  '</div></section></div>' +
+  '<div class="ck-bar" id="ck-bar"><div class="tot"><small>Total</small><b id="ck-bartot">&ndash;</b></div><button class="btn btn-pri" data-act="barplace" type="button" disabled>Pay</button></div>';
+  $('#ck-terms').checked = S.terms; $('#ck-ph').value = S.phone; $('#ck-nm').value = S.name;
+  paintAll();
+}
+/* ===== REWARDS CARD (piggy bank from the RR home Royal Club section) ===== */
+var RW_TIERS = [{ n: 'Silver', at: 500 }, { n: 'Gold', at: 2000 }, { n: 'Royal Durbar', at: 5000 }];   // same as the site's Royal Club tiers
+function rwTier(p) { var next = null, prev = 0, cur = '', fill = 0; RW_TIERS.forEach(function (x, i) { if (p >= x.at) { prev = x.at; cur = x.n; fill = i + 1; } else if (!next) next = x; });
+  return { next: next, cur: cur, fill: fill, pct: next ? Math.max(4, Math.round((p - prev) / (next.at - prev) * 100)) : 100 }; }
+var COIN = '<svg viewBox="-18 -18 36 36" aria-hidden="true"><circle r="17" fill="url(#rw-gd)" stroke="#8a5a1c" stroke-width="1.5"/><circle r="12" fill="none" stroke="#8a5a1c" stroke-opacity=".6" stroke-width="1.2"/><text y="6" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="16" fill="#6b3f12">&#8377;</text></svg>';
+var PIG = '<svg class="rw-pig" viewBox="52 108 330 300" aria-hidden="true"><defs>' +
+  '<radialGradient id="rw-pg" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#C13A4B"/><stop offset=".5" stop-color="#8E1B2C"/><stop offset="1" stop-color="#4A0810"/></radialGradient>' +
+  '<linearGradient id="rw-gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE9A8"/><stop offset=".5" stop-color="#E7B85C"/><stop offset="1" stop-color="#9D692B"/></linearGradient>' +
+  '<radialGradient id="rw-sn" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#D9566A"/><stop offset="1" stop-color="#8E1B2C"/></radialGradient></defs>' +
+  '<ellipse cx="205" cy="392" rx="150" ry="14" fill="#1a0306" opacity=".5"/>' +
+  '<g class="pile p1"><ellipse cx="96" cy="388" rx="22" ry="6" fill="url(#rw-gd)"/><ellipse cx="96" cy="381" rx="22" ry="6" fill="#C9922F"/><ellipse cx="96" cy="374" rx="22" ry="6" fill="url(#rw-gd)"/></g>' +
+  '<g class="pile p2"><ellipse cx="330" cy="390" rx="22" ry="6" fill="url(#rw-gd)"/><ellipse cx="330" cy="383" rx="22" ry="6" fill="#C9922F"/><ellipse cx="330" cy="376" rx="22" ry="6" fill="url(#rw-gd)"/><ellipse cx="330" cy="369" rx="22" ry="6" fill="#C9922F"/><ellipse cx="330" cy="362" rx="22" ry="6" fill="url(#rw-gd)"/></g>' +
+  '<path d="M84 238c-30-4-34-34-14-42 10-4 18 4 12 12-4 6-12 4-12 0" fill="none" stroke="#8E1B2C" stroke-width="7" stroke-linecap="round"/>' +
+  '<rect x="118" y="320" width="40" height="64" rx="16" fill="#6b0f1c"/><rect x="238" y="320" width="40" height="64" rx="16" fill="#6b0f1c"/>' +
+  '<rect x="150" y="326" width="40" height="64" rx="16" fill="url(#rw-pg)"/><rect x="262" y="326" width="40" height="64" rx="16" fill="url(#rw-pg)"/>' +
+  '<path d="M150 380h40M262 380h40" stroke="#E7B85C" stroke-width="4" stroke-linecap="round"/>' +
+  '<ellipse cx="200" cy="255" rx="136" ry="102" fill="url(#rw-pg)"/><path d="M92 215c26-44 80-62 130-56" stroke="#fff" stroke-opacity=".28" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+  '<path d="M82 262c34 30 96 40 150 32s84-30 100-58" stroke="url(#rw-gd)" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+  '<g fill="url(#rw-gd)"><circle cx="112" cy="232" r="4"/><circle cx="130" cy="218" r="3.5"/><circle cx="252" cy="196" r="4"/><circle cx="270" cy="206" r="3.5"/><circle cx="138" cy="296" r="3.5"/><circle cx="224" cy="302" r="4"/></g>' +
+  '<circle cx="190" cy="248" r="34" fill="#4A0810" stroke="url(#rw-gd)" stroke-width="4"/><circle cx="190" cy="248" r="27" fill="none" stroke="#E7B85C" stroke-opacity=".7" stroke-dasharray="2 3"/>' +
+  '<text x="190" y="257" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-weight="700" font-size="26" fill="url(#rw-gd)">RR</text>' +
+  '<path d="M246 170Q256 118 294 126Q302 152 284 178z" fill="#8E1B2C"/><path d="M258 166Q264 138 288 140Q290 156 280 170z" fill="#D9566A"/>' +
+  '<ellipse cx="338" cy="262" rx="36" ry="40" fill="url(#rw-sn)"/><ellipse cx="338" cy="262" rx="36" ry="40" fill="none" stroke="#E7B85C" stroke-width="3"/>' +
+  '<ellipse cx="328" cy="262" rx="5" ry="9" fill="#33050B"/><ellipse cx="350" cy="262" rx="5" ry="9" fill="#33050B"/>' +
+  '<circle cx="296" cy="222" r="9" fill="#fff"/><circle cx="298" cy="223" r="5.5" fill="#1a0306"/><circle cx="300" cy="220" r="2" fill="#fff"/>' +
+  '<path d="M302 296c14 8 30 6 40-4" fill="none" stroke="#33050B" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="288" cy="262" rx="14" ry="9" fill="#FF8aa0" opacity=".45"/>' +
+  '<rect x="166" y="152" width="68" height="11" rx="5.5" fill="#1a0306" stroke="#E7B85C" stroke-width="2"/></svg>';
+var LIGHTS = '<svg class="rw-lights" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 6Q200 46 400 4" fill="none" stroke="#E7B85C" stroke-opacity=".6" stroke-width="1.5"/><g fill="#FFE29A"><circle cx="50" cy="13" r="3.5"/><circle cx="125" cy="21" r="3.5"/><circle cx="200" cy="25" r="3.5"/><circle cx="275" cy="21" r="3.5"/><circle cx="350" cy="12" r="3.5"/></g></svg>';
+function rwMarkup() {
+  return '<div class="rw" data-state="locked" data-fill="0">' + LIGHTS + '<div class="rw-card"><div class="rw-txt"><div class="rw-k">RR Durbar Royal Club</div><div class="rw-n" id="rw-n" aria-live="polite"></div>' +
+    '<div class="rw-bar"><i id="rw-bar"></i></div><p class="rw-t" id="rw-t"></p></div>' + PIG + '</div>' +
+    '<div class="rw-trk" role="status"><i class="rw-fill"></i><div class="rw-lbl" id="rw-lbl">Enter your mobile to see your points</div><div class="rw-knob" aria-hidden="true">' + COIN + '</div></div></div>';
+}
+function otpBoxes() { var h = ''; for (var i = 0; i < CFG.OTP_LEN; i++) h += '<input id="ck-o' + i + '" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Digit ' + (i + 1) + '"' + (i === 0 ? ' autocomplete="one-time-code"' : ' autocomplete="off"') + '>'; return h; }
+function paintAll() { paintSteps(); paintPickup(); paintMobile(); paintCard(); paintOrder(); paintTip(); paintOffers(); paintSummary(); paintPay(); }
+function paintTip() {
+  var b = $('#ck-tip'); if (!b) return;
+  if (!feat('tip') || !S.quote || S.quoteErr) { b.innerHTML = ''; return; }
+  var pct = S.tip && S.tip.pct, other = S.tipOther || (S.tip && S.tip.paise);
+  b.innerHTML = '<div class="tipcard"><h3>Tip the team</h3><p class="muted" style="margin:0 0 6px">100% of it goes to the kitchen and counter staff. Not taxed.</p><div class="ck-chip-row" role="group" aria-label="Tip">' +
+    CFG.TIP_CHOICES.map(function (p) { var on = pct === p; return '<button type="button" class="ck-chip tip" data-tip="' + p + '" aria-pressed="' + on + '"' + (on ? ' aria-label="' + p + '% tip, tap to remove"' : '') + '>' + p + '%' + (on ? '<span class="x" aria-hidden="true">&times;</span>' : '') + '</button>'; }).join('') +
+    '<button type="button" class="ck-chip tip" data-tip="other" aria-pressed="' + !!other + '">Other</button></div>' +
+    (other ? '<div class="tipother"><span>Rs</span><input type="text" id="ck-tipamt" inputmode="numeric" maxlength="3" value="' + (S.tip && S.tip.paise ? S.tip.paise / 100 : '') + '" aria-label="Tip amount in rupees"><small>up to Rs 500</small></div>' : '') +
+    '<p class="muted" style="margin:6px 0 0" id="ck-tiptxt">' + (S.quote.tipPaise ? 'Your tip: <b>' + rs(S.quote.tipPaise) + '</b>' + (pct ? ' (' + pct + '% of the item total)' : '') : 'No tip added.') + '</p></div>';
+}
+function paintSteps() { var k = step(); $$('#ck-steps li').forEach(function (li, i) { li.className = i < k ? 'done' : i === k ? 'on' : ''; }); var n = $('#ck-outname'); if (n) n.textContent = outName() ? outName() + (slotLabel() ? ' · ' + slotLabel() : '') : ''; }
+function paintPickup() {
+  var b = $('#ck-pickbody'); if (!b) return;
+  if (S.outlet && S.slot && !S.pickupOpen) { b.innerHTML = '<div class="when" id="ck-when"><span><b>' + esc(outName()) + '</b><br>Ready for pickup: ' + esc(slotLabel()) + '</span><button class="btn btn-sec" style="width:auto;margin:0" data-act="change" type="button">Change</button></div>'; return; }
+  var opts = outlets().map(function (o) { return '<option value="' + esc(o.code) + '"' + (o.code === S.outlet ? ' selected' : '') + '>' + esc(o.name) + '</option>'; }).join('');
+  var slots = '';
+  if (S.outlet) {
+    if (!S.slots) slots = '<p class="muted">Loading pickup times&hellip;</p>';
+    else if (!S.slots.length) slots = '<p class="err">No pickup times are left today at this outlet. Please choose another outlet or call us.</p>';
+    else slots = '<label class="fld" for="ck-slot">Pickup today</label><select id="ck-slot"><option value="">Choose a pickup time</option>' +
+      S.slots.map(function (s) { return '<option value="' + esc(s.id) + '"' + (s.id === S.slot ? ' selected' : '') + '>' + esc(bandLabel(s)) + '</option>'; }).join('') + '</select>';
+  }
+  b.innerHTML = '<label class="fld" for="ck-outlet">Outlet</label><select id="ck-outlet"><option value="">Choose an outlet</option>' + opts + '</select>' +
+    '<p class="muted" style="margin:6px 0 0">Patamatalanka takes orders by phone: <a href="tel:' + CFG.CALL + '">call us</a>.</p>' + slots +
+    (S.outlet && S.slot ? '<button class="btn btn-dark" data-act="next" type="button">Continue</button>' : '');
+}
+function paintMobile() {
+  var box = $('#ck-otpbox'); if (!box) return;
+  box.classList.toggle('hidden', !S.sent || verified());
+  $('#ck-ph').disabled = S.sent; $('#ck-terms').disabled = verified();
+  $('#ck-otpto').innerHTML = 'Enter the ' + CFG.OTP_LEN + '-digit code sent to <b>+91 ' + esc(S.phone) + '</b>.';
+  var rsb = $('#ck-rs'); rsb.disabled = S.resend > 0 || S.busy; rsb.textContent = S.resend > 0 ? 'Resend in ' + S.resend + 's' : 'Resend code';
+  var vb = $('[data-act=verify]'); vb.disabled = S.busy || S.otp === 'verifying';
+}
+function paintCard() {
+  var rw = $('.rw'); if (!rw) return; rw.setAttribute('data-state', S.otp);
+  var lbl = { locked: S.sent ? 'Enter the code to unlock' : 'Swipe to unlock rewards', otp: 'Enter the code to unlock', verifying: 'Checking your code…', err: 'That code is not right', open: 'Rewards unlocked' }[S.otp];
+  $('#rw-lbl').textContent = lbl;
+  if (!verified()) { $('#rw-n').textContent = ''; rw.setAttribute('data-fill', '0'); var b0 = $('#rw-bar'); if (b0) b0.style.setProperty('--p', '0%'); $('#rw-t').textContent = S.otp === 'otp' || S.otp === 'err' ? 'Type the code. Your points appear here.' : 'Points are shown only after your mobile is verified.'; return; }
+  var l = S.loy;
+  if (!l) { $('#rw-t').textContent = 'Checking your rewards…'; return; }
+  if (!l.available) { $('#rw-n').textContent = ''; $('#rw-t').textContent = 'Rewards are unavailable right now. You can still order.'; return; }
+  var tr = rwTier(l.balance || 0), bar = $('#rw-bar'); rw.setAttribute('data-fill', String(tr.fill)); if (bar) bar.style.setProperty('--p', tr.pct + '%');
+  $('#rw-t').textContent = !l.member ? 'You are in. Points from this order are added after it is paid or settled at pickup.' :
+    (tr.next ? 'Welcome back' + (S.name ? ', ' + S.name : '') + '. ' + (tr.next.at - (l.balance || 0)) + ' more points to reach ' + tr.next.n + '.' : (tr.cur || 'Royal Durbar') + ' member. Thank you' + (S.name ? ', ' + S.name : '') + '!');
+}
+function countUp(n) {
+  var el = $('#rw-n'); if (!el) return;
+  if (REDUCED || n <= 0) { el.textContent = n + ' pts'; return; }
+  var t0 = performance.now(), d = 900;
+  (function f(t) { var k = Math.min(1, (t - t0) / d); el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))) + ' pts'; if (k < 1) requestAnimationFrame(f); })(t0);
+  var rw = $('.rw'); rw.classList.add('fresh'); setTimeout(function () { rw.classList.remove('fresh'); }, 2600);
+  for (var i = 0; i < 12; i++) { var c = document.createElement('span'); c.className = 'coin'; c.innerHTML = COIN; c.style.setProperty('--x', (66 + Math.random() * 22).toFixed(0) + '%'); c.style.setProperty('--d', (i * 70) + 'ms'); rw.appendChild(c); setTimeout(function (x) { x.remove(); }, 2200, c); }
+}
+function paintOrder() {
+  var b = $('#ck-lines'); if (!b) return;
+  if (!S.outlet) { b.innerHTML = '<p class="muted">Choose an outlet to see prices.</p>'; return; }
+  if (S.quoteErr) { b.innerHTML = '<p class="err">' + esc(S.quoteErr) + '</p><button class="btn btn-sec" data-act="requote" type="button">Try again</button>'; return; }
+  if (!S.quote) { b.innerHTML = '<p class="muted">Checking prices&hellip;</p>'; return; }
+  b.innerHTML = S.quote.items.map(function (i, k) { return '<div class="line"><div><div class="nm">' + esc(i.displayName || i.name) + '</div><div class="qty"><button type="button" data-act="dec" data-k="' + k + '" aria-label="One less ' + esc(i.name) + '">&minus;</button><b>' + i.qty + '</b><button type="button" data-act="inc" data-k="' + k + '" aria-label="One more ' + esc(i.name) + '">+</button></div></div><b>' + rs(i.unitPaise * i.qty) + '</b></div>'; }).join('');
+}
+function paintOffers() {
+  var off = $('#s-offers'), b = $('#ck-offbody'); if (!off) return;
+  if (!verified()) { off.setAttribute('inert', ''); b.innerHTML = '<div class="lock">&#128274; Verify your mobile to unlock your rewards.</div>'; return; }
+  off.removeAttribute('inert');
+  var l = S.loy || {}, earn = S.quote ? S.quote.earnPoints || 0 : 0;
+  if (feat('offers')) return paintOffersOn(b, l, earn);
+  b.innerHTML = (l.available ? '<div class="row"><span>Your points</span><b>' + (l.balance || 0) + '</b></div>' : '<p class="muted">Rewards are unavailable right now.</p>') +
+    '<label class="chk"><input type="checkbox" id="ck-usepts" disabled><span>Use a Royal Club reward on this order <span class="pill">Coming soon</span></span></label>' +
+    '<p id="ck-pts" class="okmsg">' + (earn ? 'You will earn ' + earn + ' points with this order.' : '') + '</p>' +
+    '<p class="muted">Coupons and points redemption will appear here once the rewards club is switched on.</p>';
+}
+function paintOffersOn(b, l, earn) {
+  var o = S.offer, sub = S.quote ? S.quote.subtotalPaise : 0;
+    var h = (l.available ? '<div class="row"><span>Your points</span><b>' + (l.balance || 0) + '</b></div>' : '<p class="muted">Rewards are unavailable right now. You can still order.</p>');
+  h += '<div class="offbtn"><span><b>Apply coupon</b><br><small>Offers for your number</small></span><button class="btn btn-sec" type="button" data-act="coupons">' + (o && o.kind === 'coupon' ? 'Change' : 'Apply') + '</button></div>';
+  if (o && o.kind === 'coupon') h += '<div class="cptag"><span>' + esc(o.code) + ' applied' + (S.quote && S.quote.discountPaise ? ' &middot; you save ' + rs(S.quote.discountPaise) : '') + '</span><button type="button" data-act="rmoffer">Remove</button></div>';
+  var rws = (S.offers && S.offers.rewards) || [];
+  if (l.available && l.member && rws.length) {
+    h += '<div class="rwlist" role="group" aria-label="Royal Club rewards"><b class="rwl-h">Royal Club rewards</b>' + rws.map(function (r) {
+      var on = o && o.kind === 'reward' && o.rewardId === r.id, short = r.pts - (l.balance || 0), addMore = r.kind === 'off' && sub <= r.paise ? r.paise - sub + 100 : 0;   // money off only when the order is bigger than the reward (never a Rs 0 bill)
+      return '<div class="rwi' + (on ? ' on' : '') + (short > 0 ? ' lock' : '') + '"><span><b>' + esc(r.title) + '</b><br><small>' + r.pts + ' points' + (r.kind === 'item' ? ' &middot; at pickup' : '') + '</small></span>' +
+        (on ? '<button type="button" class="btn btn-sec" data-act="rmoffer">Remove</button>' : short > 0 ? '<small class="need">' + short + ' more points</small>' : addMore ? '<small class="need">Add ' + rs(addMore) + ' more</small>' : '<button type="button" class="btn btn-pri" data-act="reward" data-id="' + r.id + '">Use</button>') + '</div>'; }).join('') + '</div>';
+    if (o && o.kind === 'reward' && S.quote && S.quote.freeItem) h += '<p class="okmsg">' + esc(S.quote.freeItem) + '</p>';
+  } else if (l.available && !l.member) h += '<p class="muted">You are new: points from this order are added after it is paid or settled at pickup. Rewards start at 500 points.</p>';
+  if (S.quote && S.quote.offerError) h += '<p class="err">' + esc(S.quote.offerError) + '</p>';
+  h += '<p id="ck-pts" class="okmsg">' + (earn ? 'You will earn ' + earn + ' points with this order.' : '') + '</p><p class="muted" style="margin:0">One offer per order: a coupon or a Royal Club reward. You earn 1 point for every \u20B91.</p>';
+  b.innerHTML = h;
+}
+function openCoupons() {
+  var d = $('#ck-dlg'); if (!d) return;
+  d.innerHTML = '<h2 id="ck-dlg-t">Apply coupon</h2><p class="muted">Loading offers&hellip;</p>'; if (d.showModal && !d.open) d.showModal(); else d.setAttribute('open', '');
+  (MOCK ? demo.offers() : API.offers({ branch: S.outlet, items: quoteBody().items })).then(function (r) { S.offers = r; paintCoupons(); }, function () { d.innerHTML = '<h2 id="ck-dlg-t">Apply coupon</h2><p class="err">Offers are unavailable right now. You can still order.</p><button class="btn btn-dark" type="button" data-act="closedlg">Close</button>'; });
+}
+function paintCoupons() {
+  var d = $('#ck-dlg'), r = S.offers || { coupons: [] };
+  d.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center"><h2 id="ck-dlg-t" style="margin:0">Apply coupon</h2><button class="btn btn-lnk" type="button" data-act="closedlg" aria-label="Close">&times;</button></div>' +
+    '<label class="fld" for="ck-cpin">Have a code?</label><div class="cpin"><input type="text" id="ck-cpin" autocapitalize="characters" maxlength="20" placeholder="Enter code"><button class="btn btn-pri" type="button" data-act="cpcode">Apply</button></div><p class="err" id="ck-cperr" role="alert">' + esc(S.offerMsg || '') + '</p>' +
+    r.coupons.map(function (c) { return '<div class="cp"><div><b>' + esc(c.title) + '</b><b class="code">' + esc(c.code) + '</b><br><small>' + esc(c.desc) + '</small><br>' + (c.eligible ? '<span class="save">You save ' + rs(c.youSavePaise) + '</span>' : '<span class="why">' + esc(c.reason) + '</span>') + '</div>' +
+      (c.eligible ? '<button class="btn btn-pri" type="button" data-act="cpapply" data-code="' + esc(c.code) + '">Apply</button>' : '') + '</div>'; }).join('');
+}
+function setOffer(o) { S.offer = o; S.offerMsg = ''; S.idem = ''; requote(true); }
+function paintSummary() {
+  var b = $('#ck-sum'); if (!b) return; var q = S.quote;
+  if (!q || S.quoteErr) { b.innerHTML = '<h2>Summary</h2><p class="muted">Your total appears here.</p>'; return; }
+  b.innerHTML = '<h2>Summary</h2><div class="row"><span>Item total</span><span>' + rs(q.subtotalPaise) + '</span></div>' +
+    (q.discountPaise ? '<div class="row disc"><span>Discount (' + esc(q.discountLabel || 'offer') + ')</span><span>&minus; ' + rs(q.discountPaise) + '</span></div>' : '') +
+    (q.freeItem ? '<div class="row disc"><span>' + esc(q.freeItem.split(':')[0]) + ' (' + q.pointsUsed + ' points)</span><span>Free at pickup</span></div>' : '') +
+    '<div class="row"><span>GST' + (q.discountPaise ? ' (after discount)' : '') + '</span><span id="ck-gst">' + rs(q.taxPaise) + '</span></div>' +
+    (q.chargesPaise ? '<div class="row"><span>Charges</span><span>' + rs(q.chargesPaise) + '</span></div>' : '') +
+    (q.tipPaise ? '<div class="row"><span>Tip' + (S.tip && S.tip.pct ? ' (' + S.tip.pct + '%)' : '') + '</span><span id="ck-tipsum">' + rs(q.tipPaise) + '</span></div>' : '') +
+    (verified() && q.earnPoints ? '<div class="row earn"><span>Points earning</span><span>+ ' + q.earnPoints + ' points</span></div>' : '') +
+    '<div class="row t"><span>Total' + (q.tipPaise || q.discountPaise ? ' including all taxes' : '') + '</span><span id="ck-total">' + rs(q.totalPaise) + '</span></div>';
+}
+function paintPay() {
+  var b = $('#ck-pm'); if (!b) return;
+  var cod = codOk(); if (S.method === 'cod' && !cod) S.method = '';
+  var limit = S.cfg ? (S.cfg.codMaxPaise / 100) : 1000;
+  b.innerHTML = '<label class="opt"><input type="radio" name="ck-pm" value="payu"' + (S.method === 'payu' ? ' checked' : '') + '><span>Pay online<br><small>UPI, cards, net banking (PayU)</small></span></label>' +
+    (cod ? '<label class="opt"><input type="radio" name="ck-pm" value="cod"' + (S.method === 'cod' ? ' checked' : '') + '><span>Pay at pickup<br><small>Pay at the counter when you collect</small></span></label>'
+         : '<p class="muted" id="ck-codmsg">' + (S.codLeft != null && S.quote && S.quote.totalPaise <= S.cfg.codMaxPaise && S.quote.totalPaise > S.codLeft && outletObj() && outletObj().codAllowed ? codLeftText(S.codLeft) : 'Pay at pickup is for orders up to Rs ' + limit + (outletObj() && !outletObj().codAllowed ? ' at outlets that offer it' : '') + '.') + '</p>');
+  var ok = canPay(), label = S.busy ? 'Placing…' : S.method === 'cod' ? 'Place order' : (S.quote ? 'Pay ' + rs(S.quote.totalPaise) : 'Pay');
+  $$('[data-act=place],[data-act=barplace]').forEach(function (x) { x.disabled = !ok; x.textContent = label; });
+  var bt = $('#ck-bartot'); if (bt) bt.textContent = S.quote ? rs(S.quote.totalPaise) : '–';
+  $('#ck-payerr').textContent = S.err || '';
+  paintSteps();
+}
+
+/* ===== ACTIONS ===== */
+function chooseOutlet(code) {
+  S.outlet = code; S.slot = ''; S.slots = null; S.quote = null; S.quoteErr = ''; S.pickupOpen = true; saveCart(); paintAll();
+  if (!code) return;
+  API.slots(code).then(function (r) { if (S.outlet !== code) return; S.slots = (r && r.slots) || []; paintPickup(); paintSteps(); }, function (e) { S.slots = []; paintPickup(); });
+  requote();
+}
+var qSeq = 0;
+function requote(soft) {
+  if (!S.outlet || !S.cart.length) return; var my = ++qSeq; if (!soft) { S.quote = null; S.quoteErr = ''; paintOrder(); paintTip(); paintSummary(); } paintPay();
+  API.quote(quoteBody()).then(function (q) {
+    if (my !== qSeq) return; S.quote = q; S.quoteErr = '';
+    if (q.offerError && S.offer) { S.offerMsg = q.offerError; if (S.offer.kind === 'coupon') S.offer = null; }
+    paintOrder(); paintTip(); paintOffers(); paintSummary(); paintPay();
+  }, function (e) {
+    if (my !== qSeq) return;
+    if (e.code === 'item_unavailable' && e.field) { var c = S.cart.filter(function (x) { return x.id === e.field; })[0]; S.quoteErr = (c ? c.name : 'A dish') + ' is not available right now. It has been removed from your order.'; S.cart = S.cart.filter(function (x) { return x.id !== e.field; }); saveCart(); paintOrder(); if (S.cart.length) setTimeout(requote, 1200); return; }
+    S.quoteErr = e.msg || 'We could not get the prices. Please try again.'; paintOrder(); paintSummary(); paintPay();
+  });
+}
+function maybeSend() {
+  var fe = $('#ck-formerr');
+  if (!phoneOk()) { if (S.phone.length === 10) fe.textContent = 'Please enter a valid 10-digit mobile number.'; return; }
+  if (!S.terms) { S.pendingSend = true; fe.textContent = 'Tick the box above to get your code.'; return; }
+  fe.textContent = ''; sendOtp();
+}
+function sendOtp() {
+  if (S.busy) return; S.busy = true; S.pendingSend = false; paintMobile();
+  var body = { phone: S.phone, purpose: 'checkout', turnstileToken: S.tsToken || '' };
+  API.otpSend(body).then(function (r) {
+    S.busy = false; S.sent = true; S.otp = 'otp'; S.tries = 5; S.resend = (r && r.resendAfterSeconds) || 30; tick(); resetTurnstile();
+    paintMobile(); paintCard(); clearBoxes(); $('#ck-o0').focus();
+    $('#ck-otpmsg').innerHTML = MOCK ? '<span class="pill">Demo</span> Use code <b>123456</b>.' : '';
+    webOtp();
+  }, function (e) { S.busy = false; resetTurnstile(); $('#ck-formerr').textContent = e.msg || 'We could not send the code. Please try again.'; paintMobile(); });
+}
+function code() { return $$('.otp input').map(function (i) { return i.value; }).join(''); }
+function clearBoxes() { $$('.otp input').forEach(function (i) { i.value = ''; }); }
+function fill(digits) { var ins = $$('.otp input'); digits = String(digits).replace(/\D/g, '').slice(0, CFG.OTP_LEN); ins.forEach(function (i, k) { i.value = digits[k] || ''; }); var last = ins[Math.min(digits.length, CFG.OTP_LEN - 1)]; if (last) last.focus(); if (digits.length === CFG.OTP_LEN) verify(); }
+function verify() {
+  var c = code(); var m = $('#ck-otpmsg');
+  if (c.length !== CFG.OTP_LEN) { m.textContent = 'Enter all ' + CFG.OTP_LEN + ' digits.'; return; }
+  if (S.tries <= 0) { m.textContent = 'Too many tries. Please tap Resend code for a new one.'; return; }
+  if (S.otp === 'verifying') return;
+  S.otp = 'verifying'; paintCard(); paintMobile();
+  API.otpVerify({ phone: S.phone, code: c }).then(function (r) {
+    S.token = r.token; S.otp = 'open'; S.loy = null; S.method = S.method || ''; clearInterval(tick.t); S.resend = 0;
+    paintAll(); unlockFx();
+    S.codLeft = null; API.limits().then(function (l) { S.codLeft = l && Number.isInteger(l.codRemainingPaise) ? l.codRemainingPaise : null; paintPay(); }, function () { S.codLeft = null; });
+    API.lookup({ branch: S.outlet || (outlets()[0] && outlets()[0].code) || '' }).then(function (l) { S.loy = l || { available: false }; }, function () { S.loy = { available: false }; }).then(function () {
+      paintCard(); paintOffers(); paintSummary(); if (S.loy.available) countUp(S.loy.balance || 0);
+      if (feat('offers') && S.loy.available && S.loy.member) (MOCK ? demo.offers() : API.offers({ branch: S.outlet, items: quoteBody().items })).then(function (r) { S.offers = r; paintOffers(); }, function () {});
+      if (window.innerWidth < 1024) { var o = $('#s-offers'); if (o && o.scrollIntoView) o.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' }); }
+    });
+  }, function (e) {
+    S.tries = e.code === 'otp_locked' ? 0 : S.tries - 1; S.otp = 'err'; paintCard(); paintMobile(); clearBoxes();
+    m.textContent = e.code === 'otp_expired' ? 'That code has expired. Tap Resend code.' : S.tries > 0 ? (e.msg || 'That code is not right.') + ' (' + S.tries + (S.tries === 1 ? ' try' : ' tries') + ' left)' : 'Too many tries. Please tap Resend code for a new one.';
+    setTimeout(function () { if (S.otp === 'err') { S.otp = 'otp'; paintCard(); } }, 700);
+    $('#ck-o0').focus();
+  });
+}
+function unlockFx() { var rw = $('.rw'); if (rw) rw.setAttribute('data-state', 'open'); }
+function webOtp() {
+  if (!('OTPCredential' in window) || !navigator.credentials) return;
+  try { var ac = new AbortController(); webOtp.ac && webOtp.ac.abort(); webOtp.ac = ac;
+    navigator.credentials.get({ otp: { transport: ['sms'] }, signal: ac.signal }).then(function (o) { if (o && o.code && S.otp !== 'open') fill(o.code); }).catch(function () {});
+  } catch (e) {}
+}
+function tick() { clearInterval(tick.t); tick.t = setInterval(function () { if (S.resend > 0) { S.resend--; paintMobile(); } else clearInterval(tick.t); }, 1000); }
+function editPhone() { S.sent = false; S.otp = 'locked'; S.token = ''; S.loy = null; S.codLeft = null; S.resend = 0; clearInterval(tick.t); if (webOtp.ac) webOtp.ac.abort(); paintAll(); var p = $('#ck-ph'); p.disabled = false; p.focus(); p.select(); }
+function place() {
+  if (!canPay()) return; S.busy = true; S.err = ''; if (!S.idem) S.idem = uuid(); paintPay();
+  var body = { branch: S.outlet, slotId: S.slot, method: S.method, items: S.quote.items.map(function (i) { return { id: i.id, qty: i.qty }; }),
+    customer: { name: S.name, email: '' }, consent: { terms: true, marketing: false, version: (S.cfg && S.cfg.termsVersion) || '' }, expectedTotalPaise: S.quote.totalPaise };
+  var qb = quoteBody(); if (qb.tip) body.tip = qb.tip; if (qb.offer) body.offer = qb.offer;   // contract v1.2 fields, only when announced
+  API.start(body, S.idem).then(function (r) {
+    S.order = { orderId: r.orderId, statusToken: r.statusToken, method: S.method, tipPaise: S.quote.tipPaise || 0, discountPaise: S.quote.discountPaise || 0, discountLabel: S.quote.discountLabel || '',
+      items: S.quote.items.map(function (i) { return { name: i.displayName || i.name, qty: i.qty }; }) };
+    if (r.payment && r.payment.demo) { S.busy = false; return view('paydemo'); }
+    if (r.payment) return submitPayu(r.payment);
+    poll(r.orderId);
+  }, function (e) {
+    S.busy = false;
+    if (e.code === 'quote_mismatch') { S.err = 'The price changed a moment ago. Please check the new total and try again.'; S.idem = ''; requote(); }
+    else if (e.code === 'slot_invalid') { S.err = 'That pickup time is no longer available. Please choose another.'; S.slot = ''; S.pickupOpen = true; S.idem = ''; chooseOutlet(S.outlet); }
+    else if (e.code === 'token_invalid') { S.err = 'Please verify your mobile again.'; S.idem = ''; editPhone(); }
+    else if (e.code === 'cod_not_allowed') { S.err = e.msg; S.method = ''; S.codLeft = 0; S.idem = ''; }
+    else S.err = e.msg || 'Something went wrong. Nothing has been charged. Please try again.';
+    paintPay();
+  });
+}
+function submitPayu(p) {
+  if (!p || !/^https:\/\/(secure|test)\.payu\.in\//.test(p.action || '')) { S.busy = false; S.err = 'The payment could not be started. Nothing has been charged.'; return paintPay(); }
+  var f = document.createElement('form'); f.method = 'POST'; f.action = p.action; f.style.display = 'none';
+  Object.keys(p.fields || {}).forEach(function (k) { var i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = p.fields[k]; f.appendChild(i); });
+  document.body.appendChild(f); f.submit();
+}
+function poll(id, n) {
+  n = n || 0; view('wait');
+  return API.status(id, S.order && S.order.statusToken).then(function (o) {
+    if (o.state === 'CONFIRMED') { S.order = Object.assign({}, S.order, o, { items: o.items || S.order.items, tipPaise: o.tipPaise != null ? o.tipPaise : S.order.tipPaise, discountPaise: o.discountPaise != null ? o.discountPaise : S.order.discountPaise }); try { localStorage.removeItem('rr_cart_v2'); } catch (e) {} return view('done'); }
+    if (o.state === 'PAYMENT_FAILED' || o.state === 'EXPIRED') return view('failed');
+    if (n >= 40) { S.err = 'We could not confirm your order yet. If money was taken, it will be refunded or the order confirmed shortly. Please call the outlet.'; return view('failed'); }
+    return sleep(1500).then(function () { return poll(id, n + 1); });
+  }, function () { if (n >= 5) { S.err = 'We cannot check your order right now. Please call the outlet with your order number.'; return view('failed'); } return sleep(2000).then(function () { return poll(id, n + 1); }); });
+}
+
+/* ===== OTHER VIEWS (no one-screen class, so nothing is clipped) ===== */
+function view(v) {
+  S.view = v; var ck = $('#ck'); ck.classList.remove('two'); window.scrollTo(0, 0);
+  if (v === 'order') return renderOrder();
+  if (v === 'empty') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big">Your cart is empty</h1><p>Choose your dishes first, then come back here to pick up your order.</p><a class="btn btn-pri" href="/?page=pickup-menu">Choose dishes</a>' + (MOCK ? '<button class="btn btn-sec" data-act="sample" type="button">Load a sample cart (demo)</button>' : '') + '</div>';
+  if (v === 'closed') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big">Online ordering is not open yet</h1><p>Please call us to order for pickup, or order on WhatsApp.</p><a class="btn btn-pri" href="tel:' + CFG.CALL + '">Call to order</a><a class="btn btn-sec" href="https://wa.me/919849982052">WhatsApp</a></div>';
+  if (v === 'paydemo') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><p><span class="pill">Demo</span> This is a pretend payment page. No money moves.</p><div class="row t"><span>Order ' + esc(S.order.orderId) + '</span><span>' + rs(S.quote.totalPaise) + '</span></div><button class="btn btn-pri" data-act="mp" data-ok="1" type="button">Pretend the payment worked</button><button class="btn btn-sec" data-act="mp" data-ok="0" type="button">Pretend the payment failed</button></div>';
+  if (v === 'wait') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big">Confirming your order&hellip;</h1><p>Please wait and do not close this page.</p></div>';
+  if (v === 'done') { var o = S.order, cod = o.method === 'cod';
+    ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><div class="done-hd"><div class="done-ok" aria-hidden="true">&#10003;</div>' +
+    '<h1 class="big">' + (cod ? 'Order placed' : 'Order confirmed') + (MOCK ? ' <span class="pill">Demo</span>' : '') + '</h1>' +
+    '<p class="okmsg" style="margin:4px 0">' + (cod ? 'Pay at the counter when you collect.' : 'Payment received. The kitchen has your order.') + '</p>' +
+    '<div class="done-no" id="h-id">' + esc(o.orderId) + '</div><p class="muted" style="margin:0 0 10px">Show this number at the counter.</p></div>' +
+    '<div class="row"><span>Outlet</span><b>' + esc(o.branchName || outName()) + '</b></div><div class="row"><span>Ready at</span><b>' + esc(o.slotLabel || slotLabel()) + '</b></div>' +
+    (o.discountPaise ? '<div class="row disc"><span>Discount' + (o.discountLabel ? ' (' + esc(o.discountLabel) + ')' : '') + '</span><span>&minus; ' + rs(o.discountPaise) + '</span></div>' : '') +
+    (o.freeItem ? '<div class="row disc"><span>' + esc(o.freeItem.split(':')[0]) + '</span><span>Collect at the counter</span></div>' : '') +
+    (o.tipPaise ? '<div class="row"><span>Tip</span><b>' + rs(o.tipPaise) + '</b></div>' : '') +
+    '<div class="row t"><span>' + (cod ? 'To pay at pickup' : 'Total paid') + '</span><span>' + rs(o.totalPaise || (S.quote && S.quote.totalPaise) || 0) + '</span></div>' +
+    (o.items && o.items.length ? '<p class="done-items">' + o.items.map(function (i) { return i.qty + ' x ' + esc(i.name); }).join(', ') + '</p>' : '') +
+    (o.earnPoints ? '<div class="done-earn">You will earn <b>' + o.earnPoints + '</b> RR Durbar points ' + (cod ? 'after you pay at the counter.' : 'on this order.') + '</div>' : '') +
+    '<p class="muted">Keep this page or note your order number. For help call <a href="tel:' + CFG.CALL + '">+91 98499 82052</a>.</p><p class="cat-line" style="margin:10px 0"><a href="/catering/" style="display:inline-block;padding:10px 0;color:var(--m,#4a0e1a);font-weight:700">Planning an event? We cater too &rarr;</a></p><a class="btn btn-pri" href="/?page=pickup-menu">Order more</a><a class="btn btn-sec" href="/">Back to home</a></div>'; }
+  if (v === 'failed') ck.innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big">Payment not completed</h1><p>' + esc(S.err || 'Your payment did not go through and your order has not been placed. You have not been charged.') + '</p><button class="btn btn-pri" data-act="retry" type="button">Try again</button><a class="btn btn-sec" href="tel:' + CFG.CALL + '">Call the outlet</a></div>';
+}
+
+/* ===== DIALOG ===== */
+var DLG = { terms: ['Terms', 'Read the full Terms of Service on our website. By ticking the box you agree to them and to the rewards club terms. You can ask us to stop at any time.', '/?page=terms-of-service'],
+  privacy: ['Privacy', 'We use your mobile number to verify your order, to tell the outlet who is collecting, and for rewards. Read the full Privacy Policy on our website.', '/?page=privacy-policy'] };
+function openDlg(k) { var d = $('#ck-dlg'), t = DLG[k]; if (!d || !t) return; d.innerHTML = '<h2 id="ck-dlg-t">' + esc(t[0]) + '</h2><p>' + esc(t[1]) + '</p><a href="' + t[2] + '" target="_blank" rel="noopener">Open the full page</a><button class="btn btn-dark" type="button" data-act="closedlg">Close</button>'; if (d.showModal) d.showModal(); else d.setAttribute('open', ''); }
+
+/* ===== TURNSTILE (only when a site key is set) ===== */
+function setupTurnstile() {
+  if (!CFG.TURNSTILE_SITEKEY || MOCK) return;
+  window.rrTsOk = function (t) { S.tsToken = t; if (S.pendingSend) maybeSend(); };
+  var s = document.createElement('script'); s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=rrTsLoad'; s.async = true; s.defer = true;
+  window.rrTsLoad = function () { var box = document.createElement('div'); box.id = 'ck-tsw'; var m = $('#s-mobile'); if (m) m.insertBefore(box, $('#ck-formerr')); window.turnstile.render('#ck-tsw', { sitekey: CFG.TURNSTILE_SITEKEY, callback: window.rrTsOk, 'refresh-expired': 'auto' }); };
+  document.head.appendChild(s);
+}
+function resetTurnstile() { S.tsToken = ''; try { if (window.turnstile) window.turnstile.reset('#ck-tsw'); } catch (e) {} }
+
+/* ===== EVENTS (one delegated set) ===== */
+document.addEventListener('click', function (ev) {
+  var t = ev.target.closest('[data-act],[data-dlg]'); if (!t) return;
+  if (t.hasAttribute('data-dlg')) { ev.preventDefault(); return openDlg(t.getAttribute('data-dlg')); }
+  // (time buttons replaced by the #ck-slot dropdown, 27 Oct)
+  var a = t.getAttribute('data-act');
+  if (a === 'next') { S.pickupOpen = false; paintPickup(); var p = $('#ck-ph'); if (p && !S.sent) p.focus(); else if (S.sent) $('#ck-o0').focus(); return; }
+  if (a === 'change') { S.pickupOpen = true; paintPickup(); var sel = $('#ck-outlet'); if (sel) sel.focus(); return; }
+  if (a === 'verify') return verify();
+  if (a === 'resend') { if (S.resend > 0) return; return sendOtp(); }
+  if (a === 'editphone') return editPhone();
+  if (a === 'place' || a === 'barplace') return place();
+  if (a === 'requote') return requote();
+  if (a === 'inc' || a === 'dec') { var it = S.quote && S.quote.items[+t.getAttribute('data-k')]; if (!it) return; var c = S.cart.filter(function (x) { return x.id === it.id; })[0]; if (!c) return; c.qty = Math.max(0, Math.min(20, c.qty + (a === 'inc' ? 1 : -1))); S.cart = S.cart.filter(function (x) { return x.qty > 0; }); saveCart(); S.idem = ''; if (!S.cart.length) return view('empty'); return requote(); }
+  if (a === 'sample') { S.cart = SAMPLE.map(function (x) { return Object.assign({}, x); }); saveCart(); return view('order'); }
+  if (a === 'mp') { var ok = t.getAttribute('data-ok') === '1'; view('wait'); return demo.pay(S.order.orderId, ok).then(function () { return poll(S.order.orderId); }); }
+  if (a === 'retry') { S.err = ''; S.idem = ''; S.busy = false; view('order'); return requote(); }
+  if (a === 'closedlg') { var d = $('#ck-dlg'); if (d.close) d.close(); else d.removeAttribute('open'); }
+  if (a === 'coupons') return openCoupons();
+  if (a === 'cpapply' || a === 'cpcode') { var cc = a === 'cpapply' ? t.getAttribute('data-code') : ($('#ck-cpin').value || '').trim().toUpperCase(); if (!cc) { $('#ck-cperr').textContent = 'Enter a code.'; return; }
+    var hit = a === 'cpcode' && S.offers && S.offers.coupons.filter(function (x) { return x.code === cc; })[0];
+    if (a === 'cpcode' && hit && !hit.eligible) { $('#ck-cperr').textContent = hit.reason; return; }
+    var dd = $('#ck-dlg'); if (dd.close) dd.close(); else dd.removeAttribute('open'); return setOffer({ kind: 'coupon', code: cc }); }
+  if (a === 'rmoffer') return setOffer(null);
+  if (a === 'reward') return setOffer({ kind: 'reward', rewardId: t.getAttribute('data-id') });
+});
+document.addEventListener('click', function (ev) {
+  var t = ev.target.closest('[data-tip]'); if (!t) return;
+  var v = t.getAttribute('data-tip');
+  if (v === 'other') { var was = S.tipOther || !!(S.tip && S.tip.paise); S.tipOther = !was; S.tip = null; S.idem = ''; paintTip(); var ti = $('#ck-tipamt'); if (ti) ti.focus(); return requote(true); }
+  var p = +v; S.tipOther = false; S.tip = S.tip && S.tip.pct === p ? null : { pct: p }; S.idem = ''; paintTip(); requote(true);
+});
+document.addEventListener('change', function (ev) {
+  var t = ev.target;
+  if (t.id === 'ck-outlet') return chooseOutlet(t.value);
+  if (t.id === 'ck-slot') { S.slot = t.value; var pb = $('#ck-pickbody'); if (pb && !!S.slot !== !!$('[data-act=next]', pb)) paintPickup(); paintSteps(); paintPay(); return; }
+  if (t.id === 'ck-terms') { S.terms = t.checked; if (t.checked) { $('#ck-formerr').textContent = ''; if (S.pendingSend || (phoneOk() && !S.sent)) maybeSend(); } return; }
+  if (t.name === 'ck-pm') { S.method = t.value; S.err = ''; S.idem = ''; return paintPay(); }
+});
+document.addEventListener('input', function (ev) {
+  var t = ev.target;
+  if (t.id === 'ck-ph') { t.value = t.value.replace(/\D/g, '').slice(0, 10); S.phone = t.value; $('#ck-formerr').textContent = ''; if (S.phone.length === 10 && !S.sent) maybeSend(); return; }
+  if (t.id === 'ck-nm') { S.name = t.value.trim().slice(0, 60); return; }
+  if (t.id === 'ck-tipamt') { t.value = t.value.replace(/\D/g, '').slice(0, 3); var rup = +t.value || 0; S.tip = rup > 0 ? { paise: Math.min(rup, 500) * 100 } : null; S.idem = ''; clearTimeout(requote.t); requote.t = setTimeout(function () { requote(true); }, 400); return; }
+  if (/^ck-o\d$/.test(t.id)) {
+    var v = t.value.replace(/\D/g, '');
+    if (v.length > 1) return fill(v);
+    t.value = v; if (S.otp === 'locked' || S.otp === 'err') { S.otp = 'otp'; paintCard(); }
+    if (v) { var nx = $('#ck-o' + (+t.id.slice(4) + 1)); if (nx) nx.focus(); }
+    if (code().length === CFG.OTP_LEN) verify();
+  }
+});
+document.addEventListener('keydown', function (ev) {
+  var t = ev.target; if (!/^ck-o\d$/.test(t.id || '')) return;
+  var i = +t.id.slice(4);
+  if (ev.key === 'Backspace' && !t.value && i > 0) { var p = $('#ck-o' + (i - 1)); p.value = ''; p.focus(); ev.preventDefault(); }
+  if (ev.key === 'ArrowLeft' && i > 0) $('#ck-o' + (i - 1)).focus();
+  if (ev.key === 'ArrowRight' && i < CFG.OTP_LEN - 1) $('#ck-o' + (i + 1)).focus();
+});
+document.addEventListener('paste', function (ev) {
+  if (!/^ck-o\d$/.test((ev.target && ev.target.id) || '')) return;
+  var txt = (ev.clipboardData || window.clipboardData).getData('text'); if (!/\d/.test(txt)) return; ev.preventDefault(); fill(txt);
+});
+/* The coin never unlocks by itself: only the right code does. Dragging it most of the way (or tapping the track) takes you to the next field. */
+function rwNext() { var rw = $('.rw'); if (!rw || verified()) return; rw.classList.add('nudge'); setTimeout(function () { rw.classList.remove('nudge'); }, 600);
+  var f = !phoneOk() ? $('#ck-ph') : !S.terms ? $('#ck-terms') : $('#ck-o0'); if (f && !f.disabled) { f.focus(); if (f.scrollIntoView) f.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' }); } }
+(function () {
+  var d = null, swAt = 0;
+  document.addEventListener('pointerdown', function (ev) { var k = ev.target.closest && ev.target.closest('.rw-knob'), rw = k && k.closest('.rw'); if (!rw || verified() || S.otp === 'verifying') return;
+    d = { k: k, rw: rw, x0: ev.clientX, dx: 0, max: Math.max(1, rw.querySelector('.rw-trk').clientWidth - k.offsetWidth - 6) }; rw.classList.add('drag'); try { k.setPointerCapture(ev.pointerId); } catch (e) {} });
+  document.addEventListener('pointermove', function (ev) { if (!d) return; d.dx = Math.max(0, Math.min(d.max, ev.clientX - d.x0)); d.k.style.transform = 'translateX(' + d.dx + 'px)'; });
+  function end() { if (!d) return; var x = d; d = null; x.rw.classList.remove('drag'); x.k.style.transform = ''; if (x.dx > 6) swAt = Date.now(); if (x.dx > x.max * 0.6 || x.dx <= 6) rwNext(); }
+  document.addEventListener('pointerup', end); document.addEventListener('pointercancel', end);
+  document.addEventListener('click', function (ev) { if (Date.now() - swAt < 400) return; var tr = ev.target.closest && ev.target.closest('.rw-trk'); if (tr && !ev.target.closest('.rw-knob')) rwNext(); });
+})();
+
+/* ===== START ===== */
+(function start() {
+  if (MOCK) { var tb = $('#testbar'); tb.hidden = false; tb.innerHTML = '<b>DEMO MODE</b>: pretend code, pretend payment, pretend rewards. No real orders or money.'; }
+  // Return from PayU: /checkout/v2/?order=RR-1&t=... (the status token is removed from the address bar at once)
+  if (!MOCK && Q.get('order') && Q.get('t')) { S.order = { orderId: Q.get('order'), statusToken: Q.get('t') }; history.replaceState(null, '', location.pathname); return API.config().then(function (c) { S.cfg = c; }, function () {}).then(function () { poll(S.order.orderId); }); }
+  loadCart();
+  API.config().then(function (c) {
+    S.cfg = c; if (!c.orderingOpen) return view('closed');
+    if (!S.cart.length) return view('empty');
+    if (S.outlet && !outletObj()) S.outlet = '';
+    view('order'); setupTurnstile(); if (S.outlet) chooseOutlet(S.outlet);
+  }, function () { $('#ck').innerHTML = '<div class="ck-card" style="max-width:560px;margin:24px auto"><h1 class="big">We cannot open checkout right now</h1><p>Please try again in a few minutes, or call us to order.</p><a class="btn btn-pri" href="tel:' + CFG.CALL + '">Call to order</a></div>'; });
+})();
+})();
+</script>
+</body>
+</html>

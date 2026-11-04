@@ -26,7 +26,7 @@ with sync_playwright() as p:
         res(len(o) > 0 and all(int(x.split('/')[0]) >= 0 and int(x.split('/')[1]) <= 1 for x in o), f"{w}px: {len(o)} signature cards, text below photo and nothing cut off (gap/overflow): {sorted(set(o))}")
         pg.close()
     pg = br.new_page(viewport={"width": 390, "height": 844}, is_mobile=True); pg.goto(B + "/branches/", wait_until="load"); pg.wait_for_timeout(1500)
-    m = pg.evaluate("(()=>{const s=document.getElementById('br-locator').getBoundingClientRect(),m=document.getElementById('map').getBoundingClientRect(),l=document.querySelector('#br-locator .leaves');return [Math.round(m.bottom-s.bottom),l?getComputedStyle(l).display:'none']})()")
+    m = pg.evaluate("(()=>{const s=document.getElementById('br-locator').getBoundingClientRect(),m=document.getElementById('brmMap').getBoundingClientRect(),l=document.querySelector('#br-locator .leaves');return [Math.round(m.bottom-s.bottom),l?getComputedStyle(l).display:'none']})()")
     res(m[0] <= 0 and m[1] == "none", f"390px branches: map bottom vs section bottom {m[0]} (want <= 0, i.e. not cut off), leaf decoration {m[1]}"); pg.close()
     for w, h, want in ((980, 1730, "hero-m-"), (820, 1180, "hero-m-"), (1280, 800, "NOT hero-m-"), (1440, 900, "NOT hero-m-")):
         pg = br.new_page(viewport={"width": w, "height": h}); pg.goto(B + "/", wait_until="load"); pg.wait_for_timeout(1500)

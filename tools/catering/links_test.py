@@ -51,10 +51,10 @@ with sync_playwright() as p:
         res(on == ([want] if want else []), f"tab highlight {path}: {on} (want {want})"); ctx.close()
     # branches heading above the map (phone), two columns kept on laptop
     ctx, pg = load(br, "/branches/", 390, 844, True)
-    o = pg.evaluate("(()=>{const h=document.querySelector('#br-map h2').getBoundingClientRect(),e=document.querySelector('#br-map .brm-eye').getBoundingClientRect(),m=document.getElementById('brmMap').getBoundingClientRect(),c=document.getElementById('brmCards').getBoundingClientRect();return [e.bottom<=h.top+1,h.bottom<=m.top,m.bottom<=c.top,document.documentElement.scrollWidth<=innerWidth]})()")
-    res(all(o), f"branches 390: eyebrow, heading above map, cards below {o}"); ctx.close()
+    o = pg.evaluate("(()=>{const h=document.querySelector('#br-locator h1').getBoundingClientRect(),e=document.querySelector('#br-locator .brt-eye').getBoundingClientRect(),m=document.getElementById('brmMap').getBoundingClientRect(),c=document.getElementById('brtCards').getBoundingClientRect();return [e.bottom<=h.top+1,h.bottom<=m.top,m.bottom<=c.top,document.documentElement.scrollWidth<=innerWidth]})()")
+    res(all(o), f"branches 390 (Step N top section): eyebrow, heading above map, card below {o}"); ctx.close()
     ctx, pg = load(br, "/branches/", 1440, 900, False)
-    o = pg.evaluate("(()=>{const h=document.querySelector('#br-map h2').getBoundingClientRect(),m=document.getElementById('brmMap').getBoundingClientRect();return [h.left>m.right]})()")
+    o = pg.evaluate("(()=>{const h=document.querySelector('#br-locator h1').getBoundingClientRect(),m=document.getElementById('brmMap').getBoundingClientRect();return [h.left>m.right]})()")
     res(all(o), f"branches 1440: heading stays in the right column {o}"); ctx.close()
     for w in (360,):
         for path in ("/", "/menu/", "/branches/", "/track-order/"):
