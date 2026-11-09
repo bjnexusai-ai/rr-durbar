@@ -89,11 +89,16 @@ window.RR_LISTINGS=window.RR_LISTINGS||{swiggy:'https://www.swiggy.com/city/vija
 const W3F_URL='https://api.web3forms.com/submit',W3F_KEY='aa64aaed-cd9b-4041-b36c-6ef0314be0db';
 const OK_MSG="Thank you! We'll call you within a day.";
 function w3fBody(f,kind){const v=vals(f),hp=f.querySelector('input[name=botcheck]'),b={access_key:W3F_KEY,from_name:'RR Durbar website',botcheck:!!(hp&&hp.checked)};
- b.name=v.name;b.phone=v.phone;if(v.email)b.email=v.email;
- if(kind==='catering'){b.event_type=v['event type'];b.date=v['event date'];b.guests=v['guest count'];b.location=v.location;b.message=v.requirements||'';
-  b.subject='[RR Durbar] Catering enquiry \u2013 '+v['event type']+' \u2013 '+v['event date']}
- else{b.topic=v.subject;b.message=v.message;b.subject='[RR Durbar] Contact \u2013 '+v.name}
- return b}
+ const set=(k,x)=>{if(x)b[k]=x},M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  nice=x=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(x||'');return m?(+m[3])+' '+M[+m[2]-1]+' '+m[1]:(x||'')},
+  d=(v.phone||'').replace(/\D/g,'').slice(-10);
+ set('Name',v.name);set('Phone',v.phone);set('Email',v.email);if(v.email)b.replyto=v.email;
+ if(kind==='catering'){const dt=nice(v['event date']);
+  set('Event type',v['event type']);set('Event date',dt);set('Number of guests',v['guest count']);set('Venue / location',v.location);set('Requirements',v.requirements);
+  b.subject='[RR Durbar] Catering enquiry \u2013 '+(v['event type']||'Enquiry')+' \u2013 '+(dt||'date not given')}
+ else{set('Topic',v.subject);set('Message',v.message);b.subject='[RR Durbar] Contact \u2013 '+v.name}
+ if(d.length===10){b.Call='tel:+91'+d;b.WhatsApp='https://wa.me/91'+d}
+ b['Submitted from']=location.href;return b}
 function w3fFail(f){const p=f.querySelector('.rr-form-status');if(!p)return;p.textContent='';
  p.appendChild(document.createTextNode('Sorry, your message was not sent. Please message us on '));
  const a=document.createElement('a');a.href='https://wa.me/'+WA;a.target='_blank';a.rel='noopener noreferrer';a.textContent='WhatsApp';p.appendChild(a);
