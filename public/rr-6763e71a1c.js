@@ -86,10 +86,21 @@ var rrq=0;new MutationObserver(function(){if(rrq)return;rrq=setTimeout(function(
 window.RR_LISTINGS=window.RR_LISTINGS||{swiggy:'https://www.swiggy.com/city/vijayawada/rr-durbar-siddhartha-nagar-labbipet-rest68611',zomato:'https://www.zomato.com/vijayawada/restaurants/rrs-durbar?category=1'};
 /* Form delivery: set to the WordPress endpoint (wp_mail via WP Mail SMTP) at conversion.
    Expected: POST JSON {form,fields}; respond 200 {ok:true}. Empty = not connected, and NO success is ever shown. */
-const RR_FORM_ENDPOINT='';
+const W3F_URL='https://api.web3forms.com/submit',W3F_KEY='aa64aaed-cd9b-4041-b36c-6ef0314be0db';
+const OK_MSG="Thank you! We'll call you within a day.";
+function w3fBody(f,kind){const v=vals(f),hp=f.querySelector('input[name=botcheck]'),b={access_key:W3F_KEY,from_name:'RR Durbar website',botcheck:!!(hp&&hp.checked)};
+ b.name=v.name;b.phone=v.phone;if(v.email)b.email=v.email;
+ if(kind==='catering'){b.event_type=v['event type'];b.date=v['event date'];b.guests=v['guest count'];b.location=v.location;b.message=v.requirements||'';
+  b.subject='[RR Durbar] Catering enquiry \u2013 '+v['event type']+' \u2013 '+v['event date']}
+ else{b.topic=v.subject;b.message=v.message;b.subject='[RR Durbar] Contact \u2013 '+v.name}
+ return b}
+function w3fFail(f){const p=f.querySelector('.rr-form-status');if(!p)return;p.textContent='';
+ p.appendChild(document.createTextNode('Sorry, your message was not sent. Please message us on '));
+ const a=document.createElement('a');a.href='https://wa.me/'+WA;a.target='_blank';a.rel='noopener noreferrer';a.textContent='WhatsApp';p.appendChild(a);
+ p.appendChild(document.createTextNode(' or call 98499 82052.'));p.hidden=false;p.dataset.tone='error'}
 const WA='919849982052';
 const msgs={catering:'Online enquiries are not live yet. Please use Send on WhatsApp or call 98499 82052.',contact:'Online messages are not live yet. Please use Send on WhatsApp or call 98499 82052.',checkout:'Online payment is not live yet. Please call 98499 82052 to place your pickup order.'};
-function vals(f){const o={};f.querySelectorAll('input,select,textarea').forEach(e=>{if(e.name)o[e.name]=e.value.trim()});return o}
+function vals(f){const o={};f.querySelectorAll('input,select,textarea').forEach(e=>{if(e.name&&e.name!=='botcheck')o[e.name]=e.value.trim()});return o}
 function validate(f){let ok=true;f.querySelectorAll('.rr-err').forEach(e=>e.remove());
  f.querySelectorAll('input,select,textarea').forEach(e=>{e.removeAttribute('aria-invalid');let m='';const v=e.value.trim();
   if(e.required&&!v)m='This field is required.';
@@ -101,12 +112,14 @@ function status(f,t,tone){const p=f.querySelector('.rr-form-status');if(!p)retur
 document.querySelectorAll('form[data-rr-form]').forEach(f=>{
  const kind=f.dataset.rrForm,btn=f.querySelector('[data-rr-submit]');let busy=false;
  f.addEventListener('submit',async e=>{e.preventDefault();if(busy||!validate(f))return;
-  if(!RR_FORM_ENDPOINT){status(f,msgs[kind],'notice');return}
-  busy=true;btn.disabled=true;const label=btn.textContent;btn.textContent='Sending…';status(f,'');
-  try{const r=await fetch(RR_FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({form:kind,fields:vals(f)})});
-   if(!r.ok)throw 0;status(f,'Thank you. We have received your request and will get back to you shortly.');f.reset()}
-  catch(_){status(f,'Something went wrong, so your request was not sent. Please try again, or use WhatsApp or call.','error')}
-  finally{busy=false;btn.disabled=false;btn.textContent=label}});
+  const hp=f.querySelector('input[name=botcheck]');
+  if(hp&&hp.checked){status(f,OK_MSG,'success');return}
+  busy=true;btn.disabled=true;btn.setAttribute('aria-busy','true');const label=btn.textContent;btn.textContent='Sending…';status(f,'');
+  try{const r=await fetch(W3F_URL,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(w3fBody(f,kind))});
+   const d=await r.json().catch(()=>({}));
+   if(!r.ok||!d.success)throw 0;status(f,OK_MSG,'success');f.reset()}
+  catch(_){w3fFail(f)}
+  finally{busy=false;btn.disabled=false;btn.removeAttribute('aria-busy');btn.textContent=label}});
  const wa=f.querySelector('[data-rr-wa]');
  if(wa)wa.addEventListener('click',e=>{if(!validate(f)){e.preventDefault();return}
   const v=vals(f),t='Hi RR Durbar, '+(kind==='catering'?'catering enquiry':'message')+':\n'+Object.entries(v).filter(([,x])=>x).map(([k,x])=>k+': '+x).join('\n');
